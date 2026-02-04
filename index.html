@@ -710,10 +710,29 @@
             .report-title { font-size: 2.5rem; }
         }
 
-        /* Loading state */
-        .loading {
-            opacity: 0.5;
-            pointer-events: none;
+        /* AI Thinking Animation */
+        .ai-thinking {
+            display: inline-block;
+            margin-left: 5px;
+        }
+        .ai-thinking span {
+            display: inline-block;
+            animation: blink 1.4s infinite both;
+        }
+        .ai-thinking span:nth-child(2) { animation-delay: 0.2s; }
+        .ai-thinking span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes blink {
+            0% { opacity: 0.2; }
+            20% { opacity: 1; }
+            100% { opacity: 0.2; }
+        }
+
+        .loading-text {
+            color: var(--gold-bright);
+            font-style: italic;
+            letter-spacing: 1px;
+            font-size: 0.9rem;
         }
 
     </style>
@@ -723,7 +742,6 @@
     <div class="ambient-glow"></div>
     <div class="drifting-stars"></div>
     
-    <!-- Floating particles -->
     <div class="particle"></div>
     <div class="particle"></div>
     <div class="particle"></div>
@@ -871,7 +889,7 @@
             <input type="text" id="input-rule" placeholder="One golden rule for first dates?">
             <input type="text" id="input-curious" placeholder="One thing you're curious about me?">
             
-            <button class="finish-btn" onclick="finish()">
+            <button class="finish-btn" onclick="finish()" id="final-btn">
                 <span>Lock It In</span>
             </button>
         </div>
@@ -880,7 +898,7 @@
 
     <div id="report-view">
         <div class="report-header">
-            <h1 class="report-title">It's a Date.</h1>
+            <h1 class="report-title" id="typewriter-title"></h1>
             <p class="report-subtitle">The shore awaits us</p>
         </div>
         
@@ -904,9 +922,8 @@
             — Now we're here.
         </p>
         
-        <button class="report-cta" onclick="takeScreenshot()">Screenshot This</button>
-        <p style="color: #666; font-size: 0.75rem; margin-top: 15px; font-style: italic;">
-            (Then send it my way)
+        <p style="color: var(--gold-bright); font-size: 0.85rem; margin-top: 30px; letter-spacing: 2px; text-transform: uppercase;">
+            TRANSMISSION RECEIVED
         </p>
     </div>
 
@@ -1154,16 +1171,22 @@
             // Submit form
             const form = document.getElementById('hidden-form');
             const data = new FormData(form);
+            const btn = document.getElementById('final-btn');
             
-            document.getElementById('form-container').classList.add('loading');
+            // AI Thinking Simulation
+            btn.innerHTML = 'Analyzing <div class="ai-thinking"><span>.</span><span>.</span><span>.</span></div>';
             
             fetch(form.action, { 
                 method: 'POST', 
                 body: data, 
                 headers: {'Accept': 'application/json'} 
             })
-            .then(() => showReport())
-            .catch(() => showReport()); // Show report even if form fails
+            .then(() => {
+                setTimeout(showReport, 2000); // Artificial delay for effect
+            })
+            .catch(() => {
+                setTimeout(showReport, 2000);
+            }); 
         }
 
         function showReport() {
@@ -1178,11 +1201,25 @@
                 document.getElementById('res-venue').innerText = formData.venue;
                 document.getElementById('res-caffeine').innerText = formData.caffeine;
                 document.getElementById('res-game').innerText = formData.game;
+                
+                // Typewriter Effect
+                typeWriter("It's a Date.", "typewriter-title", 100);
             }, 500);
         }
 
-        function takeScreenshot() {
-            alert('📸 Take a screenshot now and send it my way!\n\n(Use your device\'s screenshot function)');
+        function typeWriter(text, elementId, speed) {
+            let i = 0;
+            const element = document.getElementById(elementId);
+            element.innerHTML = "";
+            
+            function type() {
+                if (i < text.length) {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
         }
 
     </script>
