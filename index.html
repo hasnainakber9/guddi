@@ -3,192 +3,718 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Shore: Rida</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,600&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+    <title>The Shore — Just Keep Swimming</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* VELVET SHORE PALETTE */
-            --bg-deep: #050508;
-            --glass-panel: rgba(255, 255, 255, 0.03);
-            --border-soft: rgba(255, 255, 255, 0.1);
-            --gold-dim: #8a7e68;
+            --bg-deep: #0a0512;
+            --bg-layer: #120820;
+            --glass-panel: rgba(255, 255, 255, 0.04);
+            --glass-panel-hover: rgba(255, 255, 255, 0.08);
+            --border-soft: rgba(255, 255, 255, 0.12);
+            --gold-dim: #9b8b6f;
             --gold-bright: #d4af37;
-            --correct: #508e58; /* Muted Emerald */
-            --present: #b59f3b; /* Gold */
-            --absent: #2a2a2e;
-            --text-main: #e2e2e2;
+            --gold-glow: rgba(212, 175, 55, 0.2);
+            --correct: #4a9b5c;
+            --present: #c9a93e;
+            --absent: #2d2d35;
+            --text-main: #e8e8e8;
+            --text-dim: #a0a0a8;
+            --shadow-deep: rgba(0, 0, 0, 0.6);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            -webkit-tap-highlight-color: transparent;
+        }
 
         body {
-            background-color: var(--bg-deep);
+            background: linear-gradient(135deg, var(--bg-deep) 0%, var(--bg-layer) 100%);
             color: var(--text-main);
             font-family: 'Montserrat', sans-serif;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow-x: hidden;
             position: relative;
+            padding: 20px;
         }
 
-        /* --- BACKGROUND --- */
+        /* --- ENHANCED BACKGROUND --- */
         .ambient-glow {
-            position: absolute; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 120%, #1a1025, #000 60%);
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(138, 86, 148, 0.15), transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(75, 105, 155, 0.12), transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05), transparent 70%);
             z-index: -2;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.9; }
         }
         
         .drifting-stars {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(1px 1px at 50px 50px, #fff, transparent), radial-gradient(1px 1px at 150px 250px, #fff, transparent);
-            background-size: 300px 300px;
-            opacity: 0.2;
-            animation: drift 100s linear infinite;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(2px 2px at 20% 30%, white, transparent),
+                radial-gradient(2px 2px at 60% 70%, white, transparent),
+                radial-gradient(1px 1px at 50% 50%, white, transparent),
+                radial-gradient(1px 1px at 80% 10%, white, transparent),
+                radial-gradient(2px 2px at 90% 60%, white, transparent),
+                radial-gradient(1px 1px at 33% 80%, white, transparent);
+            background-size: 400px 400px, 500px 500px, 300px 300px, 450px 450px, 350px 350px, 380px 380px;
+            background-position: 0 0, 40px 60px, 130px 270px, 70px 100px, 200px 150px, 300px 50px;
+            opacity: 0.3;
+            animation: drift 120s linear infinite;
             z-index: -1;
+        }
+
+        @keyframes drift {
+            from { background-position: 0 0, 40px 60px, 130px 270px, 70px 100px, 200px 150px, 300px 50px; }
+            to { background-position: 0 1200px, 40px 1260px, 130px 1470px, 70px 1300px, 200px 1350px, 300px 1250px; }
+        }
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: var(--gold-dim);
+            border-radius: 50%;
+            opacity: 0;
+            animation: float 15s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(100px) scale(1); opacity: 0; }
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
+        .particle:nth-child(2) { left: 30%; animation-delay: 3s; animation-duration: 15s; }
+        .particle:nth-child(3) { left: 50%; animation-delay: 6s; animation-duration: 13s; }
+        .particle:nth-child(4) { left: 70%; animation-delay: 2s; animation-duration: 14s; }
+        .particle:nth-child(5) { left: 90%; animation-delay: 5s; animation-duration: 16s; }
+
+        /* --- MAIN CONTAINER --- */
+        .main-container {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
-            color: var(--gold-dim);
-            font-weight: 400;
+            font-size: 1.8rem;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            color: var(--gold-bright);
+            font-weight: 300;
             text-transform: uppercase;
-            border-bottom: 1px solid rgba(138, 126, 104, 0.3);
-            padding-bottom: 10px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
         }
 
-        /* --- GAME BOARD (5x5) --- */
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
+        }
+
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--text-dim);
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
+
+        /* --- ENHANCED GAME BOARD --- */
         #game-board {
             display: grid;
             grid-template-rows: repeat(5, 1fr); 
-            gap: 8px;
-            margin-bottom: 40px;
+            gap: 10px;
+            margin-bottom: 35px;
+            perspective: 1000px;
         }
 
         .row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
+            gap: 10px;
         }
 
         .tile {
-            width: 50px;
-            height: 50px;
-            border: 1px solid var(--border-soft);
+            width: 100%;
+            aspect-ratio: 1;
+            max-width: 65px;
+            max-height: 65px;
+            border: 2px solid var(--border-soft);
             background: var(--glass-panel);
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 600;
             text-transform: uppercase;
-            transition: all 0.4s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: #fff;
-            border-radius: 4px;
+            border-radius: 6px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tile::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tile:hover::before {
+            opacity: 1;
         }
 
         /* Tile States */
-        .tile[data-state="active"] { border-color: var(--gold-dim); box-shadow: 0 0 10px rgba(212, 175, 55, 0.1); }
-        .tile[data-state="correct"] { background-color: var(--correct); border-color: var(--correct); }
-        .tile[data-state="present"] { background-color: var(--present); border-color: var(--present); }
-        .tile[data-state="absent"] { background-color: var(--absent); border-color: var(--absent); opacity: 0.6; }
+        .tile[data-state="active"] { 
+            border-color: var(--gold-bright);
+            box-shadow: 0 0 20px var(--gold-glow);
+            transform: scale(1.05);
+        }
+
+        .tile[data-state="correct"] { 
+            background: linear-gradient(135deg, var(--correct) 0%, #3d8249 100%);
+            border-color: var(--correct);
+            box-shadow: 0 4px 15px rgba(74, 155, 92, 0.4);
+        }
+
+        .tile[data-state="present"] { 
+            background: linear-gradient(135deg, var(--present) 0%, #b38d2e 100%);
+            border-color: var(--present);
+            box-shadow: 0 4px 15px rgba(201, 169, 62, 0.4);
+        }
+
+        .tile[data-state="absent"] { 
+            background: var(--absent);
+            border-color: var(--absent);
+            opacity: 0.5;
+        }
         
-        .flip { animation: flip 0.6s ease forwards; }
+        .flip { 
+            animation: flip 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
 
-        @keyframes flip { 0% { transform: rotateX(0); } 50% { transform: rotateX(90deg); } 100% { transform: rotateX(0); } }
-        @keyframes drift { from { background-position: 0 0; } to { background-position: 0 1000px; } }
+        @keyframes flip {
+            0% { transform: rotateX(0) scale(1); }
+            50% { transform: rotateX(90deg) scale(1.05); }
+            100% { transform: rotateX(0) scale(1); }
+        }
 
-        /* --- KEYBOARD --- */
-        #keyboard { display: flex; flex-direction: column; gap: 8px; align-items: center; width: 100%; max-width: 500px; padding: 0 10px; }
-        .key-row { display: flex; gap: 6px; width: 100%; justify-content: center; }
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .bounce {
+            animation: bounce 0.6s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* --- ENHANCED HINT --- */
+        .hint-container {
+            background: var(--glass-panel);
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 35px;
+            backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hint-container::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            font-size: 6rem;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--gold-dim);
+            opacity: 0.15;
+        }
+
+        .hint-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.15rem;
+            color: var(--gold-bright);
+            text-align: center;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hint-author {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            text-align: right;
+            margin-top: 12px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* --- ENHANCED KEYBOARD --- */
+        #keyboard { 
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .key-row { 
+            display: flex;
+            gap: 6px;
+            width: 100%;
+            justify-content: center;
+        }
+
         .key {
             flex: 1;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 400;
-            background-color: rgba(255,255,255,0.05);
-            color: #ccc;
-            height: 48px;
-            border-radius: 4px;
+            font-weight: 500;
+            background: var(--glass-panel);
+            color: var(--text-main);
+            height: 54px;
+            border-radius: 6px;
             cursor: pointer;
             text-transform: uppercase;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 0.8rem;
-            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1px solid transparent;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
         }
-        .key.big { flex: 1.5; font-size: 0.7rem; letter-spacing: 1px; }
-        .key:hover { border-color: var(--gold-dim); color: #fff; }
-        .key:active { background-color: rgba(255,255,255,0.1); }
 
-        /* --- HINT TEXT --- */
-        .hint-text {
-            margin-top: 30px;
+        .key::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .key:hover::before {
+            opacity: 1;
+        }
+
+        .key.big { 
+            flex: 1.6;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .key:hover { 
+            border-color: var(--gold-dim);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--shadow-deep);
+        }
+
+        .key:active { 
+            transform: translateY(0);
+            background: var(--glass-panel-hover);
+        }
+
+        .key[data-state="correct"] {
+            background: var(--correct);
+            border-color: var(--correct);
+        }
+
+        .key[data-state="present"] {
+            background: var(--present);
+            border-color: var(--present);
+        }
+
+        .key[data-state="absent"] {
+            background: var(--absent);
+            opacity: 0.5;
+        }
+
+        /* --- ENHANCED FORM --- */
+        #form-container {
+            display: none;
+            width: 100%;
+            max-width: 520px;
+            padding: 50px 40px;
+            background: rgba(15, 10, 20, 0.92);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            backdrop-filter: blur(40px);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7), 0 0 60px var(--gold-glow);
+            animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            position: relative;
+        }
+
+        .form-step { 
+            display: none;
+            text-align: center;
+        }
+
+        .form-step.active { 
+            display: block;
+            animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .form-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            color: var(--gold-bright);
+            margin-bottom: 12px;
+            font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        .form-subtitle {
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
             font-size: 1.1rem;
-            color: var(--gold-dim);
-            text-align: center;
-            padding: 0 20px;
-            line-height: 1.4;
+            color: var(--text-dim);
+            margin-bottom: 40px;
+            line-height: 1.6;
         }
-
-        /* --- FORM (HIDDEN) --- */
-        #form-container {
-            display: none;
-            width: 100%; max-width: 450px;
-            padding: 40px;
-            background: rgba(10, 10, 15, 0.85);
-            border: 1px solid var(--border-soft);
-            border-radius: 8px;
-            backdrop-filter: blur(30px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-            animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-        }
-
-        .form-step { display: none; text-align: center; }
-        .form-step.active { display: block; animation: fadeIn 0.8s; }
 
         /* Elegant Choice Buttons */
         .choice-btn {
-            display: flex; align-items: center; padding: 18px 0;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            cursor: pointer; transition: all 0.4s ease; color: #888; text-align: left;
+            display: flex;
+            align-items: center;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border-soft);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--text-dim);
+            text-align: left;
+            background: var(--glass-panel);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
         }
-        .choice-btn:hover { padding-left: 10px; color: #fff; border-bottom-color: var(--gold-dim); }
-        .choice-btn:last-child { border-bottom: none; }
-        
-        .btn-icon { font-size: 1.2rem; margin-right: 20px; opacity: 0.7; }
-        .btn-label { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; }
-        .btn-sub { font-family: 'Montserrat', sans-serif; font-size: 0.7rem; color: #666; display: block; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
 
-        input[type="text"] {
-            background: transparent; border: none; border-bottom: 1px solid #333;
-            padding: 15px 0; color: #fff; font-family: 'Cormorant Garamond';
-            font-size: 1.4rem; outline: none; text-align: center; margin-bottom: 30px; width: 100%;
+        .choice-btn::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 0;
+            background: linear-gradient(90deg, var(--gold-glow), transparent);
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        input[type="text"]:focus { border-bottom-color: var(--gold-bright); }
+
+        .choice-btn:hover {
+            transform: translateX(8px);
+            border-color: var(--gold-dim);
+            color: var(--text-main);
+            box-shadow: 0 4px 20px var(--shadow-deep);
+        }
+
+        .choice-btn:hover::before {
+            width: 100%;
+        }
+
+        .choice-btn:active {
+            transform: translateX(8px) scale(0.98);
+        }
+        
+        .btn-icon {
+            font-size: 1.8rem;
+            margin-right: 20px;
+            opacity: 0.8;
+            transition: all 0.3s;
+            z-index: 1;
+        }
+
+        .choice-btn:hover .btn-icon {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+
+        .btn-content {
+            flex: 1;
+            z-index: 1;
+        }
+
+        .btn-label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .btn-sub {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Input Fields */
+        input[type="text"] {
+            background: var(--glass-panel);
+            border: 1px solid var(--border-soft);
+            border-radius: 8px;
+            padding: 18px 20px;
+            color: var(--text-main);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            outline: none;
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        input[type="text"]::placeholder {
+            color: var(--text-dim);
+            font-style: italic;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--gold-bright);
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
 
         .finish-btn {
-            background: transparent; border: 1px solid var(--gold-dim); color: var(--gold-dim);
-            padding: 15px 30px; font-family: 'Montserrat'; font-size: 0.8rem; letter-spacing: 2px;
-            text-transform: uppercase; cursor: pointer; transition: 0.5s; display: block; margin: 0 auto;
+            background: transparent;
+            border: 2px solid var(--gold-dim);
+            color: var(--gold-bright);
+            padding: 16px 40px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: block;
+            margin: 30px auto 0;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
         }
-        .finish-btn:hover { border-color: var(--gold-bright); color: var(--gold-bright); box-shadow: 0 0 20px rgba(212, 175, 55, 0.15); }
 
-        /* --- REPORT --- */
-        #report-view { display: none; text-align: center; animation: fadeIn 1s; }
-        .r-line { margin-bottom: 25px; }
-        .r-lbl { font-size: 0.6rem; color: var(--gold-dim); letter-spacing: 2px; text-transform: uppercase; }
-        .r-val { font-family: 'Cormorant Garamond'; font-size: 1.8rem; color: #fff; margin-top: 5px; }
+        .finish-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: var(--gold-glow);
+            transition: all 0.5s;
+            transform: translate(-50%, -50%);
+        }
 
-        @keyframes fadeUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .finish-btn:hover {
+            border-color: var(--gold-bright);
+            color: #fff;
+            box-shadow: 0 8px 25px var(--gold-glow);
+            transform: translateY(-2px);
+        }
+
+        .finish-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .finish-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* --- ENHANCED REPORT --- */
+        #report-view {
+            display: none;
+            text-align: center;
+            animation: fadeIn 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+            max-width: 520px;
+            width: 100%;
+        }
+
+        .report-header {
+            margin-bottom: 50px;
+        }
+
+        .report-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            color: var(--gold-bright);
+            margin-bottom: 15px;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-shadow: 0 0 30px var(--gold-glow);
+        }
+
+        .report-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        .report-content {
+            background: var(--glass-panel);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 40px 30px;
+            margin-bottom: 30px;
+            backdrop-filter: blur(20px);
+        }
+
+        .r-line {
+            margin-bottom: 35px;
+            padding-bottom: 35px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .r-line:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .r-lbl {
+            font-size: 0.65rem;
+            color: var(--gold-dim);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .r-val {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            color: var(--text-main);
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .report-footer {
+            color: var(--text-dim);
+            font-size: 0.8rem;
+            margin-top: 40px;
+            font-style: italic;
+        }
+
+        .report-cta {
+            background: linear-gradient(135deg, var(--gold-dim), var(--gold-bright));
+            border: none;
+            color: #000;
+            padding: 14px 35px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px var(--gold-glow);
+        }
+
+        .report-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px var(--gold-glow);
+        }
+
+        @keyframes fadeUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.4rem; letter-spacing: 3px; }
+            .tile { font-size: 1.6rem; max-width: 55px; max-height: 55px; }
+            .hint-text { font-size: 1rem; }
+            .key { height: 48px; font-size: 0.8rem; }
+            #form-container { padding: 40px 25px; }
+            .form-title { font-size: 1.8rem; }
+            .choice-btn { padding: 16px 18px; }
+            .btn-label { font-size: 1.2rem; }
+            .report-title { font-size: 2.5rem; }
+        }
+
+        /* Loading state */
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
 
     </style>
 </head>
@@ -196,135 +722,169 @@
 
     <div class="ambient-glow"></div>
     <div class="drifting-stars"></div>
+    
+    <!-- Floating particles -->
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
+    <div class="particle"></div>
 
-    <div id="game-ui">
-        <h1>Unlocked By Truth</h1>
+    <div class="main-container" id="game-ui">
+        <h1>The Shore</h1>
+        <p class="subtitle">Just Keep Swimming</p>
+        
         <div id="game-board"></div>
         
-        <div class="hint-text">
-            "You can stop swimming now, Lily.<br>We finally reached the..."
+        <div class="hint-container">
+            <p class="hint-text">
+                "You can stop swimming now, Lily.<br>
+                We finally reached the..."
+            </p>
+            <p class="hint-author">— Ryle to Lily</p>
         </div>
 
-        <div id="keyboard" style="margin-top: 30px;">
-            <div class="key-row">
-                <div class="key" onclick="press('Q')">Q</div><div class="key" onclick="press('W')">W</div><div class="key" onclick="press('E')">E</div><div class="key" onclick="press('R')">R</div><div class="key" onclick="press('T')">T</div><div class="key" onclick="press('Y')">Y</div><div class="key" onclick="press('U')">U</div><div class="key" onclick="press('I')">I</div><div class="key" onclick="press('O')">O</div><div class="key" onclick="press('P')">P</div>
-            </div>
-            <div class="key-row">
-                <div class="key" onclick="press('A')">A</div><div class="key" onclick="press('S')">S</div><div class="key" onclick="press('D')">D</div><div class="key" onclick="press('F')">F</div><div class="key" onclick="press('G')">G</div><div class="key" onclick="press('H')">H</div><div class="key" onclick="press('J')">J</div><div class="key" onclick="press('K')">K</div><div class="key" onclick="press('L')">L</div>
-            </div>
-            <div class="key-row">
-                <div class="key big" onclick="submitGuess()">ENTER</div>
-                <div class="key" onclick="press('Z')">Z</div><div class="key" onclick="press('X')">X</div><div class="key" onclick="press('C')">C</div><div class="key" onclick="press('V')">V</div><div class="key" onclick="press('B')">B</div><div class="key" onclick="press('N')">N</div><div class="key" onclick="press('M')">M</div>
-                <div class="key big" onclick="backspace()">⌫</div>
-            </div>
-        </div>
+        <div id="keyboard"></div>
     </div>
 
     <div id="form-container">
         
         <div class="form-step active" id="step-0">
-            <h1 style="border:none; font-size: 2.5rem; color: var(--gold-bright);">It Ends With Us.</h1>
-            <p style="font-family:'Cormorant Garamond'; font-size: 1.3rem; color: #ccc; margin-bottom: 40px; line-height: 1.5;">
+            <h1 class="form-title">It Ends With Us.</h1>
+            <p class="form-subtitle">
                 Or rather, it begins with us.<br>
-                Let's plan the start.
+                Every great story starts with a choice.<br>
+                Let's write ours.
             </p>
-            <button class="finish-btn" onclick="nextStep(1)">Initialize</button>
+            <button class="finish-btn" onclick="nextStep(1)">
+                <span>Begin Our Story</span>
+            </button>
         </div>
 
         <div class="form-step" id="step-1">
-            <h1>The Fuel</h1>
-            <div class="choice-btn" onclick="select('caffeine', 'Black', 2)">
+            <h1 class="form-title">What's Your Fuel?</h1>
+            <p class="form-subtitle">Every conversation needs the right energy</p>
+            
+            <div class="choice-btn" onclick="select('caffeine', 'Pitch Black Coffee', 2)">
                 <span class="btn-icon">☕</span> 
-                <div>
+                <div class="btn-content">
                     <span class="btn-label">Pitch Black</span>
-                    <span class="btn-sub">Strong & Focused.</span>
+                    <span class="btn-sub">No sugar, no cream — pure focus</span>
                 </div>
             </div>
-            <div class="choice-btn" onclick="select('caffeine', 'Sweet', 2)">
+            <div class="choice-btn" onclick="select('caffeine', 'Sweet & Iced', 2)">
                 <span class="btn-icon">✨</span> 
-                <div>
+                <div class="btn-content">
                     <span class="btn-label">Sweet & Iced</span>
-                    <span class="btn-sub">Sugar rush energy.</span>
+                    <span class="btn-sub">Because life's too short for bitter</span>
                 </div>
             </div>
-            <div class="choice-btn" onclick="select('caffeine', 'Tea', 2)">
+            <div class="choice-btn" onclick="select('caffeine', 'Tea / Decaf', 2)">
                 <span class="btn-icon">🍵</span> 
-                <div>
+                <div class="btn-content">
                     <span class="btn-label">Tea / Decaf</span>
-                    <span class="btn-sub">Calm & Collected.</span>
+                    <span class="btn-sub">Calm, collected, intentional</span>
+                </div>
+            </div>
+            <div class="choice-btn" onclick="select('caffeine', 'Surprise Me', 2)">
+                <span class="btn-icon">🎲</span> 
+                <div class="btn-content">
+                    <span class="btn-label">Surprise Me</span>
+                    <span class="btn-sub">I trust your instincts</span>
                 </div>
             </div>
         </div>
 
         <div class="form-step" id="step-2">
-            <h1>Coordinates</h1>
+            <h1 class="form-title">Where To?</h1>
+            <p class="form-subtitle">Pick our backdrop for good conversations</p>
+            
             <div class="choice-btn" onclick="select('venue', 'Koel Cafe', 3)">
                 <span class="btn-icon">🌿</span> 
-                <div>
+                <div class="btn-content">
                     <span class="btn-label">Koel Cafe</span>
-                    <span class="btn-sub">Serene & Artsy.</span>
+                    <span class="btn-sub">Serene vibes, art on the walls</span>
                 </div>
             </div>
             <div class="choice-btn" onclick="select('venue', 'Melbrew', 3)">
                 <span class="btn-icon">✨</span> 
-                <div>
+                <div class="btn-content">
                     <span class="btn-label">Melbrew</span>
-                    <span class="btn-sub">Chic & Modern.</span>
+                    <span class="btn-sub">Modern, chic, Instagram-worthy</span>
                 </div>
             </div>
             <div class="choice-btn" onclick="select('venue', 'Drop Coffee', 3)">
                 <span class="btn-icon">💧</span> 
-                <div>
+                <div class="btn-content">
                     <span class="btn-label">Drop Coffee</span>
-                    <span class="btn-sub">Minimalist & Serious.</span>
+                    <span class="btn-sub">Minimalist & serious coffee people</span>
                 </div>
             </div>
             <div class="choice-btn" onclick="select('venue', 'Your Choice', 3)">
                 <span class="btn-icon">🗝️</span> 
-                <div>
+                <div class="btn-content">
                     <span class="btn-label">Your Choice</span>
-                    <span class="btn-sub">I trust your taste.</span>
+                    <span class="btn-sub">I trust your taste completely</span>
                 </div>
             </div>
         </div>
 
         <div class="form-step" id="step-3">
-            <h1>Vibe Check</h1>
+            <h1 class="form-title">Set The Vibe</h1>
+            <p class="form-subtitle">What kind of conversation are we having?</p>
+            
             <div class="choice-btn" onclick="select('game', 'Off The Record', 4)">
                 <span class="btn-icon">🎙️</span> 
-                <div>
+                <div class="btn-content">
                     <span class="btn-label">Off The Record</span>
-                    <span class="btn-sub">No corporate filters. Just us.</span>
+                    <span class="btn-sub">No filters, no corporate masks — real talk</span>
                 </div>
             </div>
             <div class="choice-btn" onclick="select('game', 'Intellectual Chemistry', 4)">
                 <span class="btn-icon">🧠</span> 
-                <div>
+                <div class="btn-content">
                     <span class="btn-label">Intellectual Chemistry</span>
-                    <span class="btn-sub">High-level banter & debates.</span>
+                    <span class="btn-sub">Deep dives, debates, ideas that spark</span>
                 </div>
             </div>
             <div class="choice-btn" onclick="select('game', 'The Blueprint', 4)">
                 <span class="btn-icon">📐</span> 
-                <div>
+                <div class="btn-content">
                     <span class="btn-label">The Blueprint</span>
-                    <span class="btn-sub">Goals, dreams & what drives us.</span>
+                    <span class="btn-sub">Dreams, ambitions, what drives us forward</span>
+                </div>
+            </div>
+            <div class="choice-btn" onclick="select('game', 'Stories & Secrets', 4)">
+                <span class="btn-icon">📖</span> 
+                <div class="btn-content">
+                    <span class="btn-label">Stories & Secrets</span>
+                    <span class="btn-sub">The chapters we don't usually share</span>
                 </div>
             </div>
         </div>
 
         <div class="form-step" id="step-4">
-            <h1>Final Detail</h1>
-            <input type="text" id="input-ick" placeholder="What is your biggest Ick?">
-            <input type="text" id="input-rule" placeholder="One golden rule?">
-            <button class="finish-btn" onclick="finish()">Confirm Date</button>
+            <h1 class="form-title">The Final Details</h1>
+            <p class="form-subtitle">Help me make this perfect</p>
+            
+            <input type="text" id="input-ick" placeholder="Your biggest ick in dating?">
+            <input type="text" id="input-rule" placeholder="One golden rule for first dates?">
+            <input type="text" id="input-curious" placeholder="One thing you're curious about me?">
+            
+            <button class="finish-btn" onclick="finish()">
+                <span>Lock It In</span>
+            </button>
         </div>
 
     </div>
 
     <div id="report-view">
-        <h1 style="font-size: 3rem; border:none; color: var(--gold-bright); margin-bottom: 40px;">It's a Date.</h1>
-        <div style="margin: 30px 0; text-align: center; padding: 0 20px;">
+        <div class="report-header">
+            <h1 class="report-title">It's a Date.</h1>
+            <p class="report-subtitle">The shore awaits us</p>
+        </div>
+        
+        <div class="report-content">
             <div class="r-line">
                 <div class="r-lbl">Location</div>
                 <div class="r-val" id="res-venue"></div>
@@ -338,7 +898,16 @@
                 <div class="r-val" id="res-game"></div>
             </div>
         </div>
-        <p style="color: #666; font-size: 0.8rem; margin-top: 50px;">(Screenshot this & send it to me)</p>
+        
+        <p class="report-footer">
+            "Just keep swimming until you reach the shore."<br>
+            — Now we're here.
+        </p>
+        
+        <button class="report-cta" onclick="takeScreenshot()">Screenshot This</button>
+        <p style="color: #666; font-size: 0.75rem; margin-top: 15px; font-style: italic;">
+            (Then send it my way)
+        </p>
     </div>
 
     <form id="hidden-form" action="https://formspree.io/f/xgozggkq" method="POST">
@@ -347,29 +916,35 @@
         <input type="hidden" name="game" id="form-game">
         <input type="hidden" name="ick" id="form-ick">
         <input type="hidden" name="rule" id="form-rule">
+        <input type="hidden" name="curious" id="form-curious">
     </form>
 
     <script>
-        // --- CONFIGURATION ---
-        const TARGET = "SHORE"; // The Password (5 Letters)
+        // --- GAME CONFIGURATION ---
+        const TARGET = "SHORE";
+        const WORD_LENGTH = 5;
+        const MAX_GUESSES = 5;
 
         let currentRow = 0;
         let currentTile = 0;
-        let guesses = [
-            ["", "", "", "", ""],
-            ["", "", "", "", ""],
-            ["", "", "", "", ""],
-            ["", "", "", "", ""],
-            ["", "", "", "", ""]
-        ];
+        let guesses = Array(MAX_GUESSES).fill(null).map(() => Array(WORD_LENGTH).fill(""));
+        let keyStates = {};
 
         const board = document.getElementById('game-board');
+        const keyboard = document.getElementById('keyboard');
 
-        // Init Board (5 Rows)
-        for(let r=0; r<5; r++) {
+        // Keyboard Layout
+        const keys = [
+            ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+            ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+            ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫']
+        ];
+
+        // Initialize Board
+        for(let r = 0; r < MAX_GUESSES; r++) {
             const row = document.createElement('div');
             row.className = 'row';
-            for(let c=0; c<5; c++) {
+            for(let c = 0; c < WORD_LENGTH; c++) {
                 const tile = document.createElement('div');
                 tile.className = 'tile';
                 tile.id = `tile-${r}-${c}`;
@@ -378,12 +953,42 @@
             board.appendChild(row);
         }
 
+        // Initialize Keyboard
+        keys.forEach(row => {
+            const keyRow = document.createElement('div');
+            keyRow.className = 'key-row';
+            row.forEach(key => {
+                const keyBtn = document.createElement('div');
+                keyBtn.className = 'key';
+                if(key === 'ENTER' || key === '⌫') {
+                    keyBtn.classList.add('big');
+                }
+                keyBtn.textContent = key;
+                keyBtn.id = `key-${key}`;
+                keyBtn.onclick = () => handleKeyPress(key);
+                keyRow.appendChild(keyBtn);
+            });
+            keyboard.appendChild(keyRow);
+        });
+
+        function handleKeyPress(key) {
+            if(key === 'ENTER') {
+                submitGuess();
+            } else if(key === '⌫') {
+                backspace();
+            } else {
+                press(key);
+            }
+        }
+
         function press(key) {
-            if(currentTile < 5 && currentRow < 5) {
+            if(currentTile < WORD_LENGTH && currentRow < MAX_GUESSES) {
                 guesses[currentRow][currentTile] = key;
                 const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
                 tile.innerText = key;
                 tile.setAttribute('data-state', 'active');
+                tile.classList.add('bounce');
+                setTimeout(() => tile.classList.remove('bounce'), 600);
                 currentTile++;
             }
         }
@@ -399,91 +1004,185 @@
         }
 
         function submitGuess() {
-            if(currentTile !== 5) return; // Not enough letters
-
-            const guess = guesses[currentRow].join("");
-
-            // Animation & Checking
-            for(let i=0; i<5; i++) {
-                const tile = document.getElementById(`tile-${currentRow}-${i}`);
-                const letter = guesses[currentRow][i];
-                
-                // FLIP ANIMATION
-                setTimeout(() => {
-                    tile.classList.add('flip');
-                    
-                    if(letter === TARGET[i]) {
-                        tile.setAttribute('data-state', 'correct');
-                    } else if(TARGET.includes(letter)) {
-                        tile.setAttribute('data-state', 'present');
-                    } else {
-                        tile.setAttribute('data-state', 'absent');
-                    }
-                }, i * 200);
+            if(currentTile !== WORD_LENGTH) {
+                // Shake animation for incomplete word
+                const row = document.querySelectorAll(`#tile-${currentRow}-0, #tile-${currentRow}-1, #tile-${currentRow}-2, #tile-${currentRow}-3, #tile-${currentRow}-4`);
+                row.forEach(tile => {
+                    tile.classList.add('shake');
+                    setTimeout(() => tile.classList.remove('shake'), 500);
+                });
+                return;
             }
 
-            // CHECK WIN
+            const guess = guesses[currentRow].join("");
+            const targetLetters = TARGET.split('');
+            const guessLetters = guess.split('');
+            const letterStates = Array(WORD_LENGTH).fill(null);
+
+            // First pass: mark correct letters
+            guessLetters.forEach((letter, i) => {
+                if(letter === targetLetters[i]) {
+                    letterStates[i] = 'correct';
+                    targetLetters[i] = null;
+                }
+            });
+
+            // Second pass: mark present letters
+            guessLetters.forEach((letter, i) => {
+                if(letterStates[i] === null) {
+                    const index = targetLetters.indexOf(letter);
+                    if(index !== -1) {
+                        letterStates[i] = 'present';
+                        targetLetters[index] = null;
+                    } else {
+                        letterStates[i] = 'absent';
+                    }
+                }
+            });
+
+            // Animate tiles
+            guessLetters.forEach((letter, i) => {
+                const tile = document.getElementById(`tile-${currentRow}-${i}`);
+                const state = letterStates[i];
+                
+                setTimeout(() => {
+                    tile.classList.add('flip');
+                    setTimeout(() => {
+                        tile.setAttribute('data-state', state);
+                        
+                        // Update keyboard
+                        if(!keyStates[letter] || (state === 'correct' || (state === 'present' && keyStates[letter] !== 'correct'))) {
+                            keyStates[letter] = state;
+                            const keyBtn = document.getElementById(`key-${letter}`);
+                            if(keyBtn) {
+                                keyBtn.setAttribute('data-state', state);
+                            }
+                        }
+                    }, 300);
+                }, i * 150);
+            });
+
+            // Check win condition
             if(guess === TARGET) {
                 setTimeout(() => {
                     win();
-                }, 1500);
+                }, WORD_LENGTH * 150 + 500);
             } else {
                 currentRow++;
                 currentTile = 0;
-                if(currentRow === 5) {
-                    alert("System Locked. Refresh to try again.");
-                    location.reload();
+                if(currentRow === MAX_GUESSES) {
+                    setTimeout(() => {
+                        alert(`The word was: ${TARGET}\n\nRefresh to try again.`);
+                        location.reload();
+                    }, WORD_LENGTH * 150 + 500);
                 }
             }
         }
 
         function win() {
-            document.getElementById('game-ui').style.display = 'none';
-            document.getElementById('form-container').style.display = 'block';
+            // Victory animation
+            for(let i = 0; i < WORD_LENGTH; i++) {
+                const tile = document.getElementById(`tile-${currentRow}-${i}`);
+                setTimeout(() => {
+                    tile.classList.add('bounce');
+                }, i * 100);
+            }
+
+            setTimeout(() => {
+                document.getElementById('game-ui').style.opacity = '0';
+                document.getElementById('game-ui').style.transform = 'scale(0.95)';
+                document.getElementById('game-ui').style.transition = 'all 0.5s ease';
+                
+                setTimeout(() => {
+                    document.getElementById('game-ui').style.display = 'none';
+                    document.getElementById('form-container').style.display = 'block';
+                }, 500);
+            }, 800);
         }
 
-        // Keyboard Support
+        // Physical Keyboard Support
         document.addEventListener('keydown', (e) => {
             const key = e.key.toUpperCase();
-            if(key.length === 1 && key >= 'A' && key <= 'Z') press(key);
-            if(key === 'BACKSPACE') backspace();
-            if(key === 'ENTER') submitGuess();
+            if(key.length === 1 && key >= 'A' && key <= 'Z') {
+                handleKeyPress(key);
+            }
+            if(key === 'BACKSPACE') {
+                handleKeyPress('⌫');
+            }
+            if(key === 'ENTER') {
+                handleKeyPress('ENTER');
+            }
         });
-
 
         // --- FORM LOGIC ---
         const formData = {};
 
         function nextStep(step) {
-            document.querySelectorAll('.form-step').forEach(el => el.style.display = 'none');
-            document.getElementById('step-'+step).style.display = 'block';
-            document.getElementById('step-'+step).classList.add('active');
+            document.querySelectorAll('.form-step').forEach(el => {
+                el.style.display = 'none';
+                el.classList.remove('active');
+            });
+            const nextStepEl = document.getElementById('step-' + step);
+            nextStepEl.style.display = 'block';
+            setTimeout(() => nextStepEl.classList.add('active'), 10);
         }
 
         function select(key, val, next) {
             formData[key] = val;
-            document.getElementById('form-'+key).value = val;
-            nextStep(next);
+            document.getElementById('form-' + key).value = val;
+            setTimeout(() => nextStep(next), 200);
         }
 
         function finish() {
-            formData.ick = document.getElementById('input-ick').value;
-            formData.rule = document.getElementById('input-rule').value;
-            document.getElementById('form-ick').value = formData.ick;
-            document.getElementById('form-rule').value = formData.rule;
+            const ick = document.getElementById('input-ick').value;
+            const rule = document.getElementById('input-rule').value;
+            const curious = document.getElementById('input-curious').value;
 
-            // Submit
+            if(!ick || !rule || !curious) {
+                alert('Please fill in all fields to continue.');
+                return;
+            }
+
+            formData.ick = ick;
+            formData.rule = rule;
+            formData.curious = curious;
+            
+            document.getElementById('form-ick').value = ick;
+            document.getElementById('form-rule').value = rule;
+            document.getElementById('form-curious').value = curious;
+
+            // Submit form
             const form = document.getElementById('hidden-form');
             const data = new FormData(form);
-            fetch(form.action, { method: 'POST', body: data, headers: {'Accept': 'application/json'} });
-
-            // Show Report
-            document.getElementById('form-container').style.display = 'none';
-            document.getElementById('report-view').style.display = 'block';
             
-            document.getElementById('res-venue').innerText = formData.venue;
-            document.getElementById('res-caffeine').innerText = formData.caffeine;
-            document.getElementById('res-game').innerText = formData.game;
+            document.getElementById('form-container').classList.add('loading');
+            
+            fetch(form.action, { 
+                method: 'POST', 
+                body: data, 
+                headers: {'Accept': 'application/json'} 
+            })
+            .then(() => showReport())
+            .catch(() => showReport()); // Show report even if form fails
+        }
+
+        function showReport() {
+            document.getElementById('form-container').style.opacity = '0';
+            document.getElementById('form-container').style.transform = 'scale(0.95)';
+            document.getElementById('form-container').style.transition = 'all 0.5s ease';
+            
+            setTimeout(() => {
+                document.getElementById('form-container').style.display = 'none';
+                document.getElementById('report-view').style.display = 'block';
+                
+                document.getElementById('res-venue').innerText = formData.venue;
+                document.getElementById('res-caffeine').innerText = formData.caffeine;
+                document.getElementById('res-game').innerText = formData.game;
+            }, 500);
+        }
+
+        function takeScreenshot() {
+            alert('📸 Take a screenshot now and send it my way!\n\n(Use your device\'s screenshot function)');
         }
 
     </script>
