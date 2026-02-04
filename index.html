@@ -3,192 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proposal: Rida</title>
+    <title>Date Protocol: Rida</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Romantic, Warm, Coffee Date Palette */
+            /* Warm Coffee Palette */
             --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
-            --glass-bg: rgba(255, 255, 255, 0.90);
-            --glass-border: rgba(255, 255, 255, 0.8);
-            --primary: #8E6E53; /* Latte/Mocha */
-            --primary-dark: #5C4033;
-            --accent: #C8A27A; /* Gold/Bronze */
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --border: rgba(0,0,0,0.08);
+            --primary: #A67B5B; /* Latte */
+            --primary-dark: #5C4033; /* Espresso */
+            --accent: #D4A373; /* Gold */
             --text-dark: #2d2a26;
             --text-light: #7a7672;
-            --shadow: 0 15px 35px rgba(139, 110, 83, 0.15);
+            --shadow: 0 20px 40px rgba(92, 64, 51, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             background-color: #F3E5DC;
-            background-image: 
-                radial-gradient(at 0% 0%, hsla(28,100%,74%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 0%, hsla(189,100%,86%,1) 0, transparent 50%), 
-                radial-gradient(at 100% 100%, hsla(340,100%,76%,1) 0, transparent 50%), 
-                radial-gradient(at 0% 100%, hsla(22,100%,77%,1) 0, transparent 50%);
+            /* Subtle grain texture overlay */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"),
+            linear-gradient(to bottom, #e0c3fc 0%, #8ec5fc 100%); 
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
             background-attachment: fixed;
             font-family: 'Outfit', sans-serif;
             color: var(--text-dark);
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start; /* Changed to flex-start for scrolling */
+            align-items: flex-start;
             padding: 40px 20px;
         }
 
         .container {
             width: 100%;
-            max-width: 650px;
-            perspective: 1000px;
+            max-width: 600px;
             margin-bottom: 50px;
         }
 
         /* CARD STYLING */
         .card {
             background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
+            border: 1px solid #fff;
             border-radius: 24px;
-            padding: 50px 40px;
+            padding: 40px 30px;
             box-shadow: var(--shadow);
             animation: slideUp 0.8s ease-out;
+            position: relative;
+            overflow: hidden;
         }
 
-        header { text-align: center; margin-bottom: 40px; }
+        header { text-align: center; margin-bottom: 35px; }
         
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
+            font-size: 2.2rem;
             color: var(--primary-dark);
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
+            margin-bottom: 5px;
         }
 
         .subtitle {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            color: var(--accent);
+            color: var(--primary);
             font-weight: 700;
         }
 
-        .phase-title {
+        .section-header {
             font-family: 'Playfair Display', serif;
-            font-size: 1.2rem;
-            color: var(--primary);
-            border-bottom: 1px solid rgba(139, 110, 83, 0.2);
-            padding-bottom: 10px;
-            margin: 40px 0 25px 0;
-            font-style: italic;
+            font-size: 1.1rem;
+            color: var(--primary-dark);
+            border-bottom: 1px dashed rgba(92, 64, 51, 0.2);
+            padding-bottom: 8px;
+            margin: 35px 0 20px 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        /* QUESTIONS */
-        .question-block { margin-bottom: 30px; }
-        
-        .q-label {
-            font-size: 0.95rem;
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: var(--text-dark);
-        }
+        /* FORM ELEMENTS */
+        .question { margin-bottom: 25px; }
+        .label { font-size: 0.9rem; font-weight: 600; margin-bottom: 10px; color: var(--text-dark); display: block; }
 
-        /* RADIO GRIDS */
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-        }
+        /* IMAGE/OPTION GRIDS */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 
+        /* Custom Radio Buttons */
         .radio-hidden { display: none; }
         
-        .option-box {
+        .option-card {
+            background: #fff;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            height: 100%;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
-            padding: 15px;
-            background: #fff;
-            border: 1px solid rgba(0,0,0,0.08);
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            text-align: center;
-            height: 100%;
+            align-items: center;
         }
 
-        .emoji { font-size: 1.8rem; margin-bottom: 8px; display: block; }
-        .opt-text { font-size: 0.85rem; color: var(--text-light); font-weight: 500; }
+        .emoji { font-size: 1.5rem; margin-bottom: 5px; }
+        .opt-title { font-size: 0.85rem; font-weight: 600; color: var(--text-dark); }
+        .opt-desc { font-size: 0.7rem; color: var(--text-light); margin-top: 2px; }
 
-        /* Checked State */
-        .radio-hidden:checked + .option-box {
-            background: #FFF5EC;
+        .radio-hidden:checked + .option-card {
             border-color: var(--primary);
-            color: var(--primary-dark);
-            box-shadow: 0 4px 12px rgba(139, 110, 83, 0.15);
+            background: #FFF8F0;
+            box-shadow: 0 4px 10px rgba(166, 123, 91, 0.2);
             transform: translateY(-2px);
         }
-        .radio-hidden:checked + .option-box .opt-text { color: var(--primary-dark); font-weight: 700; }
 
-        /* SLIDER & TEXT INPUTS */
-        input[type="range"] {
+        /* TEXT INPUTS */
+        input[type="text"] {
             width: 100%;
-            accent-color: var(--primary);
-            margin-top: 10px;
-        }
-
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid #e0e0e0;
-            background: #fff;
-            font-family: 'Outfit';
-            font-size: 0.95rem;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            font-family: 'Outfit', sans-serif;
             outline: none;
-            transition: border-color 0.3s;
+            background: #fff;
         }
-        input[type="text"]:focus, textarea:focus { border-color: var(--primary); }
+        input[type="text"]:focus { border-color: var(--primary); }
 
         /* BUTTON */
         button {
             width: 100%;
-            padding: 20px;
+            padding: 18px;
             background: var(--primary-dark);
             color: white;
             border: none;
-            border-radius: 16px;
-            font-size: 1.1rem;
+            border-radius: 12px;
+            font-size: 1rem;
             font-weight: 600;
             letter-spacing: 1px;
             cursor: pointer;
-            margin-top: 30px;
-            transition: transform 0.2s;
+            margin-top: 20px;
             font-family: 'Outfit', sans-serif;
-            box-shadow: 0 10px 20px rgba(92, 64, 51, 0.2);
+            transition: transform 0.2s;
         }
-        button:hover { background: #4a332a; transform: translateY(-3px); }
+        button:hover { transform: translateY(-2px); background: #4a332a; }
 
         /* REPORT VIEW */
         #report-view { display: none; }
         
-        .report-paper {
-            background: #fff;
-            padding: 40px;
-            border-radius: 4px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-            position: relative;
+        .report-content {
+            background: #FFF8F0;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid rgba(166, 123, 91, 0.2);
+            margin-bottom: 20px;
         }
-        
-        /* Simulating a "typed" report */
-        .report-section { margin-bottom: 25px; border-bottom: 1px dashed #eee; padding-bottom: 15px; }
-        .report-label { font-size: 0.75rem; text-transform: uppercase; color: var(--primary); letter-spacing: 1px; margin-bottom: 5px; font-weight: 700; }
-        .report-val { font-size: 1.1rem; line-height: 1.5; color: var(--text-dark); }
-        .highlight { color: var(--primary-dark); font-weight: 700; background: #FFF5EC; padding: 0 5px; }
 
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .report-line { margin-bottom: 15px; font-size: 0.95rem; line-height: 1.6; }
+        .highlight { color: var(--primary-dark); font-weight: 700; background: rgba(255,255,255,0.5); padding: 0 4px; border-radius: 4px; }
+        
+        .ai-badge {
+            display: inline-block;
+            background: var(--primary-dark);
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 0.65rem;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -197,151 +185,171 @@
         
         <div id="form-view" class="card">
             <header>
-                <div class="subtitle">CALIBRATION PROTOCOL V1.0</div>
+                <div class="subtitle">DATE CALIBRATION v1.2</div>
                 <h1>Hi, Rida</h1>
-                <p style="color: var(--text-light);">I want our first date to be perfect. <br>Please help me configure the settings.</p>
+                <p style="font-size: 0.9rem; color: var(--text-light); margin-top: 5px;">
+                    I want to plan the perfect first date.<br>Just a few quick questions to get the vibe right.
+                </p>
             </header>
 
             <form id="dateForm" action="https://formspree.io/f/xgozggkq" method="POST">
                 
-                <div class="phase-title">Phase 1: The Essentials</div>
+                <div class="section-header">01 // The Essentials</div>
 
-                <div class="question-block">
-                    <div class="q-label">1. Caffeine Tolerance Level</div>
-                    <div class="options-grid">
+                <div class="question">
+                    <label class="label">1. Caffeine Priority</label>
+                    <div class="grid-3">
                         <label>
-                            <input type="radio" name="caffeine" value="High" class="radio-hidden" required>
-                            <div class="option-box"><span class="emoji">☕</span><span class="opt-text">Serious Coffee</span></div>
+                            <input type="radio" name="caffeine_preference" value="Snob" class="radio-hidden" required>
+                            <div class="option-card">
+                                <span class="emoji">☕</span>
+                                <span class="opt-title">Purist</span>
+                                <span class="opt-desc">Strong coffee.</span>
+                            </div>
                         </label>
                         <label>
-                            <input type="radio" name="caffeine" value="Sweet" class="radio-hidden">
-                            <div class="option-box"><span class="emoji">🥤</span><span class="opt-text">Sweet/Iced</span></div>
+                            <input type="radio" name="caffeine_preference" value="Sweet" class="radio-hidden">
+                            <div class="option-card">
+                                <span class="emoji">🥤</span>
+                                <span class="opt-title">Sweet</span>
+                                <span class="opt-desc">Iced/Latte.</span>
+                            </div>
                         </label>
                         <label>
-                            <input type="radio" name="caffeine" value="None" class="radio-hidden">
-                            <div class="option-box"><span class="emoji">🍵</span><span class="opt-text">Tea/Decaf</span></div>
+                            <input type="radio" name="caffeine_preference" value="Tea" class="radio-hidden">
+                            <div class="option-card">
+                                <span class="emoji">🍵</span>
+                                <span class="opt-title">Tea/Other</span>
+                                <span class="opt-desc">No coffee.</span>
+                            </div>
                         </label>
                     </div>
                 </div>
 
-                <div class="question-block">
-                    <div class="q-label">2. Are we getting dessert?</div>
-                    <div class="options-grid">
+                <div class="question">
+                    <label class="label">2. Dessert Policy</label>
+                    <div class="grid-2">
                         <label>
-                            <input type="radio" name="dessert" value="Yes" class="radio-hidden" required>
-                            <div class="option-box"><span class="emoji">🍰</span><span class="opt-text">Mandatory</span></div>
+                            <input type="radio" name="dessert_policy" value="Mandatory" class="radio-hidden" required>
+                            <div class="option-card">
+                                <span class="emoji">🍰</span>
+                                <span class="opt-title">Mandatory</span>
+                                <span class="opt-desc">We must order.</span>
+                            </div>
                         </label>
                         <label>
-                            <input type="radio" name="dessert" value="Maybe" class="radio-hidden">
-                            <div class="option-box"><span class="emoji">🥐</span><span class="opt-text">Maybe a croissant</span></div>
-                        </label>
-                        <label>
-                            <input type="radio" name="dessert" value="No" class="radio-hidden">
-                            <div class="option-box"><span class="emoji">🚫</span><span class="opt-text">Just coffee</span></div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="q-label">3. Ideal Duration?</div>
-                    <div class="options-grid">
-                        <label>
-                            <input type="radio" name="duration" value="Quick" class="radio-hidden">
-                            <div class="option-box"><span class="emoji">⚡</span><span class="opt-text">Quick (< 1 hr)</span></div>
-                        </label>
-                        <label>
-                            <input type="radio" name="duration" value="Standard" class="radio-hidden" checked>
-                            <div class="option-box"><span class="emoji">🕰️</span><span class="opt-text">Standard (1-2 hrs)</span></div>
-                        </label>
-                        <label>
-                            <input type="radio" name="duration" value="Long" class="radio-hidden">
-                            <div class="option-box"><span class="emoji">🌙</span><span class="opt-text">Until they kick us out</span></div>
+                            <input type="radio" name="dessert_policy" value="Optional" class="radio-hidden">
+                            <div class="option-card">
+                                <span class="emoji">🥐</span>
+                                <span class="opt-title">If it looks good</span>
+                                <span class="opt-desc">Maybe sharing.</span>
+                            </div>
                         </label>
                     </div>
                 </div>
 
-                <div class="phase-title">Phase 2: The Vibe</div>
+                <div class="section-header">02 // The Location</div>
 
-                <div class="question-block">
-                    <div class="q-label">4. Location Aesthetic</div>
-                    <div class="options-grid">
+                <div class="question">
+                    <label class="label">3. Pick the Spot (or vibe)</label>
+                    <div class="grid-2">
                         <label>
-                            <input type="radio" name="location_style" value="Cozy" class="radio-hidden" required>
-                            <div class="option-box"><span class="emoji">🧸</span><span class="opt-text">Cozy & Quiet</span></div>
+                            <input type="radio" name="venue" value="Cote Rotie" class="radio-hidden" required>
+                            <div class="option-card">
+                                <span class="emoji">🕯️</span>
+                                <span class="opt-title">Cote Rôtie</span>
+                                <span class="opt-desc">Intimate & Classy</span>
+                            </div>
                         </label>
                         <label>
-                            <input type="radio" name="location_style" value="Chic" class="radio-hidden">
-                            <div class="option-box"><span class="emoji">✨</span><span class="opt-text">Chic & Trendy</span></div>
+                            <input type="radio" name="venue" value="Xanders" class="radio-hidden">
+                            <div class="option-card">
+                                <span class="emoji">🥗</span>
+                                <span class="opt-title">Xander's</span>
+                                <span class="opt-desc">Lively & Safe</span>
+                            </div>
                         </label>
                         <label>
-                            <input type="radio" name="location_style" value="Outdoors" class="radio-hidden">
-                            <div class="option-box"><span class="emoji">🌳</span><span class="opt-text">Open Air / Patio</span></div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="q-label">5. Sitting or Walking?</div>
-                    <div class="options-grid">
-                        <label>
-                            <input type="radio" name="activity" value="Sit" class="radio-hidden" required>
-                            <div class="option-box"><span class="emoji">🪑</span><span class="opt-text">Sit & Talk</span></div>
+                            <input type="radio" name="venue" value="Koel Cafe" class="radio-hidden">
+                            <div class="option-card">
+                                <span class="emoji">🌿</span>
+                                <span class="opt-title">Koel Cafe</span>
+                                <span class="opt-desc">Artsy & Quiet</span>
+                            </div>
                         </label>
                         <label>
-                            <input type="radio" name="activity" value="Walk" class="radio-hidden">
-                            <div class="option-box"><span class="emoji">🚶‍♀️</span><span class="opt-text">Walk & Talk</span></div>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="q-label">6. Current Social Battery Level</div>
-                    <input type="range" name="battery" min="1" max="100" value="80">
-                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#888; margin-top:5px;">
-                        <span>Needs Silence</span>
-                        <span>Ready to yap</span>
-                    </div>
-                </div>
-
-                <div class="question-block">
-                    <div class="q-label">7. Car Playlist Vibe (for pickup)</div>
-                    <select name="music" style="width:100%; padding:12px; border-radius:12px; border:1px solid #ddd; font-family:'Outfit';">
-                        <option value="Pop">Pop / Top 40 (Safe)</option>
-                        <option value="Indie">Indie / Chill (Vibey)</option>
-                        <option value="RnB">R&B / Soul (Smooth)</option>
-                        <option value="Bollywood">Bollywood / Desi (Fun)</option>
-                        <option value="Silence">Silence (Please don't)</option>
-                    </select>
-                </div>
-
-                <div class="phase-title">Phase 3: Final details</div>
-
-                <div class="question-block">
-                    <div class="q-label">8. Conversation Menu (Pick one)</div>
-                    <div class="options-grid">
-                        <label>
-                            <input type="radio" name="topic" value="Deep" class="radio-hidden" required>
-                            <div class="option-box"><span class="emoji">📜</span><span class="opt-text">Life Lore & Dreams</span></div>
+                            <input type="radio" name="venue" value="Melbrew" class="radio-hidden">
+                            <div class="option-card">
+                                <span class="emoji">✨</span>
+                                <span class="opt-title">Melbrew</span>
+                                <span class="opt-desc">Trendy & Cute</span>
+                            </div>
                         </label>
                         <label>
-                            <input type="radio" name="topic" value="Fun" class="radio-hidden">
-                            <div class="option-box"><span class="emoji">🤡</span><span class="opt-text">Roasting & Laughs</span></div>
+                            <input type="radio" name="venue" value="Drop Coffee" class="radio-hidden">
+                            <div class="option-card">
+                                <span class="emoji">🔬</span>
+                                <span class="opt-title">Drop Coffee</span>
+                                <span class="opt-desc">Serious Roasts</span>
+                            </div>
                         </label>
                         <label>
-                            <input type="radio" name="topic" value="Work" class="radio-hidden">
-                            <div class="option-box"><span class="emoji">💼</span><span class="opt-text">Work/Industry Tea</span></div>
+                            <input type="radio" name="venue" value="Surprise Me" class="radio-hidden">
+                            <div class="option-card">
+                                <span class="emoji">🎁</span>
+                                <span class="opt-title">Surprise Me</span>
+                                <span class="opt-desc">You choose.</span>
+                            </div>
                         </label>
                     </div>
                 </div>
 
-                <div class="question-block">
-                    <div class="q-label">9. What gives you the "Ick"? (I will avoid this)</div>
-                    <input type="text" name="ick" placeholder="e.g. Loud chewing, bad parking...">
+                <div class="section-header">03 // The Atmosphere</div>
+
+                <div class="question">
+                    <label class="label">4. Conversation Menu</label>
+                    <div class="grid-3">
+                        <label>
+                            <input type="radio" name="conversation_topic" value="Lore" class="radio-hidden" required>
+                            <div class="option-card"><span class="emoji">📖</span><span class="opt-title">Life Story</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="conversation_topic" value="Fun" class="radio-hidden">
+                            <div class="option-card"><span class="emoji">😂</span><span class="opt-title">Just Laughs</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="conversation_topic" value="Work" class="radio-hidden">
+                            <div class="option-card"><span class="emoji">💼</span><span class="opt-title">Goals/Work</span></div>
+                        </label>
+                    </div>
                 </div>
 
-                <div class="question-block">
-                    <div class="q-label">10. One specific request?</div>
-                    <input type="text" name="request" placeholder="e.g. 'We must sit outside' or 'Pick me up at 8'">
+                <div class="question">
+                    <label class="label">5. Uber/Transit DJ Preference</label>
+                    <div class="grid-3">
+                        <label>
+                            <input type="radio" name="music_vibe" value="Chill" class="radio-hidden">
+                            <div class="option-card"><span class="emoji">☁️</span><span class="opt-title">Lowkey</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="music_vibe" value="Pop" class="radio-hidden">
+                            <div class="option-card"><span class="emoji">🎤</span><span class="opt-title">Pop/Fun</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="music_vibe" value="Talk" class="radio-hidden">
+                            <div class="option-card"><span class="emoji">🗣️</span><span class="opt-title">Just Talk</span></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <label class="label">6. What gives you the "Ick"?</label>
+                    <input type="text" name="ick_factor" placeholder="e.g. Chewing loudly, bad texters...">
+                </div>
+
+                <div class="question">
+                    <label class="label">7. Any final notes?</label>
+                    <input type="text" name="final_notes" placeholder="e.g. 'Lets meet at 7pm' or 'I love chocolate'">
                 </div>
 
                 <button type="submit" id="submitBtn">Generate Date Plan</button>
@@ -350,24 +358,23 @@
 
         <div id="report-view" class="card">
             <header>
-                <div class="subtitle" style="color: green;">✔ CALIBRATION COMPLETE</div>
-                <h1 style="font-size: 2rem;">The Strategy</h1>
-                <p>Based on 10 data points, here is the optimal first date plan.</p>
+                <div class="ai-badge">ANALYSIS COMPLETE</div>
+                <h1 style="font-size: 1.8rem;">The Game Plan</h1>
+                <p style="color: var(--text-light); font-size: 0.9rem;">Based on your inputs, here is what we are doing.</p>
             </header>
             
-            <div class="report-paper">
-                <div id="ai-report-content">
-                    </div>
-                
-                <div style="margin-top: 30px; border-top: 2px solid #333; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
-                    <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem;">Rida x Me</div>
-                    <div style="font-family: 'Courier New'; font-size: 0.8rem;">STATUS: PENDING</div>
-                </div>
+            <div class="report-content">
+                <div id="ai-result"></div>
             </div>
 
-            <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--text-light);">
-                Screenshot this and send it to me to confirm.
-            </p>
+            <div style="text-align: center;">
+                <p style="font-size: 0.8rem; margin-bottom: 5px; color: var(--text-light);">
+                    (Screenshot this and send it to me!)
+                </p>
+                <p style="font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--primary-dark);">
+                    See you soon.
+                </p>
+            </div>
         </div>
 
     </div>
@@ -376,110 +383,84 @@
         const form = document.getElementById("dateForm");
         const formView = document.getElementById("form-view");
         const reportView = document.getElementById("report-view");
-        const reportContent = document.getElementById("ai-report-content");
+        const reportResult = document.getElementById("ai-result");
         const btn = document.getElementById("submitBtn");
 
         async function handleSubmit(event) {
             event.preventDefault();
-            btn.innerText = "Processing 10 variables...";
+            btn.innerText = "Calculated Optimal Vibe...";
             
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData.entries());
 
-            // Send to Formspree
+            // 1. Send data to you via Formspree
             fetch(event.target.action, {
                 method: form.method,
                 body: formData,
                 headers: { 'Accept': 'application/json' }
             });
 
-            // Fake processing delay
-            await new Promise(r => setTimeout(r, 1500));
+            // 2. Fake processing delay
+            await new Promise(r => setTimeout(r, 1200));
 
-            // Generate Logic
-            generatePlan(data);
+            // 3. Generate the Plan for HER to see
+            generateReport(data);
 
-            // Switch Views
+            // 4. Switch Views
             formView.style.display = 'none';
             reportView.style.display = 'block';
             window.scrollTo(0,0);
         }
 
-        function generatePlan(data) {
-            // LOCATION LOGIC
-            let location = "Undetermined";
-            let reason = "based on vibes";
-
-            if (data.location_style === "Cozy") {
-                location = "Cote Rôtie (Inside)";
-                reason = "maximum coziness and acoustics.";
-            } else if (data.location_style === "Chic") {
-                location = "Xander's or Flo";
-                reason = "impeccable aesthetics.";
+        function generateReport(data) {
+            // Venue Logic
+            let venueText = "";
+            if (data.venue === "Cote Rotie") {
+                venueText = "We are going to <strong>Cote Rôtie</strong>. It's cozy, intimate, and perfect for actually hearing each other.";
+            } else if (data.venue === "Xanders") {
+                venueText = "<strong>Xander's</strong> it is. Good food, lively energy, and zero chance of awkward silence.";
+            } else if (data.venue === "Koel Cafe") {
+                venueText = "<strong>Koel Cafe</strong>. We'll enjoy the open air, the art, and the peace.";
+            } else if (data.venue === "Drop Coffee") {
+                venueText = "<strong>Drop Coffee</strong>. Serious coffee for serious conversation.";
+            } else if (data.venue === "Surprise Me") {
+                venueText = "You chose <strong>Surprise Me</strong>. I have a spot in mind (trust me, it's good).";
             } else {
-                location = "Koel Cafe or Patio";
-                reason = "fresh air and greenery.";
+                venueText = `<strong>${data.venue}</strong> is the move. Great choice.`;
             }
 
-            // ACTIVITY LOGIC
-            let activity = "";
-            if (data.activity === "Walk") {
-                activity = "Followed by a walk on E-Street/Sea View (shoes permit).";
+            // Dessert Logic
+            let dessertText = "";
+            if (data.dessert_policy === "Mandatory") {
+                dessertText = "Dessert is <span class='highlight'>non-negotiable</span>. We are ordering the best thing on the menu.";
             } else {
-                activity = "We will occupy the table for hours.";
+                dessertText = "We'll play it by ear with food, but the coffee is happening.";
             }
 
-            // MUSIC LOGIC
-            let aux = "";
-            if (data.music === "Silence") {
-                aux = "Radio will be OFF.";
+            // Vibe Logic
+            let vibeText = "";
+            if (data.conversation_topic === "Lore") {
+                vibeText = "Prepare your life story. I want the deep lore, not just the small talk.";
+            } else if (data.conversation_topic === "Fun") {
+                vibeText = "Agenda: Roasting each other and laughing.";
             } else {
-                aux = `Car speakers set to: ${data.music} Mix.`;
+                vibeText = "We'll keep it professional(ish) but fun.";
             }
 
-            // DESSERT LOGIC
-            let sweet = "";
-            if (data.dessert === "Yes") {
-                sweet = "Dessert is legally binding. We are ordering.";
-            } else if (data.dessert === "No") {
-                sweet = "We stick to the bean water.";
-            } else {
-                sweet = "We'll judge the dessert menu upon arrival.";
+            // Transit/Ick Logic
+            let extraText = "";
+            if (data.ick_factor) {
+                extraText = `<br><br><em>Note: I have noted your Ick ("${data.ick_factor}") and will behave accordingly.</em>`;
             }
 
             const html = `
-                <div class="report-section">
-                    <div class="report-label">Target Location</div>
-                    <div class="report-val">📍 <span class="highlight">${location}</span></div>
-                    <div style="font-size: 0.9rem; opacity: 0.7; margin-top:5px;">Selected for ${reason}</div>
-                </div>
-
-                <div class="report-section">
-                    <div class="report-label">The Blueprint</div>
-                    <ul style="list-style: none; padding: 0; font-size: 1rem; line-height: 1.6;">
-                        <li>☕ <strong>Fuel:</strong> ${data.caffeine === 'High' ? 'Serious Coffee' : 'Fun/Sweet Drinks'}</li>
-                        <li>🍰 <strong>Sugar Policy:</strong> ${sweet}</li>
-                        <li>🎵 <strong>Transit:</strong> ${aux}</li>
-                    </ul>
-                </div>
-
-                <div class="report-section">
-                    <div class="report-label">Vibe Check</div>
-                    <div class="report-val">
-                        "We are aiming for a <span class="highlight">${data.topic}</span> conversation flow. 
-                        ${activity}"
-                    </div>
-                </div>
-
-                <div class="report-section" style="border-bottom: none;">
-                    <div class="report-label">Compliance Notes</div>
-                    <div style="font-style: italic; font-size: 0.95rem; color: #555;">
-                        "I have noted your request regarding '${data.ick || 'N/A'}' and will ensure strict adherence to avoid the Ick."
-                    </div>
-                </div>
+                <div class="report-line">📍 <strong>The Spot:</strong><br>${venueText}</div>
+                <div class="report-line">🍰 <strong>The Plan:</strong><br>${dessertText}</div>
+                <div class="report-line">🗣️ <strong>The Vibe:</strong><br>${vibeText}</div>
+                <div class="report-line">🚕 <strong>Logistics:</strong><br>I'll coordinate the Uber/Meet-up details via text.${extraText}</div>
             `;
             
-            reportContent.innerHTML = html;
+            reportResult.innerHTML = html;
         }
 
         form.addEventListener("submit", handleSubmit);
