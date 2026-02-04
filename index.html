@@ -3,508 +3,519 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proposal: Rida</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Mission: Rida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* COSMIC INTIMATE PALETTE */
             --bg-deep: #050714;
-            --glass-bg: rgba(20, 20, 35, 0.6);
-            --border-glow: rgba(162, 155, 254, 0.3);
-            --primary: #a29bfe; /* Soft Purple */
-            --accent: #74b9ff;  /* Electric Blue */
+            --glass-bg: rgba(20, 20, 35, 0.7);
+            --border-glow: rgba(116, 185, 255, 0.3);
+            --primary: #a29bfe; 
+            --accent: #00f2ff; /* Cyber Blue */
+            --danger: #ff0055; /* Glitch Red */
             --text-main: #ffffff;
-            --text-dim: #b2bec3;
-            --neon-glow: 0 0 20px rgba(162, 155, 254, 0.2);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
 
         body {
             background-color: var(--bg-deep);
-            background-image: 
-                radial-gradient(circle at 20% 30%, #1a1a2e 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, #16213e 0%, transparent 40%);
             font-family: 'Outfit', sans-serif;
             color: var(--text-main);
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* DYNAMIC STARS BACKGROUND */
-        .stars {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-        .stars::after {
-            content: "";
-            position: absolute;
-            top: -50%; left: -50%; width: 200%; height: 200%;
-            background-image: 
-                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
-            background-repeat: repeat;
-            background-size: 200px 200px;
-            animation: twinkle 5s infinite linear;
-            opacity: 0.4;
-        }
-
-        /* AURORA GLOW */
-        .aurora {
-            position: absolute;
-            width: 600px; height: 600px;
-            background: linear-gradient(180deg, rgba(162, 155, 254, 0.1), rgba(116, 185, 255, 0.05));
-            filter: blur(100px);
-            border-radius: 50%;
-            z-index: -1;
-            animation: floatBlob 12s infinite alternate;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
             perspective: 1000px;
-            z-index: 10;
         }
 
-        /* GLASS PANEL */
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border: 1px solid var(--border-glow);
-            border-radius: 24px;
-            padding: 40px 30px;
-            box-shadow: var(--neon-glow);
-            min-height: 520px;
+        /* --- WARP SPEED BACKGROUND --- */
+        .star-field {
+            position: fixed;
+            top: 50%; left: 50%;
+            width: 2px; height: 2px;
+            transform-style: preserve-3d;
+            perspective: 800px;
+            z-index: -1;
+        }
+        .star {
+            position: absolute;
+            width: 2px; height: 2px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        /* WARP ANIMATION CLASS */
+        body.warp-active .star {
+            width: 4px;
+            height: 200px; /* Stretch into lines */
+            background: var(--accent);
+            opacity: 1;
+            transition: height 0.2s, opacity 0.2s;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* --- THE LOCK SCREEN (CANVAS) --- */
+        #lock-screen {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 7, 20, 0.95);
+            z-index: 100;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            position: relative;
-            transition: all 0.5s ease;
-        }
-
-        /* PROGRESS BAR */
-        .progress-container {
-            position: absolute;
-            top: 0; left: 0; width: 100%;
-            height: 4px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 24px 24px 0 0;
-            overflow: hidden;
-        }
-        .progress-bar {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--primary), var(--accent));
-            box-shadow: 0 0 10px var(--primary);
-            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        /* TYPOGRAPHY */
-        h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 2.5rem;
-            background: linear-gradient(to right, #fff, #a29bfe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            line-height: 1.2;
-        }
-        
-        .question-label {
-            font-size: 0.75rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 12px;
-            text-shadow: 0 0 5px rgba(116, 185, 255, 0.5);
-        }
-
-        .question-text {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 300;
-            margin-bottom: 35px;
-            line-height: 1.3;
-        }
-
-        .ai-comment {
-            font-size: 1rem;
-            color: var(--primary);
-            font-style: italic;
-            margin-top: 25px;
-            min-height: 24px;
-            opacity: 0;
-            transition: opacity 0.4s;
-            text-shadow: 0 0 8px rgba(162, 155, 254, 0.3);
-        }
-
-        /* OPTIONS */
-        .options-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 15px;
-        }
-
-        .option-btn {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            padding: 20px;
-            border-radius: 16px;
-            text-align: left;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
             align-items: center;
-            gap: 15px;
+            cursor: crosshair;
+        }
+        
+        canvas { position: absolute; top: 0; left: 0; }
+        
+        .lock-text {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--accent);
+            text-shadow: 0 0 20px var(--accent);
+            z-index: 101;
+            pointer-events: none;
+            margin-top: 300px; /* Push text below the constellation */
+            opacity: 0.8;
+            animation: pulseText 2s infinite;
+        }
+
+        /* --- MAIN INTERFACE --- */
+        .container {
+            width: 100%;
+            max-width: 500px;
+            z-index: 10;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .container.active { opacity: 1; transform: scale(1); }
+
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-glow);
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
             position: relative;
             overflow: hidden;
         }
 
-        .option-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 0%; height: 100%;
-            background: linear-gradient(90deg, rgba(162, 155, 254, 0.1), transparent);
-            transition: width 0.4s;
-        }
-
-        .option-btn:hover {
-            border-color: var(--primary);
-            transform: translateX(5px);
-            box-shadow: 0 0 20px rgba(162, 155, 254, 0.1);
-        }
-        .option-btn:hover::before { width: 100%; }
-
-        .emoji { font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
-        .opt-text { font-size: 1.05rem; letter-spacing: 0.5px; z-index: 1; }
-
-        /* INPUTS */
-        .input-wrapper { position: relative; }
-        
-        input[type="text"] {
-            width: 100%;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 20px;
-            border-radius: 16px;
-            color: #fff;
-            font-family: 'Outfit';
-            font-size: 1.1rem;
-            outline: none;
-            transition: 0.3s;
-        }
-        
-        input[type="text"]:focus { 
-            border-color: var(--accent); 
-            box-shadow: 0 0 15px rgba(116, 185, 255, 0.2);
-            background: rgba(0,0,0,0.5);
-        }
-
-        .next-btn {
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #050714;
-            border: none;
-            padding: 16px;
-            border-radius: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 15px;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            transition: 0.3s;
-        }
-        
-        .next-btn:hover {
-            box-shadow: 0 0 25px rgba(162, 155, 254, 0.4);
-            transform: scale(1.02);
-        }
-
-        /* ANIMATIONS */
-        @keyframes twinkle { 0% { transform: translateY(0); } 100% { transform: translateY(-200px); } }
-        @keyframes floatBlob { 0% { transform: translate(-20px, -20px); } 100% { transform: translate(20px, 20px); } }
-        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
-        
-        .fade-in { animation: enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-        .fade-out { animation: exit 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
-
-        @keyframes enter { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-        @keyframes exit { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-20px) scale(0.95); } }
-
-        /* REPORT STYLES */
-        .report-grid {
-            display: grid;
-            gap: 12px;
-            margin-top: 20px;
-        }
-        .report-card {
-            background: rgba(255,255,255,0.05);
-            padding: 20px;
-            border-radius: 12px;
-            border-left: 2px solid var(--accent);
+        /* LEGO HEADER */
+        .lego-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
         }
-        .r-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
-        .r-val { font-size: 1.1rem; color: #fff; font-weight: 600; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .studs { display: flex; gap: 5px; }
+        .stud { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.2); box-shadow: inset 0 2px 2px rgba(255,255,255,0.3); }
 
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+            line-height: 1;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            color: #e0e0e0;
+        }
+
+        /* --- LEGO BUTTONS --- */
+        .options-grid { display: grid; gap: 12px; }
+
+        .lego-btn {
+            background: rgba(255,255,255,0.05);
+            border-left: 4px solid rgba(255,255,255,0.2);
+            padding: 18px;
+            font-size: 1rem;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.1s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 0 rgba(0,0,0,0.3); /* The "Block" depth */
+            transform: translateY(0);
+            border-radius: 4px;
+        }
+
+        .lego-btn:active {
+            transform: translateY(4px); /* Physical click feel */
+            box-shadow: 0 0 0 rgba(0,0,0,0);
+        }
+
+        .lego-btn:hover { background: rgba(255,255,255,0.1); border-left-color: var(--accent); }
+        
+        /* Chaos/Glitch Effect */
+        .glitch-hover:hover {
+            animation: glitch 0.3s infinite;
+            border-left-color: var(--danger);
+            color: var(--danger);
+            text-shadow: 2px 0 #fff, -2px 0 #000;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0) translateY(0); }
+            20% { transform: translate(-2px, 2px) translateY(0); }
+            40% { transform: translate(-2px, -2px) translateY(0); }
+            60% { transform: translate(2px, 2px) translateY(0); }
+            80% { transform: translate(2px, -2px) translateY(0); }
+            100% { transform: translate(0) translateY(0); }
+        }
+
+        /* --- INPUTS --- */
+        input[type="text"] {
+            width: 100%;
+            background: #111;
+            border: 2px solid #333;
+            padding: 15px;
+            color: var(--accent);
+            font-family: 'Orbitron';
+            font-size: 1rem;
+            outline: none;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+        }
+        input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent); }
+
+        .confirm-btn {
+            width: 100%;
+            margin-top: 15px;
+            padding: 15px;
+            background: var(--accent);
+            color: #000;
+            font-family: 'Orbitron';
+            font-weight: 900;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.2s;
+        }
+        .confirm-btn:hover { background: #fff; transform: scale(1.02); }
+
+        /* --- REPORT (INSTRUCTION MANUAL STYLE) --- */
+        #report-view { display: none; }
+        .manual-page {
+            background: #fff;
+            color: #000;
+            padding: 20px;
+            transform: rotate(-1deg);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+        }
+        .step-row {
+            display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding: 10px 0;
+            font-family: 'Orbitron'; font-weight: 700;
+        }
+
+        /* --- PARTICLES --- */
+        #particles { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none; z-index: 50; }
+
+        @keyframes pulseText { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        
         #hidden-form { display: none; }
     </style>
 </head>
 <body>
 
-    <div class="stars"></div>
-    <div class="aurora"></div>
+    <div class="star-field" id="starField"></div>
 
-    <div class="container">
+    <div id="lock-screen">
+        <canvas id="lockCanvas"></canvas>
+        <div class="lock-text">Connect the Constellation</div>
+        <div style="font-size: 0.8rem; color: #666; margin-top: 10px;">(Drag between the stars)</div>
+    </div>
+
+    <div class="container" id="app-container">
         
-        <div class="glass-panel" id="main-panel">
+        <div class="glass-panel">
             
-            <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
-
-            <div class="step fade-in" id="step-0">
-                <div style="text-align: center; padding: 20px 0;">
-                    <div style="font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(162, 155, 254, 0.6));">🪐</div>
-                    <h1>Shuro Hojaye?</h1>
-                    <p style="color: var(--text-dim); line-height: 1.6; font-size: 1.1rem; margin-bottom: 40px;">
-                        I know you are thinking too long,<br>but let's just do this.<br><br>
-                        <em>A tiny calibration to align our stars.</em>
-                    </p>
-                    <button class="next-btn" onclick="nextStep(1)">Let's Do This</button>
+            <div class="lego-header">
+                <div class="studs">
+                    <div class="stud"></div><div class="stud"></div><div class="stud"></div>
                 </div>
+                <div style="font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent);">SYS.READY</div>
             </div>
 
-            <div class="step" id="step-1" style="display:none;">
-                <div class="question-label">Phase 01 // The Fuel</div>
-                <div class="question-text">How do you take your stardust?</div>
+            <div class="step" id="step-1">
+                <h1>Phase 1</h1>
+                <div class="question-text">Select Fuel Source.</div>
                 <div class="options-grid">
-                    <div class="option-btn" onclick="selectOption('caffeine', 'Purist', 'Pitch black. A purist. The universe respects that.', 2)">
-                        <span class="emoji">🌑</span>
-                        <span class="opt-text">Pitch Black (Strong)</span>
+                    <div class="lego-btn" onclick="next(2, 'caffeine', 'Black')">
+                        <span style="font-size:1.5rem">🌑</span> Pitch Black (Strong)
                     </div>
-                    <div class="option-btn" onclick="selectOption('caffeine', 'Sweet', 'Sugar rush detected. I like your energy.', 2)">
-                        <span class="emoji">✨</span>
-                        <span class="opt-text">Sweet & Iced</span>
+                    <div class="lego-btn" onclick="next(2, 'caffeine', 'Sweet')">
+                        <span style="font-size:1.5rem">✨</span> Sweet & Iced
                     </div>
-                    <div class="option-btn" onclick="selectOption('caffeine', 'Tea', 'Calm and collected. Very Zen.', 2)">
-                        <span class="emoji">🍵</span>
-                        <span class="opt-text">Tea / Decaf</span>
+                    <div class="lego-btn" onclick="next(2, 'caffeine', 'Tea')">
+                        <span style="font-size:1.5rem">🍵</span> Tea / Decaf
                     </div>
                 </div>
-                <div class="ai-comment" id="comment-1"></div>
             </div>
 
             <div class="step" id="step-2" style="display:none;">
-                <div class="question-label">Phase 02 // Sugar Policy</div>
-                <div class="question-text">Is dessert written in the stars?</div>
+                <h1>Phase 2</h1>
+                <div class="question-text">Target Coordinates.</div>
                 <div class="options-grid">
-                    <div class="option-btn" onclick="selectOption('dessert', 'Mandatory', 'Green flag. Calories do not count in space.', 3)">
-                        <span class="emoji">🍰</span>
-                        <span class="opt-text">Mandatory.</span>
+                    <div class="lego-btn" onclick="next(3, 'venue', 'Cote Rotie')">
+                        <span style="font-size:1.5rem">🕯️</span> Cote Rôtie (Intimate)
                     </div>
-                    <div class="option-btn" onclick="selectOption('dessert', 'Maybe', 'Playing hard to get with the cake. I see you.', 3)">
-                        <span class="emoji">🥐</span>
-                        <span class="opt-text">Maybe we share?</span>
+                    <div class="lego-btn" onclick="next(3, 'venue', 'Xanders')">
+                        <span style="font-size:1.5rem">🥗</span> Xander's (Lively)
+                    </div>
+                    <div class="lego-btn" onclick="next(3, 'venue', 'Koel')">
+                        <span style="font-size:1.5rem">🌿</span> Koel Cafe (Artsy)
+                    </div>
+                    <div class="lego-btn glitch-hover" onclick="next(3, 'venue', 'Surprise')">
+                        <span style="font-size:1.5rem">🔮</span> SURPRISE ME (Risk)
                     </div>
                 </div>
-                <div class="ai-comment" id="comment-2"></div>
             </div>
 
             <div class="step" id="step-3" style="display:none;">
-                <div class="question-label">Phase 03 // Coordinates</div>
-                <div class="question-text">Where should we land?</div>
-                <div class="options-grid" style="grid-template-columns: 1fr 1fr;">
-                    <div class="option-btn" onclick="selectOption('venue', 'Cote Rotie', 'Intimate vibe. The lighting there is stellar.', 4)">
-                        <span class="emoji">🕯️</span> <span class="opt-text">Cote Rôtie</span>
+                <h1>Phase 3</h1>
+                <div class="question-text">Side Quest Selection.</div>
+                <div style="font-size:0.8rem; color: #888; margin-bottom: 15px;">Pick a tiny game to play at the table:</div>
+                <div class="options-grid">
+                    <div class="lego-btn" onclick="next(4, 'game', 'Thumb War')">
+                        <span style="font-size:1.5rem">👍</span> Ultimate Thumb War
                     </div>
-                    <div class="option-btn" onclick="selectOption('venue', 'Xanders', 'Lively choice. Social constellation active.', 4)">
-                        <span class="emoji">🥗</span> <span class="opt-text">Xander's</span>
+                    <div class="lego-btn" onclick="next(4, 'game', '20 Questions')">
+                        <span style="font-size:1.5rem">❓</span> 20 Questions (Rapid Fire)
                     </div>
-                    <div class="option-btn" onclick="selectOption('venue', 'Koel', 'Artsy. Nature and vibes aligning perfectly.', 4)">
-                        <span class="emoji">🌿</span> <span class="opt-text">Koel Cafe</span>
-                    </div>
-                    <div class="option-btn" onclick="selectOption('venue', 'Surprise', 'Brave choice. Leaving it to fate (and me).', 4)">
-                        <span class="emoji">🔮</span> <span class="opt-text">Surprise Me</span>
+                    <div class="lego-btn" onclick="next(4, 'game', 'Staring Contest')">
+                        <span style="font-size:1.5rem">👀</span> Staring Contest (I win)
                     </div>
                 </div>
-                <div class="ai-comment" id="comment-3"></div>
             </div>
 
             <div class="step" id="step-4" style="display:none;">
-                <div class="question-label">Phase 04 // Frequency</div>
-                <div class="question-text">Select conversation vibe.</div>
-                <div class="options-grid">
-                    <div class="option-btn" onclick="selectOption('topic', 'Lore', 'Deep life lore. No skipping chapters tonight.', 5)">
-                        <span class="emoji">📜</span>
-                        <span class="opt-text">Deep Life Lore</span>
-                    </div>
-                    <div class="option-btn" onclick="selectOption('topic', 'Fun', 'Shields up. I hope you can handle the roasting.', 5)">
-                        <span class="emoji">☄️</span>
-                        <span class="opt-text">Roasting & Chaos</span>
-                    </div>
-                    <div class="option-btn" onclick="selectOption('topic', 'Work', 'Ambitions high. Power couple energy detected.', 5)">
-                        <span class="emoji">🚀</span>
-                        <span class="opt-text">Future Ambitions</span>
-                    </div>
-                </div>
-                <div class="ai-comment" id="comment-4"></div>
+                <h1>Phase 4</h1>
+                <div class="question-text">Identify Dealbreakers.</div>
+                <input type="text" id="input-ick" placeholder="What gives you the ick?">
+                <button class="confirm-btn" onclick="submitInput('ick', 'input-ick', 5)">Record Data</button>
             </div>
 
             <div class="step" id="step-5" style="display:none;">
-                <div class="question-label">Phase 05 // Red Flags</div>
-                <div class="question-text">What gives you the "Ick"?</div>
-                <div class="input-wrapper">
-                    <input type="text" id="input-ick" placeholder="e.g. Loud chewing, bad parking...">
-                    <button class="next-btn" onclick="submitText('ick', 'input-ick', 'Scanning memory banks... Ick noted and deleted.', 6)">Confirm Entry</button>
-                </div>
-                <div class="ai-comment" id="comment-5"></div>
+                <h1>Final</h1>
+                <div class="question-text">One Golden Rule?</div>
+                <input type="text" id="input-rule" placeholder="e.g. 'Don't be late'">
+                <button class="confirm-btn" onclick="submitInput('rule', 'input-rule', 6)">INITIATE LAUNCH</button>
             </div>
 
-            <div class="step" id="step-6" style="display:none;">
-                <div class="question-label">Final Phase // Directive</div>
-                <div class="question-text">One golden rule for me?</div>
-                <div class="input-wrapper">
-                    <input type="text" id="input-rule" placeholder="e.g. 'Don't be late'">
-                    <button class="next-btn" onclick="submitText('rule', 'input-rule', 'Directive received. Calibration complete.', 7)">Launch Date</button>
+            <div id="report-view">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="font-size: 3rem;">🚀</div>
+                    <h1 style="color: #000; text-shadow: none;">Mission Go.</h1>
                 </div>
-                <div class="ai-comment" id="comment-6"></div>
-            </div>
-
-            <div class="step" id="step-7" style="display:none; text-align: center; padding-top: 40px;">
-                <div style="font-size: 3rem; animation: pulse 1s infinite; margin-bottom: 20px;">💫</div>
-                <h2 style="font-family: 'Cinzel'; font-size: 1.5rem;">Aligning Stars...</h2>
-                <p style="color: var(--text-dim); margin-top: 10px;">Calculating cosmic trajectory.</p>
-            </div>
-
-            <div id="report-view" style="display: none;">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <div style="font-size: 3rem; margin-bottom: 10px;">✨</div>
-                    <h1>It's a Date.</h1>
-                    <p style="color: var(--text-dim);">The universe has spoken. Here is the plan.</p>
-                </div>
-
-                <div class="report-grid">
-                    <div class="report-card">
-                        <div>
-                            <div class="r-label">Coordinates</div>
-                            <div class="r-val" id="res-venue"></div>
-                        </div>
-                        <div style="font-size: 1.5rem;">📍</div>
+                
+                <div class="manual-page">
+                    <div style="text-align:center; font-weight:900; font-size:1.2rem; border-bottom:4px solid #000; padding-bottom:10px; margin-bottom:20px;">
+                        INSTRUCTION MANUAL
                     </div>
-                    <div class="report-card">
-                        <div>
-                            <div class="r-label">Fuel Source</div>
-                            <div class="r-val" id="res-caffeine"></div>
-                        </div>
-                        <div style="font-size: 1.5rem;">☕</div>
+                    
+                    <div class="step-row">
+                        <span>01. LOC</span>
+                        <span id="res-venue"></span>
                     </div>
-                    <div class="report-card">
-                        <div>
-                            <div class="r-label">Vibe Frequency</div>
-                            <div class="r-val" id="res-topic"></div>
-                        </div>
-                        <div style="font-size: 1.5rem;">📡</div>
+                    <div class="step-row">
+                        <span>02. FUEL</span>
+                        <span id="res-caffeine"></span>
                     </div>
-                </div>
-
-                <div style="margin-top: 40px; text-align: center;">
-                    <p style="font-size: 0.9rem; margin-bottom: 15px; color: var(--text-dim); font-style: italic;">
-                        Screenshot this prophecy & send it to me.
-                    </p>
-                    <div style="font-family: 'Cinzel'; color: var(--accent); font-size: 1.2rem;">See you soon.</div>
+                    <div class="step-row" style="color: var(--danger);">
+                        <span>03. QUEST</span>
+                        <span id="res-game"></span>
+                    </div>
+                    
+                    <div style="margin-top:20px; font-size:0.8rem; font-family:'Outfit'; text-align:center;">
+                        Project "Date Night" approved.<br>Screenshot this document.
+                    </div>
                 </div>
             </div>
 
         </div>
-
-        <form id="hidden-form" action="https://formspree.io/f/xgozggkq" method="POST">
-            <input type="hidden" name="caffeine" id="form-caffeine">
-            <input type="hidden" name="dessert" id="form-dessert">
-            <input type="hidden" name="venue" id="form-venue">
-            <input type="hidden" name="topic" id="form-topic">
-            <input type="hidden" name="ick" id="form-ick">
-            <input type="hidden" name="rule" id="form-rule">
-        </form>
-
     </div>
 
+    <form id="hidden-form" action="https://formspree.io/f/xgozggkq" method="POST">
+        <input type="hidden" name="caffeine" id="form-caffeine">
+        <input type="hidden" name="venue" id="form-venue">
+        <input type="hidden" name="game" id="form-game">
+        <input type="hidden" name="ick" id="form-ick">
+        <input type="hidden" name="rule" id="form-rule">
+    </form>
+
     <script>
-        const data = {};
+        // --- STAR FIELD GENERATION ---
+        const starField = document.getElementById('starField');
+        for(let i=0; i<100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            // Random scatter
+            const x = (Math.random() - 0.5) * window.innerWidth;
+            const y = (Math.random() - 0.5) * window.innerHeight;
+            const z = Math.random() * 800;
+            star.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
+            starField.appendChild(star);
+        }
 
-        function nextStep(stepNum) {
-            const currents = document.querySelectorAll('.step');
-            currents.forEach(el => {
-                if(el.style.display !== 'none') {
-                    el.classList.add('fade-out');
-                    setTimeout(() => { el.style.display = 'none'; el.classList.remove('fade-out'); }, 500);
+        // --- CANVAS LOCK LOGIC ---
+        const canvas = document.getElementById('lockCanvas');
+        const ctx = canvas.getContext('2d');
+        const lockScreen = document.getElementById('lock-screen');
+        const app = document.getElementById('app-container');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        // Define 3 Stars (Constellation)
+        const points = [
+            {x: window.innerWidth/2 - 100, y: window.innerHeight/2 + 50, active: false},
+            {x: window.innerWidth/2, y: window.innerHeight/2 - 100, active: false},
+            {x: window.innerWidth/2 + 100, y: window.innerHeight/2 + 50, active: false}
+        ];
+
+        let isDragging = false;
+        let lastPos = {x:0, y:0};
+
+        function drawConstellation() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw connection lines
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba(116, 185, 255, 0.5)";
+            ctx.lineWidth = 2;
+            
+            let activePoints = points.filter(p => p.active);
+            if(activePoints.length > 1) {
+                ctx.moveTo(activePoints[0].x, activePoints[0].y);
+                for(let i=1; i<activePoints.length; i++) {
+                    ctx.lineTo(activePoints[i].x, activePoints[i].y);
                 }
+            }
+            // Draw current drag line
+            if(isDragging && activePoints.length > 0) {
+                ctx.moveTo(activePoints[activePoints.length-1].x, activePoints[activePoints.length-1].y);
+                ctx.lineTo(lastPos.x, lastPos.y);
+            }
+            ctx.stroke();
+
+            // Draw Stars
+            points.forEach(p => {
+                ctx.beginPath();
+                ctx.fillStyle = p.active ? "#00f2ff" : "#fff";
+                ctx.shadowBlur = p.active ? 20 : 0;
+                ctx.shadowColor = "#00f2ff";
+                ctx.arc(p.x, p.y, p.active ? 8 : 4, 0, Math.PI * 2);
+                ctx.fill();
             });
+        }
 
-            const progress = (stepNum / 7) * 100;
-            document.getElementById('progress').style.width = progress + "%";
+        function checkPoints(x, y) {
+            points.forEach(p => {
+                const dist = Math.hypot(p.x - x, p.y - y);
+                if(dist < 30) p.active = true;
+            });
+            
+            drawConstellation();
 
+            // Check Win Condition
+            if(points.every(p => p.active)) {
+                unlockApp();
+            }
+        }
+
+        canvas.addEventListener('mousedown', (e) => { isDragging = true; lastPos = {x: e.clientX, y: e.clientY}; checkPoints(e.clientX, e.clientY); });
+        canvas.addEventListener('mousemove', (e) => { if(isDragging) { lastPos = {x: e.clientX, y: e.clientY}; checkPoints(e.clientX, e.clientY); }});
+        canvas.addEventListener('mouseup', () => { isDragging = false; drawConstellation(); });
+        
+        // Touch support
+        canvas.addEventListener('touchstart', (e) => { isDragging = true; lastPos = {x: e.touches[0].clientX, y: e.touches[0].clientY}; checkPoints(lastPos.x, lastPos.y); });
+        canvas.addEventListener('touchmove', (e) => { if(isDragging) { lastPos = {x: e.touches[0].clientX, y: e.touches[0].clientY}; checkPoints(lastPos.x, lastPos.y); }});
+
+        drawConstellation();
+
+        function unlockApp() {
+            // WARP SPEED EFFECT
+            document.body.classList.add('warp-active');
+            lockScreen.style.opacity = '0';
+            lockScreen.style.transition = 'opacity 0.5s';
+            
             setTimeout(() => {
-                const next = document.getElementById('step-' + stepNum);
-                next.style.display = 'block';
-                next.classList.add('fade-in');
-                if(stepNum === 7) finish();
+                lockScreen.style.display = 'none';
+                app.classList.add('active');
+                
+                // Stop warp after arrival
+                setTimeout(() => {
+                    document.body.classList.remove('warp-active');
+                }, 800);
             }, 500);
         }
 
-        function selectOption(key, value, comment, nextStepNum) {
-            data[key] = value;
-            document.getElementById('form-' + key).value = value;
-            
-            const commentEl = document.getElementById('comment-' + (nextStepNum - 1));
-            commentEl.innerText = comment;
-            commentEl.style.opacity = '1';
+        // --- FORM LOGIC ---
+        const data = {};
 
-            setTimeout(() => { nextStep(nextStepNum); }, 1500);
+        function next(stepNum, key, value) {
+            data[key] = value;
+            document.getElementById('form-'+key).value = value;
+
+            // Simple slide transition logic
+            const currentStep = document.getElementById('step-' + (stepNum - 1));
+            currentStep.style.display = 'none';
+            
+            const nextStep = document.getElementById('step-' + stepNum);
+            nextStep.style.display = 'block';
+            
+            // Play Warp again slightly for adrenaline
+            document.body.classList.add('warp-active');
+            setTimeout(() => document.body.classList.remove('warp-active'), 300);
         }
 
-        function submitText(key, inputId, comment, nextStepNum) {
-            const val = document.getElementById(inputId).value;
-            if(!val) { alert("The universe awaits your answer."); return; }
+        function submitInput(key, id, stepNum) {
+            const val = document.getElementById(id).value;
+            if(!val) return;
             
-            data[key] = val;
-            document.getElementById('form-' + key).value = val;
-            
-            const commentEl = document.getElementById('comment-' + (nextStepNum - 1));
-            commentEl.innerText = comment;
-            commentEl.style.opacity = '1';
-
-            setTimeout(() => { nextStep(nextStepNum); }, 1500);
+            if(stepNum === 6) {
+                // Final Submit
+                data[key] = val;
+                document.getElementById('form-'+key).value = val;
+                finish();
+            } else {
+                next(stepNum, key, val);
+            }
         }
 
         function finish() {
+            // Hide form, show report
+            document.getElementById('step-5').style.display = 'none';
+            document.getElementById('report-view').style.display = 'block';
+            
+            document.getElementById('res-venue').innerText = data.venue;
+            document.getElementById('res-caffeine').innerText = data.caffeine;
+            document.getElementById('res-game').innerText = data.game;
+
+            // Submit
             const form = document.getElementById('hidden-form');
             const formData = new FormData(form);
             fetch(form.action, { method: 'POST', body: formData, headers: {'Accept': 'application/json'} });
-
-            document.getElementById('res-venue').innerText = data.venue;
-            document.getElementById('res-caffeine').innerText = data.caffeine;
-            document.getElementById('res-topic').innerText = data.topic;
-
-            setTimeout(() => {
-                document.getElementById('step-7').style.display = 'none';
-                const report = document.getElementById('report-view');
-                report.style.display = 'block';
-                report.classList.add('fade-in');
-            }, 2500);
         }
+
     </script>
 </body>
 </html>
