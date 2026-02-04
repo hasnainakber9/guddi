@@ -3,208 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vibe Check: Malaika</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Proposal: Rida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,800;1,600&family=Outfit:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Warm, Sunset, "Golden Hour" Palette */
-            --bg-gradient: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%); 
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --primary: #c75b5b; /* Muted Rose/Terracotta */
-            --text-dark: #2d1b2d;
-            --text-light: #665c66;
-            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+            /* Romantic, Warm, Coffee Date Palette */
+            --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); 
+            --glass-bg: rgba(255, 255, 255, 0.90);
+            --glass-border: rgba(255, 255, 255, 0.8);
+            --primary: #8E6E53; /* Latte/Mocha */
+            --primary-dark: #5C4033;
+            --accent: #C8A27A; /* Gold/Bronze */
+            --text-dark: #2d2a26;
+            --text-light: #7a7672;
+            --shadow: 0 15px 35px rgba(139, 110, 83, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffd1ff);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+            background-color: #F3E5DC;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(28,100%,74%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(189,100%,86%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 100%, hsla(340,100%,76%,1) 0, transparent 50%), 
+                radial-gradient(at 0% 100%, hsla(22,100%,77%,1) 0, transparent 50%);
+            background-attachment: fixed;
             font-family: 'Outfit', sans-serif;
             color: var(--text-dark);
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            align-items: flex-start; /* Changed to flex-start for scrolling */
+            padding: 40px 20px;
         }
 
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             perspective: 1000px;
+            margin-bottom: 50px;
         }
 
         /* CARD STYLING */
         .card {
             background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
-            padding: 40px 30px;
+            padding: 50px 40px;
             box-shadow: var(--shadow);
-            transition: all 0.5s ease;
-            position: relative;
-            overflow: hidden;
+            animation: slideUp 0.8s ease-out;
         }
 
-        /* HEADER */
-        header { text-align: center; margin-bottom: 30px; }
+        header { text-align: center; margin-bottom: 40px; }
         
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            color: var(--primary);
+            font-size: 2.5rem;
+            color: var(--primary-dark);
             margin-bottom: 8px;
             letter-spacing: -0.5px;
         }
 
-        .status-badge {
-            display: inline-block;
-            background: #ffdbdb;
-            color: #d63031;
-            padding: 6px 14px;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 1px;
+        .subtitle {
+            font-size: 0.8rem;
             text-transform: uppercase;
-            margin-bottom: 15px;
+            letter-spacing: 2px;
+            color: var(--accent);
+            font-weight: 700;
         }
 
-        /* FORM ELEMENTS */
-        .question-group { margin-bottom: 35px; }
+        .phase-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--primary);
+            border-bottom: 1px solid rgba(139, 110, 83, 0.2);
+            padding-bottom: 10px;
+            margin: 40px 0 25px 0;
+            font-style: italic;
+        }
+
+        /* QUESTIONS */
+        .question-block { margin-bottom: 30px; }
         
-        .label-title {
-            font-size: 1.1rem;
+        .q-label {
+            font-size: 0.95rem;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: var(--text-dark);
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        /* MODE CARDS (Chaos, Comfort, Zen) */
-        .mode-grid {
+        /* RADIO GRIDS */
+        .options-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
             gap: 12px;
         }
 
-        .mode-option input { display: none; }
+        .radio-hidden { display: none; }
         
-        .mode-card {
+        .option-box {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            padding: 15px 20px;
-            background: rgba(255,255,255,0.6);
-            border: 1px solid transparent;
+            justify-content: center;
+            padding: 15px;
+            background: #fff;
+            border: 1px solid rgba(0,0,0,0.08);
             border-radius: 16px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            height: 100%;
         }
 
-        .mode-icon { font-size: 1.8rem; margin-right: 15px; }
-        .mode-info h3 { font-size: 1rem; margin-bottom: 2px; }
-        .mode-info p { font-size: 0.8rem; color: var(--text-light); }
+        .emoji { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+        .opt-text { font-size: 0.85rem; color: var(--text-light); font-weight: 500; }
 
-        .mode-option input:checked + .mode-card {
-            background: #fff;
+        /* Checked State */
+        .radio-hidden:checked + .option-box {
+            background: #FFF5EC;
             border-color: var(--primary);
-            box-shadow: 0 4px 15px rgba(199, 91, 91, 0.2);
-            transform: scale(1.02);
+            color: var(--primary-dark);
+            box-shadow: 0 4px 12px rgba(139, 110, 83, 0.15);
+            transform: translateY(-2px);
         }
+        .radio-hidden:checked + .option-box .opt-text { color: var(--primary-dark); font-weight: 700; }
 
-        /* COFFEE SELECTOR (Hidden by default) */
-        #coffee-section {
-            display: none; /* Toggled by JS */
-            margin-top: 20px;
-            background: rgba(255,255,255,0.4);
-            padding: 20px;
-            border-radius: 16px;
-            animation: fadeIn 0.5s;
-        }
-
-        select {
+        /* SLIDER & TEXT INPUTS */
+        input[type="range"] {
             width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #ddd;
-            background: #fff;
-            font-family: 'Outfit', sans-serif;
-            font-size: 0.95rem;
-            color: var(--text-dark);
-            outline: none;
+            accent-color: var(--primary);
+            margin-top: 10px;
         }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            background: #fff;
+            font-family: 'Outfit';
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, textarea:focus { border-color: var(--primary); }
 
         /* BUTTON */
         button {
             width: 100%;
-            padding: 18px;
-            background: var(--primary);
+            padding: 20px;
+            background: var(--primary-dark);
             color: white;
             border: none;
-            border-radius: 14px;
-            font-size: 1rem;
+            border-radius: 16px;
+            font-size: 1.1rem;
             font-weight: 600;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 30px;
+            transition: transform 0.2s;
             font-family: 'Outfit', sans-serif;
+            box-shadow: 0 10px 20px rgba(92, 64, 51, 0.2);
         }
+        button:hover { background: #4a332a; transform: translateY(-3px); }
 
-        button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(199, 91, 91, 0.3);
-            background: #b04646;
-        }
-
-        /* REPORT STYLES */
+        /* REPORT VIEW */
         #report-view { display: none; }
         
-        .report-header {
-            border-bottom: 2px dashed var(--primary);
-            padding-bottom: 20px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
-
-        .report-body {
-            font-size: 0.95rem;
-            line-height: 1.7;
-            color: var(--text-dark);
-        }
-
-        .report-highlight {
-            background: #ffe0e0;
-            color: var(--primary);
-            padding: 2px 6px;
+        .report-paper {
+            background: #fff;
+            padding: 40px;
             border-radius: 4px;
-            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
         }
+        
+        /* Simulating a "typed" report */
+        .report-section { margin-bottom: 25px; border-bottom: 1px dashed #eee; padding-bottom: 15px; }
+        .report-label { font-size: 0.75rem; text-transform: uppercase; color: var(--primary); letter-spacing: 1px; margin-bottom: 5px; font-weight: 700; }
+        .report-val { font-size: 1.1rem; line-height: 1.5; color: var(--text-dark); }
+        .highlight { color: var(--primary-dark); font-weight: 700; background: #FFF5EC; padding: 0 5px; }
 
-        .signature {
-            margin-top: 30px;
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            text-align: right;
-            font-size: 1.2rem;
-            color: var(--primary);
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -213,141 +197,191 @@
         
         <div id="form-view" class="card">
             <header>
-                <div class="status-badge">⚠️ Status: Boredom Critical</div>
-                <h1>Vibe Check Protocol</h1>
-                <p style="opacity: 0.7;">Intervention required for: Malaika</p>
+                <div class="subtitle">CALIBRATION PROTOCOL V1.0</div>
+                <h1>Hi, Rida</h1>
+                <p style="color: var(--text-light);">I want our first date to be perfect. <br>Please help me configure the settings.</p>
             </header>
 
             <form id="dateForm" action="https://formspree.io/f/xgozggkq" method="POST">
                 
-                <div class="question-group">
-                    <div class="label-title">Step 1: Select Your Adventure</div>
-                    <div class="mode-grid">
-                        
-                        <label class="mode-option">
-                            <input type="radio" name="mode" value="Chaos" onchange="toggleCoffee(false)" required>
-                            <div class="mode-card">
-                                <span class="mode-icon">🎾</span>
-                                <div class="mode-info">
-                                    <h3>Chaos Mode</h3>
-                                    <p>Paddle / Bowling rivalry. I will destroy you.</p>
-                                </div>
-                            </div>
-                        </label>
+                <div class="phase-title">Phase 1: The Essentials</div>
 
-                        <label class="mode-option">
-                            <input type="radio" name="mode" value="Comfort" onchange="toggleCoffee(false)">
-                            <div class="mode-card">
-                                <span class="mode-icon">🥘</span>
-                                <div class="mode-info">
-                                    <h3>Comfort Mode</h3>
-                                    <p>Biryani hunt & chill. No terrible jokes (maybe).</p>
-                                </div>
-                            </div>
+                <div class="question-block">
+                    <div class="q-label">1. Caffeine Tolerance Level</div>
+                    <div class="options-grid">
+                        <label>
+                            <input type="radio" name="caffeine" value="High" class="radio-hidden" required>
+                            <div class="option-box"><span class="emoji">☕</span><span class="opt-text">Serious Coffee</span></div>
                         </label>
-
-                        <label class="mode-option">
-                            <input type="radio" name="mode" value="Zen" onchange="toggleCoffee(true)">
-                            <div class="mode-card">
-                                <span class="mode-icon">☕</span>
-                                <div class="mode-info">
-                                    <h3>Zen Mode</h3>
-                                    <p>Sunset, Beach breeze & Good Coffee.</p>
-                                </div>
-                            </div>
+                        <label>
+                            <input type="radio" name="caffeine" value="Sweet" class="radio-hidden">
+                            <div class="option-box"><span class="emoji">🥤</span><span class="opt-text">Sweet/Iced</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="caffeine" value="None" class="radio-hidden">
+                            <div class="option-box"><span class="emoji">🍵</span><span class="opt-text">Tea/Decaf</span></div>
                         </label>
                     </div>
                 </div>
 
-                <div id="coffee-section">
-                    <div class="label-title">☕ Priority: Caffeine Location</div>
-                    <p style="font-size:0.85rem; margin-bottom:10px; opacity:0.7;">Since you chose Zen, we need high-quality beans.</p>
-                    <select name="coffee_spot">
-                        <option value="Cote Rotie">Cote Rôtie (Classy, E-Street)</option>
-                        <option value="Xanders">Xander's (The Safe Bet)</option>
-                        <option value="Drop Coffee">Drop Coffee (Best Roast)</option>
-                        <option value="Melbrew">Melbrew (Aesthetic)</option>
-                        <option value="Koel">Koel Cafe (Maximum Zen)</option>
-                        <option value="Surprise">Surprise Me (I trust you)</option>
+                <div class="question-block">
+                    <div class="q-label">2. Are we getting dessert?</div>
+                    <div class="options-grid">
+                        <label>
+                            <input type="radio" name="dessert" value="Yes" class="radio-hidden" required>
+                            <div class="option-box"><span class="emoji">🍰</span><span class="opt-text">Mandatory</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="dessert" value="Maybe" class="radio-hidden">
+                            <div class="option-box"><span class="emoji">🥐</span><span class="opt-text">Maybe a croissant</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="dessert" value="No" class="radio-hidden">
+                            <div class="option-box"><span class="emoji">🚫</span><span class="opt-text">Just coffee</span></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="q-label">3. Ideal Duration?</div>
+                    <div class="options-grid">
+                        <label>
+                            <input type="radio" name="duration" value="Quick" class="radio-hidden">
+                            <div class="option-box"><span class="emoji">⚡</span><span class="opt-text">Quick (< 1 hr)</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="duration" value="Standard" class="radio-hidden" checked>
+                            <div class="option-box"><span class="emoji">🕰️</span><span class="opt-text">Standard (1-2 hrs)</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="duration" value="Long" class="radio-hidden">
+                            <div class="option-box"><span class="emoji">🌙</span><span class="opt-text">Until they kick us out</span></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="phase-title">Phase 2: The Vibe</div>
+
+                <div class="question-block">
+                    <div class="q-label">4. Location Aesthetic</div>
+                    <div class="options-grid">
+                        <label>
+                            <input type="radio" name="location_style" value="Cozy" class="radio-hidden" required>
+                            <div class="option-box"><span class="emoji">🧸</span><span class="opt-text">Cozy & Quiet</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="location_style" value="Chic" class="radio-hidden">
+                            <div class="option-box"><span class="emoji">✨</span><span class="opt-text">Chic & Trendy</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="location_style" value="Outdoors" class="radio-hidden">
+                            <div class="option-box"><span class="emoji">🌳</span><span class="opt-text">Open Air / Patio</span></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="q-label">5. Sitting or Walking?</div>
+                    <div class="options-grid">
+                        <label>
+                            <input type="radio" name="activity" value="Sit" class="radio-hidden" required>
+                            <div class="option-box"><span class="emoji">🪑</span><span class="opt-text">Sit & Talk</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="activity" value="Walk" class="radio-hidden">
+                            <div class="option-box"><span class="emoji">🚶‍♀️</span><span class="opt-text">Walk & Talk</span></div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="q-label">6. Current Social Battery Level</div>
+                    <input type="range" name="battery" min="1" max="100" value="80">
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#888; margin-top:5px;">
+                        <span>Needs Silence</span>
+                        <span>Ready to yap</span>
+                    </div>
+                </div>
+
+                <div class="question-block">
+                    <div class="q-label">7. Car Playlist Vibe (for pickup)</div>
+                    <select name="music" style="width:100%; padding:12px; border-radius:12px; border:1px solid #ddd; font-family:'Outfit';">
+                        <option value="Pop">Pop / Top 40 (Safe)</option>
+                        <option value="Indie">Indie / Chill (Vibey)</option>
+                        <option value="RnB">R&B / Soul (Smooth)</option>
+                        <option value="Bollywood">Bollywood / Desi (Fun)</option>
+                        <option value="Silence">Silence (Please don't)</option>
                     </select>
                 </div>
 
-                <div class="question-group">
-                    <div class="label-title">Step 2: The Mood Setting</div>
-                    <div class="mode-grid">
-                        <label class="mode-option">
-                            <input type="radio" name="mood" value="Deep" required>
-                            <div class="mode-card">
-                                <span class="mode-icon">🧠</span>
-                                <div class="mode-info">
-                                    <h3>Deep & Meaningful</h3>
-                                    <p>Life lore, ambitions, "what does it all mean?"</p>
-                                </div>
-                            </div>
+                <div class="phase-title">Phase 3: Final details</div>
+
+                <div class="question-block">
+                    <div class="q-label">8. Conversation Menu (Pick one)</div>
+                    <div class="options-grid">
+                        <label>
+                            <input type="radio" name="topic" value="Deep" class="radio-hidden" required>
+                            <div class="option-box"><span class="emoji">📜</span><span class="opt-text">Life Lore & Dreams</span></div>
                         </label>
-                        <label class="mode-option">
-                            <input type="radio" name="mood" value="Light">
-                            <div class="mode-card">
-                                <span class="mode-icon">✨</span>
-                                <div class="mode-info">
-                                    <h3>Immaculate Vibes</h3>
-                                    <p>Gossip, roasting, laughing till it hurts.</p>
-                                </div>
-                            </div>
+                        <label>
+                            <input type="radio" name="topic" value="Fun" class="radio-hidden">
+                            <div class="option-box"><span class="emoji">🤡</span><span class="opt-text">Roasting & Laughs</span></div>
+                        </label>
+                        <label>
+                            <input type="radio" name="topic" value="Work" class="radio-hidden">
+                            <div class="option-box"><span class="emoji">💼</span><span class="opt-text">Work/Industry Tea</span></div>
                         </label>
                     </div>
                 </div>
 
-                <div class="question-group">
-                    <div class="label-title">Any Specific Cravings/Rules?</div>
-                    <input type="text" name="notes" placeholder="e.g. 'I need dessert' or 'Pick me up at 8'" style="width:100%; padding:15px; border-radius:10px; border:1px solid #ddd; outline:none; font-family:'Outfit';">
+                <div class="question-block">
+                    <div class="q-label">9. What gives you the "Ick"? (I will avoid this)</div>
+                    <input type="text" name="ick" placeholder="e.g. Loud chewing, bad parking...">
                 </div>
 
-                <button type="submit" id="submitBtn">Generate Prescription</button>
+                <div class="question-block">
+                    <div class="q-label">10. One specific request?</div>
+                    <input type="text" name="request" placeholder="e.g. 'We must sit outside' or 'Pick me up at 8'">
+                </div>
+
+                <button type="submit" id="submitBtn">Generate Date Plan</button>
             </form>
         </div>
 
         <div id="report-view" class="card">
-            <div class="report-header">
-                <h2 style="font-family: 'Playfair Display'; color: var(--primary);">Diagnosis Complete</h2>
-                <p style="font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; margin-top:5px;">Ref: MALAIKA-001</p>
-            </div>
-
-            <div class="report-body" id="report-content">
-                </div>
-
-            <div class="signature">
-                - The Management
-            </div>
+            <header>
+                <div class="subtitle" style="color: green;">✔ CALIBRATION COMPLETE</div>
+                <h1 style="font-size: 2rem;">The Strategy</h1>
+                <p>Based on 10 data points, here is the optimal first date plan.</p>
+            </header>
             
-            <p style="text-align: center; margin-top: 30px; font-size: 0.8rem; opacity: 0.6;">
-                (Take a screenshot of this and send it to me for confirmation)
+            <div class="report-paper">
+                <div id="ai-report-content">
+                    </div>
+                
+                <div style="margin-top: 30px; border-top: 2px solid #333; padding-top: 10px; display: flex; justify-content: space-between; align-items: center;">
+                    <div style="font-family: 'Playfair Display', serif; font-size: 1.2rem;">Rida x Me</div>
+                    <div style="font-family: 'Courier New'; font-size: 0.8rem;">STATUS: PENDING</div>
+                </div>
+            </div>
+
+            <p style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: var(--text-light);">
+                Screenshot this and send it to me to confirm.
             </p>
         </div>
 
     </div>
 
     <script>
-        // Toggle Coffee Menu based on "Zen Mode" selection
-        function toggleCoffee(show) {
-            const section = document.getElementById('coffee-section');
-            if (show) {
-                section.style.display = 'block';
-            } else {
-                section.style.display = 'none';
-            }
-        }
-
         const form = document.getElementById("dateForm");
         const formView = document.getElementById("form-view");
         const reportView = document.getElementById("report-view");
-        const reportContent = document.getElementById("report-content");
+        const reportContent = document.getElementById("ai-report-content");
         const btn = document.getElementById("submitBtn");
 
         async function handleSubmit(event) {
             event.preventDefault();
-            const originalText = btn.innerText;
-            btn.innerText = "Analyzing Vibes...";
+            btn.innerText = "Processing 10 variables...";
             
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData.entries());
@@ -359,51 +393,92 @@
                 headers: { 'Accept': 'application/json' }
             });
 
-            // Simulate loading
+            // Fake processing delay
             await new Promise(r => setTimeout(r, 1500));
 
-            // Generate "AI" Prescription
-            generateReport(data);
+            // Generate Logic
+            generatePlan(data);
 
-            // Transition
+            // Switch Views
             formView.style.display = 'none';
             reportView.style.display = 'block';
+            window.scrollTo(0,0);
         }
 
-        function generateReport(data) {
-            let diagnosis = "";
-            let prescription = "";
-            let location = "";
+        function generatePlan(data) {
+            // LOCATION LOGIC
+            let location = "Undetermined";
+            let reason = "based on vibes";
 
-            // LOGIC ENGINE
-            if (data.mode === "Chaos") {
-                diagnosis = "Patient exhibits dangerously low levels of adrenaline.";
-                prescription = "Immediate competition therapy required.";
-                location = "Bowling Alley or Paddle Court (I will win).";
-            } else if (data.mode === "Comfort") {
-                diagnosis = "Patient requires immediate intake of carbohydrates and spice.";
-                prescription = "Standard 'Biryani & Venting' protocol initiated.";
-                location = "The best Biryani spot in Karachi.";
-            } else { // Zen
-                diagnosis = "Patient is suffering from urban fatigue. Needs 'Main Character Energy'.";
-                prescription = `Caffeine infusion followed by sea breeze inhalation.`;
-                location = data.coffee_spot === "Surprise" ? "Manager's Choice (Trust me)" : data.coffee_spot;
+            if (data.location_style === "Cozy") {
+                location = "Cote Rôtie (Inside)";
+                reason = "maximum coziness and acoustics.";
+            } else if (data.location_style === "Chic") {
+                location = "Xander's or Flo";
+                reason = "impeccable aesthetics.";
+            } else {
+                location = "Koel Cafe or Patio";
+                reason = "fresh air and greenery.";
+            }
+
+            // ACTIVITY LOGIC
+            let activity = "";
+            if (data.activity === "Walk") {
+                activity = "Followed by a walk on E-Street/Sea View (shoes permit).";
+            } else {
+                activity = "We will occupy the table for hours.";
+            }
+
+            // MUSIC LOGIC
+            let aux = "";
+            if (data.music === "Silence") {
+                aux = "Radio will be OFF.";
+            } else {
+                aux = `Car speakers set to: ${data.music} Mix.`;
+            }
+
+            // DESSERT LOGIC
+            let sweet = "";
+            if (data.dessert === "Yes") {
+                sweet = "Dessert is legally binding. We are ordering.";
+            } else if (data.dessert === "No") {
+                sweet = "We stick to the bean water.";
+            } else {
+                sweet = "We'll judge the dessert menu upon arrival.";
             }
 
             const html = `
-                <p style="margin-bottom: 15px;"><strong>Clinical Assessment:</strong><br>
-                ${diagnosis}</p>
+                <div class="report-section">
+                    <div class="report-label">Target Location</div>
+                    <div class="report-val">📍 <span class="highlight">${location}</span></div>
+                    <div style="font-size: 0.9rem; opacity: 0.7; margin-top:5px;">Selected for ${reason}</div>
+                </div>
 
-                <p style="margin-bottom: 15px;"><strong>Prescribed Treatment:</strong><br>
-                One evening of <span class="report-highlight">${data.mode} Mode</span> focusing on <span class="report-highlight">${data.mood}</span> conversation.</p>
+                <div class="report-section">
+                    <div class="report-label">The Blueprint</div>
+                    <ul style="list-style: none; padding: 0; font-size: 1rem; line-height: 1.6;">
+                        <li>☕ <strong>Fuel:</strong> ${data.caffeine === 'High' ? 'Serious Coffee' : 'Fun/Sweet Drinks'}</li>
+                        <li>🍰 <strong>Sugar Policy:</strong> ${sweet}</li>
+                        <li>🎵 <strong>Transit:</strong> ${aux}</li>
+                    </ul>
+                </div>
 
-                <p style="margin-bottom: 15px;"><strong>Designated Facility:</strong><br>
-                📍 ${location}</p>
+                <div class="report-section">
+                    <div class="report-label">Vibe Check</div>
+                    <div class="report-val">
+                        "We are aiming for a <span class="highlight">${data.topic}</span> conversation flow. 
+                        ${activity}"
+                    </div>
+                </div>
 
-                <p><strong>Next Steps:</strong><br>
-                Wait for your pickup. Playlist is already prepared.</p>
+                <div class="report-section" style="border-bottom: none;">
+                    <div class="report-label">Compliance Notes</div>
+                    <div style="font-style: italic; font-size: 0.95rem; color: #555;">
+                        "I have noted your request regarding '${data.ick || 'N/A'}' and will ensure strict adherence to avoid the Ick."
+                    </div>
+                </div>
             `;
-
+            
             reportContent.innerHTML = html;
         }
 
