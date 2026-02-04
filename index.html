@@ -65,7 +65,7 @@
         /* --- GAME BOARD (5x5) --- */
         #game-board {
             display: grid;
-            grid-template-rows: repeat(5, 1fr); /* CHANGED TO 5 ROWS */
+            grid-template-rows: repeat(5, 1fr); 
             gap: 8px;
             margin-bottom: 40px;
         }
@@ -77,15 +77,15 @@
         }
 
         .tile {
-            width: 55px;
-            height: 55px;
+            width: 50px;
+            height: 50px;
             border: 1px solid var(--border-soft);
             background: var(--glass-panel);
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 600;
             text-transform: uppercase;
             transition: all 0.4s ease;
@@ -131,7 +131,7 @@
             margin-top: 30px;
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--gold-dim);
             text-align: center;
             padding: 0 20px;
@@ -165,6 +165,7 @@
         
         .btn-icon { font-size: 1.2rem; margin-right: 20px; opacity: 0.7; }
         .btn-label { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; }
+        .btn-sub { font-family: 'Montserrat', sans-serif; font-size: 0.7rem; color: #666; display: block; margin-top: 4px; text-transform: uppercase; letter-spacing: 1px; }
 
         input[type="text"] {
             background: transparent; border: none; border-bottom: 1px solid #333;
@@ -184,7 +185,7 @@
         #report-view { display: none; text-align: center; animation: fadeIn 1s; }
         .r-line { margin-bottom: 25px; }
         .r-lbl { font-size: 0.6rem; color: var(--gold-dim); letter-spacing: 2px; text-transform: uppercase; }
-        .r-val { font-family: 'Cormorant Garamond'; font-size: 2rem; color: #fff; margin-top: 5px; }
+        .r-val { font-family: 'Cormorant Garamond'; font-size: 1.8rem; color: #fff; margin-top: 5px; }
 
         @keyframes fadeUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -233,42 +234,82 @@
         <div class="form-step" id="step-1">
             <h1>The Fuel</h1>
             <div class="choice-btn" onclick="select('caffeine', 'Black', 2)">
-                <span class="btn-icon">☕</span> <span class="btn-label">Pitch Black</span>
+                <span class="btn-icon">☕</span> 
+                <div>
+                    <span class="btn-label">Pitch Black</span>
+                    <span class="btn-sub">Strong & Focused.</span>
+                </div>
             </div>
             <div class="choice-btn" onclick="select('caffeine', 'Sweet', 2)">
-                <span class="btn-icon">✨</span> <span class="btn-label">Sweet & Iced</span>
+                <span class="btn-icon">✨</span> 
+                <div>
+                    <span class="btn-label">Sweet & Iced</span>
+                    <span class="btn-sub">Sugar rush energy.</span>
+                </div>
             </div>
             <div class="choice-btn" onclick="select('caffeine', 'Tea', 2)">
-                <span class="btn-icon">🍵</span> <span class="btn-label">Tea / Decaf</span>
+                <span class="btn-icon">🍵</span> 
+                <div>
+                    <span class="btn-label">Tea / Decaf</span>
+                    <span class="btn-sub">Calm & Collected.</span>
+                </div>
             </div>
         </div>
 
         <div class="form-step" id="step-2">
             <h1>Coordinates</h1>
             <div class="choice-btn" onclick="select('venue', 'Koel Cafe', 3)">
-                <span class="btn-icon">🌿</span> <span class="btn-label">Koel Cafe</span>
+                <span class="btn-icon">🌿</span> 
+                <div>
+                    <span class="btn-label">Koel Cafe</span>
+                    <span class="btn-sub">Serene & Artsy.</span>
+                </div>
             </div>
             <div class="choice-btn" onclick="select('venue', 'Melbrew', 3)">
-                <span class="btn-icon">✨</span> <span class="btn-label">Melbrew</span>
+                <span class="btn-icon">✨</span> 
+                <div>
+                    <span class="btn-label">Melbrew</span>
+                    <span class="btn-sub">Chic & Modern.</span>
+                </div>
             </div>
             <div class="choice-btn" onclick="select('venue', 'Drop Coffee', 3)">
-                <span class="btn-icon">💧</span> <span class="btn-label">Drop Coffee</span>
+                <span class="btn-icon">💧</span> 
+                <div>
+                    <span class="btn-label">Drop Coffee</span>
+                    <span class="btn-sub">Minimalist & Serious.</span>
+                </div>
             </div>
             <div class="choice-btn" onclick="select('venue', 'Your Choice', 3)">
-                <span class="btn-icon">🗝️</span> <span class="btn-label">Your Choice</span>
+                <span class="btn-icon">🗝️</span> 
+                <div>
+                    <span class="btn-label">Your Choice</span>
+                    <span class="btn-sub">I trust your taste.</span>
+                </div>
             </div>
         </div>
 
         <div class="form-step" id="step-3">
             <h1>Vibe Check</h1>
-            <div class="choice-btn" onclick="select('game', 'Lore', 4)">
-                <span class="btn-icon">📜</span> <span class="btn-label">Deep Life Lore</span>
+            <div class="choice-btn" onclick="select('game', 'Off The Record', 4)">
+                <span class="btn-icon">🎙️</span> 
+                <div>
+                    <span class="btn-label">Off The Record</span>
+                    <span class="btn-sub">No corporate filters. Just us.</span>
+                </div>
             </div>
-            <div class="choice-btn" onclick="select('game', 'Fun', 4)">
-                <span class="btn-icon">😂</span> <span class="btn-label">Roasting & Chaos</span>
+            <div class="choice-btn" onclick="select('game', 'Intellectual Chemistry', 4)">
+                <span class="btn-icon">🧠</span> 
+                <div>
+                    <span class="btn-label">Intellectual Chemistry</span>
+                    <span class="btn-sub">High-level banter & debates.</span>
+                </div>
             </div>
-            <div class="choice-btn" onclick="select('game', 'Work', 4)">
-                <span class="btn-icon">🚀</span> <span class="btn-label">Future Ambitions</span>
+            <div class="choice-btn" onclick="select('game', 'The Blueprint', 4)">
+                <span class="btn-icon">📐</span> 
+                <div>
+                    <span class="btn-label">The Blueprint</span>
+                    <span class="btn-sub">Goals, dreams & what drives us.</span>
+                </div>
             </div>
         </div>
 
@@ -314,7 +355,6 @@
 
         let currentRow = 0;
         let currentTile = 0;
-        // 5 rows only now
         let guesses = [
             ["", "", "", "", ""],
             ["", "", "", "", ""],
@@ -391,8 +431,8 @@
                 currentRow++;
                 currentTile = 0;
                 if(currentRow === 5) {
-                    alert("Try again. You can do this, Lily.");
-                    location.reload(); // Simple reload on fail
+                    alert("System Locked. Refresh to try again.");
+                    location.reload();
                 }
             }
         }
