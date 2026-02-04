@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cosmic Alignment: Rida</title>
+    <title>Proposal: Rida</title>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* COSMIC PALETTE */
+            /* COSMIC INTIMATE PALETTE */
             --bg-deep: #050714;
-            --glass-bg: rgba(20, 20, 35, 0.7);
+            --glass-bg: rgba(20, 20, 35, 0.6);
             --border-glow: rgba(162, 155, 254, 0.3);
             --primary: #a29bfe; /* Soft Purple */
             --accent: #74b9ff;  /* Electric Blue */
             --text-main: #ffffff;
             --text-dim: #b2bec3;
-            --neon-glow: 0 0 15px rgba(162, 155, 254, 0.4);
+            --neon-glow: 0 0 20px rgba(162, 155, 254, 0.2);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -23,8 +23,8 @@
         body {
             background-color: var(--bg-deep);
             background-image: 
-                radial-gradient(circle at 20% 30%, #2d3436 0%, transparent 20%),
-                radial-gradient(circle at 80% 70%, #2d3436 0%, transparent 20%);
+                radial-gradient(circle at 20% 30%, #1a1a2e 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, #16213e 0%, transparent 40%);
             font-family: 'Outfit', sans-serif;
             color: var(--text-main);
             min-height: 100vh;
@@ -41,7 +41,6 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none;
-            background: transparent;
             z-index: -1;
         }
         .stars::after {
@@ -52,23 +51,22 @@
                 radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
                 radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
-                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0));
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0));
             background-repeat: repeat;
             background-size: 200px 200px;
-            animation: twinkle 4s infinite linear;
-            opacity: 0.3;
+            animation: twinkle 5s infinite linear;
+            opacity: 0.4;
         }
 
-        /* AURORA GRADIENT BLOB */
+        /* AURORA GLOW */
         .aurora {
             position: absolute;
-            width: 500px; height: 500px;
-            background: linear-gradient(180deg, rgba(162, 155, 254, 0.15), rgba(116, 185, 255, 0.1));
-            filter: blur(80px);
+            width: 600px; height: 600px;
+            background: linear-gradient(180deg, rgba(162, 155, 254, 0.1), rgba(116, 185, 255, 0.05));
+            filter: blur(100px);
             border-radius: 50%;
             z-index: -1;
-            animation: floatBlob 10s infinite alternate;
+            animation: floatBlob 12s infinite alternate;
         }
 
         .container {
@@ -81,10 +79,10 @@
         /* GLASS PANEL */
         .glass-panel {
             background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             border: 1px solid var(--border-glow);
-            border-radius: 30px;
+            border-radius: 24px;
             padding: 40px 30px;
             box-shadow: var(--neon-glow);
             min-height: 520px;
@@ -100,8 +98,8 @@
             position: absolute;
             top: 0; left: 0; width: 100%;
             height: 4px;
-            background: rgba(255,255,255,0.1);
-            border-radius: 30px 30px 0 0;
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px 24px 0 0;
             overflow: hidden;
         }
         .progress-bar {
@@ -115,12 +113,13 @@
         /* TYPOGRAPHY */
         h1 {
             font-family: 'Cinzel', serif;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             background: linear-gradient(to right, #fff, #a29bfe);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             letter-spacing: 1px;
+            line-height: 1.2;
         }
         
         .question-label {
@@ -128,14 +127,14 @@
             color: var(--accent);
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             text-shadow: 0 0 5px rgba(116, 185, 255, 0.5);
         }
 
         .question-text {
             font-family: 'Outfit', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 300; /* Thinner font for elegance */
+            font-size: 1.6rem;
+            font-weight: 300;
             margin-bottom: 35px;
             line-height: 1.3;
         }
@@ -144,7 +143,7 @@
             font-size: 1rem;
             color: var(--primary);
             font-style: italic;
-            margin-top: 20px;
+            margin-top: 25px;
             min-height: 24px;
             opacity: 0;
             transition: opacity 0.4s;
@@ -178,13 +177,13 @@
             position: absolute;
             top: 0; left: 0; width: 0%; height: 100%;
             background: linear-gradient(90deg, rgba(162, 155, 254, 0.1), transparent);
-            transition: width 0.3s;
+            transition: width 0.4s;
         }
 
         .option-btn:hover {
             border-color: var(--primary);
             transform: translateX(5px);
-            box-shadow: 0 0 15px rgba(162, 155, 254, 0.15);
+            box-shadow: 0 0 20px rgba(162, 155, 254, 0.1);
         }
         .option-btn:hover::before { width: 100%; }
 
@@ -210,11 +209,12 @@
         input[type="text"]:focus { 
             border-color: var(--accent); 
             box-shadow: 0 0 15px rgba(116, 185, 255, 0.2);
+            background: rgba(0,0,0,0.5);
         }
 
         .next-btn {
             background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #000;
+            color: #050714;
             border: none;
             padding: 16px;
             border-radius: 16px;
@@ -228,7 +228,7 @@
         }
         
         .next-btn:hover {
-            box-shadow: 0 0 20px rgba(162, 155, 254, 0.5);
+            box-shadow: 0 0 25px rgba(162, 155, 254, 0.4);
             transform: scale(1.02);
         }
 
@@ -246,19 +246,19 @@
         /* REPORT STYLES */
         .report-grid {
             display: grid;
-            gap: 15px;
+            gap: 12px;
             margin-top: 20px;
         }
         .report-card {
             background: rgba(255,255,255,0.05);
             padding: 20px;
             border-radius: 12px;
-            border-left: 3px solid var(--accent);
+            border-left: 2px solid var(--accent);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .r-label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; }
+        .r-label { font-size: 0.75rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
         .r-val { font-size: 1.1rem; color: #fff; font-weight: 600; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
 
         #hidden-form { display: none; }
@@ -277,29 +277,29 @@
 
             <div class="step fade-in" id="step-0">
                 <div style="text-align: center; padding: 20px 0;">
-                    <div style="font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(162, 155, 254, 0.6));">🪐</div>
-                    <h1>Star Map: Rida</h1>
-                    <p style="color: var(--text-dim); line-height: 1.8; font-size: 1.1rem; margin-bottom: 40px;">
-                        The universe is vast, but our date shouldn't be random.<br>
-                        Let's align the stars (and the coffee).
+                    <div style="font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 15px rgba(162, 155, 254, 0.6));">🪐</div>
+                    <h1>Shuro Hojaye?</h1>
+                    <p style="color: var(--text-dim); line-height: 1.6; font-size: 1.1rem; margin-bottom: 40px;">
+                        I know you are thinking too long,<br>but let's just do this.<br><br>
+                        <em>A tiny calibration to align our stars.</em>
                     </p>
-                    <button class="next-btn" onclick="nextStep(1)">Initialize Protocol</button>
+                    <button class="next-btn" onclick="nextStep(1)">Let's Do This</button>
                 </div>
             </div>
 
             <div class="step" id="step-1" style="display:none;">
-                <div class="question-label">Phase 01 // Cosmic Fuel</div>
+                <div class="question-label">Phase 01 // The Fuel</div>
                 <div class="question-text">How do you take your stardust?</div>
                 <div class="options-grid">
-                    <div class="option-btn" onclick="selectOption('caffeine', 'Purist', 'A purist. The universe respects that.', 2)">
+                    <div class="option-btn" onclick="selectOption('caffeine', 'Purist', 'Pitch black. A purist. The universe respects that.', 2)">
                         <span class="emoji">🌑</span>
-                        <span class="opt-text">Pitch Black (Strong Coffee)</span>
+                        <span class="opt-text">Pitch Black (Strong)</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('caffeine', 'Sweet', 'Sugar rush detected. Orbit velocity increasing.', 2)">
+                    <div class="option-btn" onclick="selectOption('caffeine', 'Sweet', 'Sugar rush detected. I like your energy.', 2)">
                         <span class="emoji">✨</span>
                         <span class="opt-text">Sweet & Iced</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('caffeine', 'Tea', 'Calm energy. Very Zen Mode.', 2)">
+                    <div class="option-btn" onclick="selectOption('caffeine', 'Tea', 'Calm and collected. Very Zen.', 2)">
                         <span class="emoji">🍵</span>
                         <span class="opt-text">Tea / Decaf</span>
                     </div>
@@ -308,14 +308,14 @@
             </div>
 
             <div class="step" id="step-2" style="display:none;">
-                <div class="question-label">Phase 02 // Sweet Tooth</div>
+                <div class="question-label">Phase 02 // Sugar Policy</div>
                 <div class="question-text">Is dessert written in the stars?</div>
                 <div class="options-grid">
-                    <div class="option-btn" onclick="selectOption('dessert', 'Mandatory', 'Excellent. Calories do not count in space.', 3)">
+                    <div class="option-btn" onclick="selectOption('dessert', 'Mandatory', 'Green flag. Calories do not count in space.', 3)">
                         <span class="emoji">🍰</span>
                         <span class="opt-text">Mandatory.</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('dessert', 'Maybe', 'We will see what the galaxy offers.', 3)">
+                    <div class="option-btn" onclick="selectOption('dessert', 'Maybe', 'Playing hard to get with the cake. I see you.', 3)">
                         <span class="emoji">🥐</span>
                         <span class="opt-text">Maybe we share?</span>
                     </div>
@@ -324,16 +324,16 @@
             </div>
 
             <div class="step" id="step-3" style="display:none;">
-                <div class="question-label">Phase 03 // The Coordinates</div>
+                <div class="question-label">Phase 03 // Coordinates</div>
                 <div class="question-text">Where should we land?</div>
                 <div class="options-grid" style="grid-template-columns: 1fr 1fr;">
-                    <div class="option-btn" onclick="selectOption('venue', 'Cote Rotie', 'Intimate vibes. The lighting there is stellar.', 4)">
+                    <div class="option-btn" onclick="selectOption('venue', 'Cote Rotie', 'Intimate vibe. The lighting there is stellar.', 4)">
                         <span class="emoji">🕯️</span> <span class="opt-text">Cote Rôtie</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('venue', 'Xanders', 'Lively energy. A social constellation.', 4)">
+                    <div class="option-btn" onclick="selectOption('venue', 'Xanders', 'Lively choice. Social constellation active.', 4)">
                         <span class="emoji">🥗</span> <span class="opt-text">Xander's</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('venue', 'Koel', 'Artsy. Nature and vibes aligning.', 4)">
+                    <div class="option-btn" onclick="selectOption('venue', 'Koel', 'Artsy. Nature and vibes aligning perfectly.', 4)">
                         <span class="emoji">🌿</span> <span class="opt-text">Koel Cafe</span>
                     </div>
                     <div class="option-btn" onclick="selectOption('venue', 'Surprise', 'Brave choice. Leaving it to fate (and me).', 4)">
@@ -344,18 +344,18 @@
             </div>
 
             <div class="step" id="step-4" style="display:none;">
-                <div class="question-label">Phase 04 // Transmission</div>
-                <div class="question-text">Select conversation frequency.</div>
+                <div class="question-label">Phase 04 // Frequency</div>
+                <div class="question-text">Select conversation vibe.</div>
                 <div class="options-grid">
-                    <div class="option-btn" onclick="selectOption('topic', 'Lore', 'Deep conversations only. No small talk allowed.', 5)">
+                    <div class="option-btn" onclick="selectOption('topic', 'Lore', 'Deep life lore. No skipping chapters tonight.', 5)">
                         <span class="emoji">📜</span>
                         <span class="opt-text">Deep Life Lore</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('topic', 'Fun', 'Roasting shields active. I am ready.', 5)">
+                    <div class="option-btn" onclick="selectOption('topic', 'Fun', 'Shields up. I hope you can handle the roasting.', 5)">
                         <span class="emoji">☄️</span>
                         <span class="opt-text">Roasting & Chaos</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('topic', 'Work', 'Ambitions high. Power couple energy.', 5)">
+                    <div class="option-btn" onclick="selectOption('topic', 'Work', 'Ambitions high. Power couple energy detected.', 5)">
                         <span class="emoji">🚀</span>
                         <span class="opt-text">Future Ambitions</span>
                     </div>
@@ -386,7 +386,7 @@
             <div class="step" id="step-7" style="display:none; text-align: center; padding-top: 40px;">
                 <div style="font-size: 3rem; animation: pulse 1s infinite; margin-bottom: 20px;">💫</div>
                 <h2 style="font-family: 'Cinzel'; font-size: 1.5rem;">Aligning Stars...</h2>
-                <p style="color: var(--text-dim); margin-top: 10px;">Generating cosmic trajectory.</p>
+                <p style="color: var(--text-dim); margin-top: 10px;">Calculating cosmic trajectory.</p>
             </div>
 
             <div id="report-view" style="display: none;">
