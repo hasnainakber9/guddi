@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Shore — Just Keep Swimming</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Shore</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-deep: #0a0512;
             --bg-layer: #120820;
-            --glass-panel: rgba(255, 255, 255, 0.04);
-            --glass-panel-hover: rgba(255, 255, 255, 0.08);
-            --border-soft: rgba(255, 255, 255, 0.12);
+            --glass-panel: rgba(255, 255, 255, 0.05);
+            --border-soft: rgba(255, 255, 255, 0.1);
             --gold-dim: #9b8b6f;
             --gold-bright: #d4af37;
             --gold-glow: rgba(212, 175, 55, 0.2);
@@ -20,15 +19,10 @@
             --absent: #2d2d35;
             --text-main: #e8e8e8;
             --text-dim: #a0a0a8;
-            --shadow-deep: rgba(0, 0, 0, 0.6);
-            --accent-purple: rgba(138, 86, 148, 0.3);
-            --accent-blue: rgba(75, 105, 155, 0.25);
         }
 
         * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
+            margin: 0; padding: 0; box-sizing: border-box; 
             -webkit-tap-highlight-color: transparent;
         }
 
@@ -37,801 +31,283 @@
             color: var(--text-main);
             font-family: 'Montserrat', sans-serif;
             min-height: 100vh;
+            /* Allow scrolling on mobile */
+            overflow-y: auto; 
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            overflow-x: hidden;
-            position: relative;
-            padding: 20px;
+            /* Align to top on mobile so keyboard doesn't hide things, center on desktop */
+            justify-content: flex-start; 
+            padding: 40px 15px 100px 15px; /* Extra bottom padding for scroll */
         }
 
-        /* --- ENHANCED BACKGROUND --- */
+        /* Desktop centering override */
+        @media (min-height: 800px) {
+            body { justify-content: center; padding-top: 0; }
+        }
+
+        /* --- BACKGROUND --- */
         .ambient-glow {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 30% 20%, var(--accent-purple), transparent 50%),
-                radial-gradient(circle at 70% 80%, var(--accent-blue), transparent 50%),
-                radial-gradient(circle at 50% 50%, var(--gold-glow), transparent 70%);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.08), transparent 70%);
             z-index: -2;
-            animation: pulse 8s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 0.6; transform: scale(1); }
-            50% { opacity: 0.9; transform: scale(1.02); }
+            pointer-events: none;
         }
         
-        .drifting-stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(2px 2px at 20% 30%, white, transparent),
-                radial-gradient(2px 2px at 60% 70%, white, transparent),
-                radial-gradient(1px 1px at 50% 50%, white, transparent),
-                radial-gradient(1px 1px at 80% 10%, white, transparent),
-                radial-gradient(2px 2px at 90% 60%, white, transparent),
-                radial-gradient(1px 1px at 33% 80%, white, transparent),
-                radial-gradient(1px 1px at 15% 90%, white, transparent),
-                radial-gradient(2px 2px at 45% 15%, white, transparent);
-            background-size: 400px 400px, 500px 500px, 300px 300px, 450px 450px, 350px 350px, 380px 380px, 420px 420px, 360px 360px;
-            background-position: 0 0, 40px 60px, 130px 270px, 70px 100px, 200px 150px, 300px 50px, 150px 200px, 250px 80px;
-            opacity: 0.3;
-            animation: drift 120s linear infinite;
-            z-index: -1;
-        }
-
-        @keyframes drift {
-            from { background-position: 0 0, 40px 60px, 130px 270px, 70px 100px, 200px 150px, 300px 50px, 150px 200px, 250px 80px; }
-            to { background-position: 0 1200px, 40px 1260px, 130px 1470px, 70px 1300px, 200px 1350px, 300px 1250px, 150px 1400px, 250px 1280px; }
-        }
-
-        /* Floating particles */
-        .particle {
-            position: fixed;
-            width: 3px;
-            height: 3px;
-            background: var(--gold-dim);
-            border-radius: 50%;
-            opacity: 0;
-            animation: float 15s ease-in-out infinite;
-            pointer-events: none;
-            box-shadow: 0 0 10px var(--gold-glow);
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) translateX(0) scale(0); opacity: 0; }
-            10% { opacity: 0.6; }
-            90% { opacity: 0.3; }
-            100% { transform: translateY(-100vh) translateX(100px) scale(1); opacity: 0; }
-        }
-
-        .particle:nth-child(1) { left: 10%; animation-delay: 0s; animation-duration: 12s; }
-        .particle:nth-child(2) { left: 30%; animation-delay: 3s; animation-duration: 15s; }
-        .particle:nth-child(3) { left: 50%; animation-delay: 6s; animation-duration: 13s; }
-        .particle:nth-child(4) { left: 70%; animation-delay: 2s; animation-duration: 14s; }
-        .particle:nth-child(5) { left: 90%; animation-delay: 5s; animation-duration: 16s; }
-        .particle:nth-child(6) { left: 20%; animation-delay: 4s; animation-duration: 17s; }
-        .particle:nth-child(7) { left: 60%; animation-delay: 7s; animation-duration: 11s; }
-        .particle:nth-child(8) { left: 80%; animation-delay: 1s; animation-duration: 18s; }
-
         /* --- MAIN CONTAINER --- */
         .main-container {
             width: 100%;
             max-width: 500px;
             position: relative;
             z-index: 1;
-            animation: slideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
         }
 
         h1 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
-            letter-spacing: 4px;
-            margin-bottom: 15px;
-            color: var(--gold-bright);
-            font-weight: 300;
+            font-size: 2rem;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            color: var(--gold-dim);
             text-transform: uppercase;
             text-align: center;
-            position: relative;
-            padding-bottom: 15px;
-            text-shadow: 0 0 30px var(--gold-glow);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+            width: 100%;
         }
 
-        h1::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--gold-dim), transparent);
-            animation: expandLine 1.5s ease-out;
-        }
-
-        @keyframes expandLine {
-            from { width: 0; }
-            to { width: 60px; }
-        }
-
-        .subtitle {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1rem;
-            color: var(--text-dim);
-            text-align: center;
-            margin-bottom: 40px;
-            letter-spacing: 1px;
-            animation: fadeIn 1s ease-out 0.3s both;
-        }
-
-        /* --- ENHANCED GAME BOARD --- */
+        /* --- RESPONSIVE GAME BOARD --- */
         #game-board {
             display: grid;
-            grid-template-rows: repeat(5, 1fr); 
-            gap: 10px;
-            margin-bottom: 35px;
-            perspective: 1000px;
-            animation: fadeIn 1s ease-out 0.5s both;
+            grid-template-rows: repeat(5, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+            width: 100%;
+            justify-content: center;
         }
 
         .row {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 10px;
+            gap: 5px;
         }
 
         .tile {
-            width: 100%;
-            aspect-ratio: 1;
-            max-width: 65px;
-            max-height: 65px;
-            border: 2px solid var(--border-soft);
+            width: 14vw;
+            height: 14vw;
+            max-width: 60px;
+            max-height: 60px;
+            border: 1px solid var(--border-soft);
             background: var(--glass-panel);
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 600;
             text-transform: uppercase;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             color: #fff;
-            border-radius: 6px;
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tile::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .tile:hover::before {
-            opacity: 1;
+            border-radius: 4px;
+            transition: all 0.3s;
         }
 
         /* Tile States */
-        .tile[data-state="active"] { 
-            border-color: var(--gold-bright);
-            box-shadow: 0 0 20px var(--gold-glow);
-            transform: scale(1.05);
-        }
-
-        .tile[data-state="correct"] { 
-            background: linear-gradient(135deg, var(--correct) 0%, #3d8249 100%);
-            border-color: var(--correct);
-            box-shadow: 0 4px 15px rgba(74, 155, 92, 0.4);
-        }
-
-        .tile[data-state="present"] { 
-            background: linear-gradient(135deg, var(--present) 0%, #b38d2e 100%);
-            border-color: var(--present);
-            box-shadow: 0 4px 15px rgba(201, 169, 62, 0.4);
-        }
-
-        .tile[data-state="absent"] { 
-            background: var(--absent);
-            border-color: var(--absent);
-            opacity: 0.5;
-        }
+        .tile[data-state="active"] { border-color: var(--gold-bright); box-shadow: 0 0 10px var(--gold-glow); }
+        .tile[data-state="correct"] { background: var(--correct); border-color: var(--correct); }
+        .tile[data-state="present"] { background: var(--present); border-color: var(--present); }
+        .tile[data-state="absent"] { background: var(--absent); opacity: 0.5; }
         
-        .flip { 
-            animation: flip 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
+        .flip { animation: flip 0.6s ease forwards; }
+        .bounce { animation: bounce 0.6s; }
 
-        @keyframes flip {
-            0% { transform: rotateX(0) scale(1); }
-            50% { transform: rotateX(90deg) scale(1.05); }
-            100% { transform: rotateX(0) scale(1); }
-        }
+        @keyframes flip { 0% { transform: rotateX(0); } 50% { transform: rotateX(90deg); } 100% { transform: rotateX(0); } }
+        @keyframes bounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
-        .shake {
-            animation: shake 0.5s;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
-        }
-
-        .bounce {
-            animation: bounce 0.6s;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        /* --- ENHANCED HINT --- */
+        /* --- HINT --- */
         .hint-container {
-            background: var(--glass-panel);
-            border: 1px solid var(--border-soft);
-            border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 35px;
-            backdrop-filter: blur(20px);
-            position: relative;
-            overflow: hidden;
-            animation: fadeIn 1s ease-out 0.7s both;
-        }
-
-        .hint-container::before {
-            content: '"';
-            position: absolute;
-            top: -10px;
-            left: 15px;
-            font-size: 6rem;
-            font-family: 'Cormorant Garamond', serif;
-            color: var(--gold-dim);
-            opacity: 0.15;
+            margin: 15px 0 25px 0;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            text-align: center;
+            width: 100%;
         }
 
         .hint-text {
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             color: var(--gold-bright);
-            text-align: center;
-            line-height: 1.7;
-            position: relative;
-            z-index: 1;
+            line-height: 1.4;
         }
 
-        .hint-author {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
-            color: var(--text-dim);
-            text-align: right;
-            margin-top: 12px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        /* --- ENHANCED KEYBOARD --- */
+        /* --- KEYBOARD --- */
         #keyboard { 
+            width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            width: 100%;
-            max-width: 500px;
-            animation: fadeIn 1s ease-out 0.9s both;
+            gap: 6px;
+            margin-top: 10px;
+            padding-bottom: 20px; /* Space at bottom */
         }
 
         .key-row { 
             display: flex;
-            gap: 6px;
-            width: 100%;
             justify-content: center;
+            gap: 4px;
+            width: 100%;
         }
 
         .key {
-            flex: 1;
             font-family: 'Montserrat', sans-serif;
-            font-weight: 500;
-            background: var(--glass-panel);
-            color: var(--text-main);
-            height: 54px;
-            border-radius: 6px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            height: 52px; /* Taller for mobile touch */
+            border-radius: 4px;
             cursor: pointer;
             text-transform: uppercase;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid transparent;
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
+            font-size: 0.9rem;
+            flex: 1; 
+            touch-action: manipulation;
+            user-select: none;
         }
 
-        .key::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
+        .key.big { flex: 1.5; font-size: 0.75rem; }
+        .key:active { background: rgba(255,255,255,0.2); transform: scale(0.95); }
 
-        .key:hover::before {
-            opacity: 1;
-        }
+        .key[data-state="correct"] { background: var(--correct); }
+        .key[data-state="present"] { background: var(--present); }
+        .key[data-state="absent"] { background: var(--absent); opacity: 0.4; }
 
-        .key.big { 
-            flex: 1.6;
-            font-size: 0.75rem;
-            letter-spacing: 1px;
-            font-weight: 600;
-        }
-
-        .key:hover { 
-            border-color: var(--gold-dim);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px var(--shadow-deep);
-        }
-
-        .key:active { 
-            transform: translateY(0);
-            background: var(--glass-panel-hover);
-        }
-
-        .key[data-state="correct"] {
-            background: var(--correct);
-            border-color: var(--correct);
-        }
-
-        .key[data-state="present"] {
-            background: var(--present);
-            border-color: var(--present);
-        }
-
-        .key[data-state="absent"] {
-            background: var(--absent);
-            opacity: 0.5;
-        }
-
-        /* --- ENHANCED FORM --- */
+        /* --- FORM (Hidden) --- */
         #form-container {
             display: none;
             width: 100%;
-            max-width: 520px;
-            padding: 50px 40px;
-            background: rgba(15, 10, 20, 0.92);
+            max-width: 500px;
+            padding: 30px 25px;
+            background: rgba(10, 8, 15, 0.95);
             border: 1px solid var(--border-soft);
-            border-radius: 16px;
-            backdrop-filter: blur(40px);
-            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7), 0 0 60px var(--gold-glow);
-            animation: fadeUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            border-radius: 12px;
+            animation: slideUp 0.8s ease forwards;
             position: relative;
+            z-index: 10;
+            margin-bottom: 50px;
         }
 
-        .form-step { 
-            display: none;
-            text-align: center;
-        }
-
-        .form-step.active { 
-            display: block;
-            animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
+        .form-step { display: none; text-align: left; }
+        .form-step.active { display: block; animation: fadeIn 0.5s; }
 
         .form-title {
             font-family: 'Cormorant Garamond', serif;
             font-size: 2.2rem;
             color: var(--gold-bright);
-            margin-bottom: 12px;
-            font-weight: 400;
-            letter-spacing: 2px;
+            margin-bottom: 10px;
+            line-height: 1.2;
         }
 
-        .form-subtitle {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1.1rem;
-            color: var(--text-dim);
-            margin-bottom: 40px;
-            line-height: 1.6;
-        }
-
-        /* Elegant Choice Buttons */
         .choice-btn {
             display: flex;
             align-items: center;
-            padding: 20px 24px;
+            padding: 18px;
             margin-bottom: 12px;
             border: 1px solid var(--border-soft);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            color: var(--text-dim);
-            text-align: left;
-            background: var(--glass-panel);
-            backdrop-filter: blur(10px);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .choice-btn::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 0;
-            background: linear-gradient(90deg, var(--gold-glow), transparent);
-            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .choice-btn:hover {
-            transform: translateX(8px);
-            border-color: var(--gold-dim);
-            color: var(--text-main);
-            box-shadow: 0 4px 20px var(--shadow-deep);
-        }
-
-        .choice-btn:hover::before {
-            width: 100%;
-        }
-
-        .choice-btn:active {
-            transform: translateX(8px) scale(0.98);
-        }
-        
-        .btn-icon {
-            font-size: 1.8rem;
-            margin-right: 20px;
-            opacity: 0.8;
-            transition: all 0.3s;
-            z-index: 1;
-        }
-
-        .choice-btn:hover .btn-icon {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        .btn-content {
-            flex: 1;
-            z-index: 1;
-        }
-
-        .btn-label {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.4rem;
-            display: block;
-            margin-bottom: 4px;
-            font-weight: 500;
-        }
-
-        .btn-sub {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            display: block;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Input Fields */
-        input[type="text"] {
-            background: var(--glass-panel);
-            border: 1px solid var(--border-soft);
             border-radius: 8px;
-            padding: 18px 20px;
-            color: var(--text-main);
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            outline: none;
-            text-align: center;
-            margin-bottom: 20px;
+            background: rgba(255,255,255,0.03);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .choice-btn:active { background: rgba(255,255,255,0.1); border-color: var(--gold-dim); }
+        
+        .btn-icon { font-size: 1.6rem; margin-right: 15px; }
+        .btn-label { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; display: block; font-weight: 600; line-height: 1.1; }
+        .btn-sub { font-size: 0.75rem; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-top: 3px; display: block; }
+
+        /* Mobile safe inputs */
+        input[type="text"] {
             width: 100%;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border-soft);
+            padding: 16px;
+            margin-bottom: 15px;
+            color: #fff;
+            font-family: 'Montserrat';
+            font-size: 16px; /* Prevents zoom on iOS */
+            border-radius: 8px;
+            outline: none;
         }
-
-        input[type="text"]::placeholder {
-            color: var(--text-dim);
-            font-style: italic;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--gold-bright);
-            box-shadow: 0 0 20px var(--gold-glow);
-            transform: translateY(-2px);
-        }
+        input[type="text"]:focus { border-color: var(--gold-bright); background: rgba(0,0,0,0.2); }
 
         .finish-btn {
-            background: transparent;
-            border: 2px solid var(--gold-dim);
-            color: var(--gold-bright);
-            padding: 16px 40px;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            display: block;
-            margin: 30px auto 0;
-            border-radius: 8px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .finish-btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            border-radius: 50%;
-            background: var(--gold-glow);
-            transition: all 0.5s;
-            transform: translate(-50%, -50%);
-        }
-
-        .finish-btn:hover {
-            border-color: var(--gold-bright);
-            color: #fff;
-            box-shadow: 0 8px 25px var(--gold-glow);
-            transform: translateY(-2px);
-        }
-
-        .finish-btn:hover::before {
-            width: 300px;
-            height: 300px;
-        }
-
-        .finish-btn span {
-            position: relative;
-            z-index: 1;
-        }
-
-        .finish-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* --- ENHANCED REPORT --- */
-        #report-view {
-            display: none;
-            text-align: center;
-            animation: fadeIn 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-            max-width: 520px;
             width: 100%;
-        }
-
-        .report-header {
-            margin-bottom: 40px;
-        }
-
-        .report-title {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 3.5rem;
+            padding: 18px;
+            background: transparent;
+            border: 1px solid var(--gold-bright);
             color: var(--gold-bright);
-            margin-bottom: 15px;
-            font-weight: 400;
-            letter-spacing: 3px;
-            text-shadow: 0 0 30px var(--gold-glow);
-        }
-
-        .report-subtitle {
-            font-family: 'Cormorant Garamond', serif;
-            font-style: italic;
-            font-size: 1.2rem;
-            color: var(--text-dim);
-            letter-spacing: 1px;
-        }
-
-        .report-content {
-            background: var(--glass-panel);
-            border: 1px solid var(--border-soft);
-            border-radius: 16px;
-            padding: 40px 30px;
-            margin-bottom: 30px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 10px 40px var(--shadow-deep);
-        }
-
-        .r-line {
-            margin-bottom: 35px;
-            padding-bottom: 35px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            animation: slideInLeft 0.6s ease-out both;
-        }
-
-        .r-line:nth-child(1) { animation-delay: 0.2s; }
-        .r-line:nth-child(2) { animation-delay: 0.4s; }
-        .r-line:nth-child(3) { animation-delay: 0.6s; }
-
-        @keyframes slideInLeft {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
-        .r-line:last-child {
-            border-bottom: none;
-            margin-bottom: 0;
-            padding-bottom: 0;
-        }
-
-        .r-lbl {
-            font-size: 0.65rem;
-            color: var(--gold-dim);
-            letter-spacing: 3px;
+            font-family: 'Montserrat';
+            font-weight: 700;
             text-transform: uppercase;
-            margin-bottom: 10px;
-            font-weight: 500;
-        }
-
-        .r-val {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2rem;
-            color: var(--text-main);
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        /* AI Insights Section */
-        .ai-insights {
-            background: linear-gradient(135deg, var(--glass-panel), rgba(212, 175, 55, 0.05));
-            border: 1px solid var(--gold-dim);
-            border-radius: 12px;
-            padding: 25px;
-            margin-top: 30px;
-            backdrop-filter: blur(20px);
-            animation: fadeIn 1s ease-out 0.8s both;
-        }
-
-        .ai-insights-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: 0.7rem;
-            color: var(--gold-bright);
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .ai-insights-title::before {
-            content: '✨';
-            font-size: 1rem;
-        }
-
-        .insight-item {
-            font-family: 'Crimson Pro', serif;
-            font-style: italic;
-            font-size: 0.95rem;
-            color: var(--text-dim);
-            line-height: 1.6;
-            margin-bottom: 10px;
-            text-align: left;
-            padding-left: 20px;
-            position: relative;
-        }
-
-        .insight-item::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--gold-dim);
-        }
-
-        .insight-item:last-child {
-            margin-bottom: 0;
-        }
-
-        .report-footer {
-            color: var(--text-dim);
-            font-size: 0.85rem;
-            margin-top: 40px;
-            font-style: italic;
-            font-family: 'Crimson Pro', serif;
-        }
-
-        .transmission-status {
-            color: var(--gold-bright);
-            font-size: 0.75rem;
-            margin-top: 30px;
             letter-spacing: 2px;
-            text-transform: uppercase;
-            animation: pulse 2s ease-in-out infinite;
-            font-family: 'Montserrat', sans-serif;
+            cursor: pointer;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 0.9rem;
         }
+        
+        .finish-btn:disabled { opacity: 0.5; border-color: #555; color: #555; }
 
-        @keyframes fadeUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
+        /* --- REPORT --- */
+        #report-view { display: none; width: 100%; text-align: center; max-width: 500px; }
+        .r-line { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 20px 0; display: flex; justify-content: space-between; align-items: center; }
+        .r-lbl { font-size: 0.75rem; color: var(--gold-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .r-val { font-family: 'Cormorant Garamond'; font-size: 1.5rem; color: #fff; text-align: right; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
+        /* Animations */
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         /* AI Thinking Animation */
-        .ai-thinking {
-            display: inline-block;
-            margin-left: 5px;
-        }
         .ai-thinking span {
             display: inline-block;
             animation: blink 1.4s infinite both;
         }
         .ai-thinking span:nth-child(2) { animation-delay: 0.2s; }
         .ai-thinking span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink { 0% { opacity: 0.2; } 20% { opacity: 1; } 100% { opacity: 0.2; } }
 
-        @keyframes blink {
-            0% { opacity: 0.2; }
-            20% { opacity: 1; }
-            100% { opacity: 0.2; }
+        /* --- AI INSIGHTS --- */
+        .ai-insights {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
         }
-
-        /* Responsive Design */
-        @media (max-width: 600px) {
-            h1 { font-size: 1.4rem; letter-spacing: 3px; }
-            .tile { font-size: 1.6rem; max-width: 55px; max-height: 55px; }
-            .hint-text { font-size: 1rem; }
-            .key { height: 48px; font-size: 0.8rem; }
-            #form-container { padding: 40px 25px; }
-            .form-title { font-size: 1.8rem; }
-            .choice-btn { padding: 16px 18px; }
-            .btn-label { font-size: 1.2rem; }
-            .report-title { font-size: 2.5rem; }
-            .ai-insights { padding: 20px; }
-            .insight-item { font-size: 0.9rem; }
+        .ai-title {
+            font-size: 0.7rem; color: var(--gold-bright); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 15px; display: block; text-align: center;
         }
+        .insight-item {
+            font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: #ccc; margin-bottom: 10px; padding-left: 15px; position: relative;
+        }
+        .insight-item::before { content: '›'; position: absolute; left: 0; color: var(--gold-dim); }
 
     </style>
 </head>
 <body>
 
     <div class="ambient-glow"></div>
-    <div class="drifting-stars"></div>
-    
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
-    <div class="particle"></div>
 
     <div class="main-container" id="game-ui">
         <h1>The Shore</h1>
-        <p class="subtitle">Just Keep Swimming</p>
         
         <div id="game-board"></div>
         
@@ -840,7 +316,6 @@
                 "You can stop swimming now, Lily.<br>
                 We finally reached the..."
             </p>
-            <p class="hint-author">— Ryle to Lily</p>
         </div>
 
         <div id="keyboard"></div>
@@ -850,169 +325,115 @@
         
         <div class="form-step active" id="step-0">
             <h1 class="form-title">It Ends With Us.</h1>
-            <p class="form-subtitle">
+            <p style="color:#aaa; line-height:1.6; margin-bottom:30px; font-size: 1.1rem;">
                 Or rather, it begins with us.<br>
-                Every great story starts with a choice.<br>
-                Let's write ours.
+                Let's plan the start.
             </p>
-            <button class="finish-btn" onclick="nextStep(1)">
-                <span>Begin Our Story</span>
-            </button>
+            <button class="finish-btn" onclick="nextStep(1)">Begin Story</button>
         </div>
 
         <div class="form-step" id="step-1">
-            <h1 class="form-title">What's Your Fuel?</h1>
-            <p class="form-subtitle">Every conversation needs the right energy</p>
-            
-            <div class="choice-btn" onclick="select('caffeine', 'Sweet & Iced', 2)">
-                <span class="btn-icon">✨</span> 
-                <div class="btn-content">
-                    <span class="btn-label">Sweet & Iced</span>
-                    <span class="btn-sub">Because life's too short for bitter</span>
-                </div>
+            <h1 class="form-title">The Fuel</h1>
+            <div class="choice-btn" onclick="select('caffeine', 'Black', 2)">
+                <span class="btn-icon">☕</span>
+                <div><span class="btn-label">Pitch Black</span><span class="btn-sub">Strong</span></div>
             </div>
-            <div class="choice-btn" onclick="select('caffeine', 'Pitch Black Coffee', 2)">
-                <span class="btn-icon">☕</span> 
-                <div class="btn-content">
-                    <span class="btn-label">Pitch Black</span>
-                    <span class="btn-sub">No sugar, no cream — pure focus</span>
-                </div>
+            <div class="choice-btn" onclick="select('caffeine', 'Sweet', 2)">
+                <span class="btn-icon">✨</span>
+                <div><span class="btn-label">Sweet & Iced</span><span class="btn-sub">Sugar Rush</span></div>
             </div>
-            <div class="choice-btn" onclick="select('caffeine', 'Tea / Decaf', 2)">
-                <span class="btn-icon">🍵</span> 
-                <div class="btn-content">
-                    <span class="btn-label">Tea / Decaf</span>
-                    <span class="btn-sub">Calm, collected, intentional</span>
-                </div>
+            <div class="choice-btn" onclick="select('caffeine', 'Tea', 2)">
+                <span class="btn-icon">🍵</span>
+                <div><span class="btn-label">Tea / Decaf</span><span class="btn-sub">Zen Mode</span></div>
             </div>
             <div class="choice-btn" onclick="select('caffeine', 'Surprise Me', 2)">
-                <span class="btn-icon">🎲</span> 
-                <div class="btn-content">
-                    <span class="btn-label">Surprise Me</span>
-                    <span class="btn-sub">I trust your instincts</span>
-                </div>
+                <span class="btn-icon">🎲</span>
+                <div><span class="btn-label">Surprise Me</span><span class="btn-sub">I Trust You</span></div>
             </div>
         </div>
 
         <div class="form-step" id="step-2">
-            <h1 class="form-title">Where To?</h1>
-            <p class="form-subtitle">Pick our backdrop for good conversations</p>
-            
+            <h1 class="form-title">Coordinates</h1>
             <div class="choice-btn" onclick="select('venue', 'Koel Cafe', 3)">
-                <span class="btn-icon">🌿</span> 
-                <div class="btn-content">
-                    <span class="btn-label">Koel Cafe</span>
-                    <span class="btn-sub">Serene vibes, art on the walls</span>
-                </div>
+                <span class="btn-icon">🌿</span>
+                <div><span class="btn-label">Koel Cafe</span><span class="btn-sub">Serene</span></div>
             </div>
             <div class="choice-btn" onclick="select('venue', 'Melbrew', 3)">
-                <span class="btn-icon">✨</span> 
-                <div class="btn-content">
-                    <span class="btn-label">Melbrew</span>
-                    <span class="btn-sub">Modern, chic, Instagram-worthy</span>
-                </div>
+                <span class="btn-icon">✨</span>
+                <div><span class="btn-label">Melbrew</span><span class="btn-sub">Chic</span></div>
             </div>
             <div class="choice-btn" onclick="select('venue', 'Drop Coffee', 3)">
-                <span class="btn-icon">💧</span> 
-                <div class="btn-content">
-                    <span class="btn-label">Drop Coffee</span>
-                    <span class="btn-sub">Minimalist & serious coffee people</span>
-                </div>
+                <span class="btn-icon">💧</span>
+                <div><span class="btn-label">Drop Coffee</span><span class="btn-sub">Minimalist</span></div>
             </div>
             <div class="choice-btn" onclick="select('venue', 'Your Choice', 3)">
-                <span class="btn-icon">🗝️</span> 
-                <div class="btn-content">
-                    <span class="btn-label">Your Choice</span>
-                    <span class="btn-sub">I trust your taste completely</span>
-                </div>
+                <span class="btn-icon">🗝️</span>
+                <div><span class="btn-label">Your Choice</span><span class="btn-sub">Trust You</span></div>
             </div>
         </div>
 
         <div class="form-step" id="step-3">
-            <h1 class="form-title">Set The Vibe</h1>
-            <p class="form-subtitle">What kind of conversation are we having?</p>
-            
+            <h1 class="form-title">Vibe Check</h1>
             <div class="choice-btn" onclick="select('game', 'Stories & Secrets', 4)">
-                <span class="btn-icon">📖</span> 
-                <div class="btn-content">
-                    <span class="btn-label">Stories & Secrets</span>
-                    <span class="btn-sub">The chapters we don't usually share</span>
-                </div>
+                <span class="btn-icon">📖</span>
+                <div><span class="btn-label">Stories</span><span class="btn-sub">Deep Lore</span></div>
             </div>
-            <div class="choice-btn" onclick="select('game', 'Off The Record', 4)">
-                <span class="btn-icon">🎙️</span> 
-                <div class="btn-content">
-                    <span class="btn-label">Off The Record</span>
-                    <span class="btn-sub">No filters, no corporate masks — real talk</span>
-                </div>
+            <div class="choice-btn" onclick="select('game', 'Off Record', 4)">
+                <span class="btn-icon">🎙️</span>
+                <div><span class="btn-label">Off Record</span><span class="btn-sub">No Filters</span></div>
             </div>
-            <div class="choice-btn" onclick="select('game', 'Intellectual Chemistry', 4)">
-                <span class="btn-icon">🧠</span> 
-                <div class="btn-content">
-                    <span class="btn-label">Intellectual Chemistry</span>
-                    <span class="btn-sub">Deep dives, debates, ideas that spark</span>
-                </div>
+            <div class="choice-btn" onclick="select('game', 'Intellectual', 4)">
+                <span class="btn-icon">🧠</span>
+                <div><span class="btn-label">Intellectual</span><span class="btn-sub">Deep Dive</span></div>
             </div>
-            <div class="choice-btn" onclick="select('game', 'The Blueprint', 4)">
-                <span class="btn-icon">📐</span> 
-                <div class="btn-content">
-                    <span class="btn-label">The Blueprint</span>
-                    <span class="btn-sub">Dreams, ambitions, what drives us forward</span>
-                </div>
+            <div class="choice-btn" onclick="select('game', 'Blueprint', 4)">
+                <span class="btn-icon">📐</span>
+                <div><span class="btn-label">The Blueprint</span><span class="btn-sub">Ambitions</span></div>
             </div>
         </div>
 
         <div class="form-step" id="step-4">
-            <h1 class="form-title">The Final Details</h1>
-            <p class="form-subtitle">Help me make this perfect</p>
-            
-            <input type="text" id="input-ick" placeholder="Your biggest ick in dating?">
-            <input type="text" id="input-rule" placeholder="One golden rule for first dates?">
-            <input type="text" id="input-curious" placeholder="One thing you're curious about me?">
-            
-            <button class="finish-btn" onclick="finish()" id="final-btn">
-                <span>Lock It In</span>
-            </button>
+            <h1 class="form-title">Final Details</h1>
+            <input type="text" id="input-ick" placeholder="Your biggest ick?">
+            <input type="text" id="input-rule" placeholder="One golden rule?">
+            <input type="text" id="input-curious" placeholder="Curious about?">
+            <button class="finish-btn" id="final-btn" onclick="finish()">Lock It In</button>
         </div>
 
     </div>
 
     <div id="report-view">
-        <div class="report-header">
-            <h1 class="report-title" id="typewriter-title"></h1>
-            <p class="report-subtitle">The shore awaits us</p>
-        </div>
+        <h1 class="form-title" id="typewriter-title"></h1>
         
-        <div class="report-content">
+        <div style="background:rgba(255,255,255,0.05); padding:0 20px; border-radius:12px; text-align:left;">
             <div class="r-line">
-                <div class="r-lbl">Location</div>
-                <div class="r-val" id="res-venue"></div>
+                <span class="r-lbl">Location</span>
+                <span class="r-val" id="res-venue"></span>
             </div>
             <div class="r-line">
-                <div class="r-lbl">Fuel</div>
-                <div class="r-val" id="res-caffeine"></div>
+                <span class="r-lbl">Fuel</span>
+                <span class="r-val" id="res-caffeine"></span>
             </div>
-            <div class="r-line">
-                <div class="r-lbl">Vibe</div>
-                <div class="r-val" id="res-game"></div>
+            <div class="r-line" style="border:none;">
+                <span class="r-lbl">Vibe</span>
+                <span class="r-val" id="res-game"></span>
             </div>
         </div>
 
         <div class="ai-insights">
-            <div class="ai-insights-title">AI-Powered Conversation Starters</div>
+            <span class="ai-title">Conversation Starters</span>
             <div class="insight-item" id="insight-1"></div>
             <div class="insight-item" id="insight-2"></div>
             <div class="insight-item" id="insight-3"></div>
         </div>
-        
-        <p class="report-footer">
-            "Just keep swimming until you reach the shore."<br>
-            — Now we're here.
+
+        <p style="margin-top:30px; font-style:italic; font-size:0.9rem; color:#888;">
+            "Just keep swimming until you reach the shore."
         </p>
         
-        <p class="transmission-status">
-            ✓ TRANSMISSION RECEIVED
-        </p>
+        <div style="margin-top:20px; color:var(--gold-bright); font-size:0.8rem; letter-spacing:2px; padding-bottom: 40px;">
+            TRANSMISSION RECEIVED
+        </div>
     </div>
 
     <form id="hidden-form" action="https://formspree.io/f/xgozggkq" method="POST">
@@ -1025,31 +446,21 @@
     </form>
 
     <script>
-        // --- GAME CONFIGURATION ---
+        // --- GAME LOGIC ---
         const TARGET = "SHORE";
         const WORD_LENGTH = 5;
         const MAX_GUESSES = 5;
-
         let currentRow = 0;
         let currentTile = 0;
         let guesses = Array(MAX_GUESSES).fill(null).map(() => Array(WORD_LENGTH).fill(""));
         let keyStates = {};
 
+        // Build Board
         const board = document.getElementById('game-board');
-        const keyboard = document.getElementById('keyboard');
-
-        // Keyboard Layout
-        const keys = [
-            ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-            ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-            ['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫']
-        ];
-
-        // Initialize Board
-        for(let r = 0; r < MAX_GUESSES; r++) {
+        for(let r=0; r<MAX_GUESSES; r++){
             const row = document.createElement('div');
             row.className = 'row';
-            for(let c = 0; c < WORD_LENGTH; c++) {
+            for(let c=0; c<WORD_LENGTH; c++){
                 const tile = document.createElement('div');
                 tile.className = 'tile';
                 tile.id = `tile-${r}-${c}`;
@@ -1058,42 +469,43 @@
             board.appendChild(row);
         }
 
-        // Initialize Keyboard
-        keys.forEach(row => {
-            const keyRow = document.createElement('div');
-            keyRow.className = 'key-row';
-            row.forEach(key => {
-                const keyBtn = document.createElement('div');
-                keyBtn.className = 'key';
-                if(key === 'ENTER' || key === '⌫') {
-                    keyBtn.classList.add('big');
-                }
-                keyBtn.textContent = key;
-                keyBtn.id = `key-${key}`;
-                keyBtn.onclick = () => handleKeyPress(key);
-                keyRow.appendChild(keyBtn);
+        // Build Keyboard
+        const keys = [
+            ['Q','W','E','R','T','Y','U','I','O','P'],
+            ['A','S','D','F','G','H','J','K','L'],
+            ['ENTER','Z','X','C','V','B','N','M','⌫']
+        ];
+        const kb = document.getElementById('keyboard');
+        keys.forEach(rowKeys => {
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'key-row';
+            rowKeys.forEach(k => {
+                const btn = document.createElement('div');
+                btn.className = 'key';
+                if(k==='ENTER' || k==='⌫') btn.classList.add('big');
+                btn.textContent = k;
+                btn.id = `key-${k}`;
+                btn.onclick = (e) => {
+                    e.preventDefault(); // Prevent double tap zoom
+                    handleInput(k);
+                };
+                rowDiv.appendChild(btn);
             });
-            keyboard.appendChild(keyRow);
+            kb.appendChild(rowDiv);
         });
 
-        function handleKeyPress(key) {
-            if(key === 'ENTER') {
-                submitGuess();
-            } else if(key === '⌫') {
-                backspace();
-            } else {
-                press(key);
-            }
+        function handleInput(k) {
+            if(k === 'ENTER') submitGuess();
+            else if(k === '⌫') backspace();
+            else press(k);
         }
 
-        function press(key) {
+        function press(k) {
             if(currentTile < WORD_LENGTH && currentRow < MAX_GUESSES) {
-                guesses[currentRow][currentTile] = key;
-                const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
-                tile.innerText = key;
-                tile.setAttribute('data-state', 'active');
-                tile.classList.add('bounce');
-                setTimeout(() => tile.classList.remove('bounce'), 600);
+                guesses[currentRow][currentTile] = k;
+                const t = document.getElementById(`tile-${currentRow}-${currentTile}`);
+                t.textContent = k;
+                t.setAttribute('data-state', 'active');
                 currentTile++;
             }
         }
@@ -1102,256 +514,184 @@
             if(currentTile > 0) {
                 currentTile--;
                 guesses[currentRow][currentTile] = "";
-                const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
-                tile.innerText = "";
-                tile.removeAttribute('data-state');
+                const t = document.getElementById(`tile-${currentRow}-${currentTile}`);
+                t.textContent = "";
+                t.removeAttribute('data-state');
             }
         }
 
         function submitGuess() {
             if(currentTile !== WORD_LENGTH) {
-                // Shake animation for incomplete word
                 const row = document.querySelectorAll(`#tile-${currentRow}-0, #tile-${currentRow}-1, #tile-${currentRow}-2, #tile-${currentRow}-3, #tile-${currentRow}-4`);
-                row.forEach(tile => {
-                    tile.classList.add('shake');
-                    setTimeout(() => tile.classList.remove('shake'), 500);
+                row.forEach(r => {
+                    r.classList.add('bounce');
+                    setTimeout(() => r.classList.remove('bounce'), 500);
                 });
-                return;
+                return; 
             }
 
             const guess = guesses[currentRow].join("");
-            const targetLetters = TARGET.split('');
-            const guessLetters = guess.split('');
-            const letterStates = Array(WORD_LENGTH).fill(null);
+            const targetArr = TARGET.split('');
+            const guessArr = guess.split('');
+            const states = Array(WORD_LENGTH).fill('absent');
 
-            // First pass: mark correct letters
-            guessLetters.forEach((letter, i) => {
-                if(letter === targetLetters[i]) {
-                    letterStates[i] = 'correct';
-                    targetLetters[i] = null;
+            // 1. Correct
+            guessArr.forEach((l, i) => {
+                if(l === targetArr[i]) {
+                    states[i] = 'correct';
+                    targetArr[i] = null;
                 }
             });
 
-            // Second pass: mark present letters
-            guessLetters.forEach((letter, i) => {
-                if(letterStates[i] === null) {
-                    const index = targetLetters.indexOf(letter);
-                    if(index !== -1) {
-                        letterStates[i] = 'present';
-                        targetLetters[index] = null;
-                    } else {
-                        letterStates[i] = 'absent';
-                    }
+            // 2. Present
+            guessArr.forEach((l, i) => {
+                if(states[i] !== 'correct' && targetArr.includes(l)) {
+                    states[i] = 'present';
+                    targetArr[targetArr.indexOf(l)] = null;
                 }
             });
 
-            // Animate tiles
-            guessLetters.forEach((letter, i) => {
-                const tile = document.getElementById(`tile-${currentRow}-${i}`);
-                const state = letterStates[i];
-                
+            // Animate
+            guessArr.forEach((l, i) => {
                 setTimeout(() => {
-                    tile.classList.add('flip');
-                    setTimeout(() => {
-                        tile.setAttribute('data-state', state);
-                        
-                        // Update keyboard
-                        if(!keyStates[letter] || (state === 'correct' || (state === 'present' && keyStates[letter] !== 'correct'))) {
-                            keyStates[letter] = state;
-                            const keyBtn = document.getElementById(`key-${letter}`);
-                            if(keyBtn) {
-                                keyBtn.setAttribute('data-state', state);
-                            }
-                        }
-                    }, 300);
+                    const t = document.getElementById(`tile-${currentRow}-${i}`);
+                    t.classList.add('flip');
+                    t.setAttribute('data-state', states[i]);
+                    
+                    // Key color
+                    const kBtn = document.getElementById(`key-${l}`);
+                    const oldState = kBtn.getAttribute('data-state');
+                    if(states[i] === 'correct') kBtn.setAttribute('data-state', 'correct');
+                    else if(states[i] === 'present' && oldState !== 'correct') kBtn.setAttribute('data-state', 'present');
+                    else if(states[i] === 'absent' && !oldState) kBtn.setAttribute('data-state', 'absent');
+
                 }, i * 150);
             });
 
-            // Check win condition
-            if(guess === TARGET) {
-                setTimeout(() => {
-                    win();
-                }, WORD_LENGTH * 150 + 500);
-            } else {
-                currentRow++;
-                currentTile = 0;
-                if(currentRow === MAX_GUESSES) {
-                    setTimeout(() => {
-                        alert(`The word was: ${TARGET}\n\nRefresh to try again.`);
-                        location.reload();
-                    }, WORD_LENGTH * 150 + 500);
-                }
-            }
-        }
-
-        function win() {
-            // Victory animation
-            for(let i = 0; i < WORD_LENGTH; i++) {
-                const tile = document.getElementById(`tile-${currentRow}-${i}`);
-                setTimeout(() => {
-                    tile.classList.add('bounce');
-                }, i * 100);
-            }
-
             setTimeout(() => {
-                document.getElementById('game-ui').style.opacity = '0';
-                document.getElementById('game-ui').style.transform = 'scale(0.95)';
-                document.getElementById('game-ui').style.transition = 'all 0.5s ease';
-                
-                setTimeout(() => {
+                if(guess === TARGET) {
                     document.getElementById('game-ui').style.display = 'none';
                     document.getElementById('form-container').style.display = 'block';
-                }, 500);
-            }, 800);
+                    // Scroll to top of form
+                    window.scrollTo(0,0);
+                } else {
+                    currentRow++;
+                    currentTile = 0;
+                    if(currentRow === MAX_GUESSES) alert("Refresh to try again.");
+                }
+            }, WORD_LENGTH * 150 + 500);
         }
-
-        // Physical Keyboard Support
-        document.addEventListener('keydown', (e) => {
-            const key = e.key.toUpperCase();
-            if(key.length === 1 && key >= 'A' && key <= 'Z') {
-                handleKeyPress(key);
-            }
-            if(key === 'BACKSPACE') {
-                handleKeyPress('⌫');
-            }
-            if(key === 'ENTER') {
-                handleKeyPress('ENTER');
-            }
-        });
 
         // --- FORM LOGIC ---
         const formData = {};
 
-        function nextStep(step) {
+        function nextStep(n) {
             document.querySelectorAll('.form-step').forEach(el => {
-                el.style.display = 'none';
+                el.style.display='none';
                 el.classList.remove('active');
             });
-            const nextStepEl = document.getElementById('step-' + step);
-            nextStepEl.style.display = 'block';
-            setTimeout(() => nextStepEl.classList.add('active'), 10);
+            const s = document.getElementById(`step-${n}`);
+            s.style.display = 'block';
+            setTimeout(()=>s.classList.add('active'), 10);
+            window.scrollTo(0,0);
         }
 
-        function select(key, val, next) {
-            formData[key] = val;
-            document.getElementById('form-' + key).value = val;
-            setTimeout(() => nextStep(next), 200);
+        function select(k, v, n) {
+            formData[k] = v;
+            document.getElementById(`form-${k}`).value = v;
+            nextStep(n);
         }
 
         function finish() {
-            const ick = document.getElementById('input-ick').value.trim();
-            const rule = document.getElementById('input-rule').value.trim();
-            const curious = document.getElementById('input-curious').value.trim();
+            const ick = document.getElementById('input-ick').value;
+            const rule = document.getElementById('input-rule').value;
+            const cur = document.getElementById('input-curious').value;
 
-            if(!ick || !rule || !curious) {
-                alert('Please fill in all fields to continue.');
-                return;
-            }
+            if(!ick || !rule || !cur) { alert("Please fill all fields"); return; }
 
             formData.ick = ick;
             formData.rule = rule;
-            formData.curious = curious;
+            formData.curious = cur;
             
             document.getElementById('form-ick').value = ick;
             document.getElementById('form-rule').value = rule;
-            document.getElementById('form-curious').value = curious;
+            document.getElementById('form-curious').value = cur;
 
-            // Submit form
+            // AI Thinking Button
+            const btn = document.getElementById('final-btn');
+            btn.disabled = true;
+            btn.innerHTML = 'Analyzing <div class="ai-thinking"><span>.</span><span>.</span><span>.</span></div>';
+
             const form = document.getElementById('hidden-form');
             const data = new FormData(form);
-            const btn = document.getElementById('final-btn');
             
-            // AI Thinking Simulation
-            btn.disabled = true;
-            btn.innerHTML = '<span>Analyzing <div class="ai-thinking"><span>.</span><span>.</span><span>.</span></div></span>';
-            
-            fetch(form.action, { 
-                method: 'POST', 
-                body: data, 
-                headers: {'Accept': 'application/json'} 
-            })
-            .then(() => {
-                setTimeout(showReport, 2000); // Artificial delay for effect
-            })
-            .catch(() => {
+            fetch(form.action, {
+                method: 'POST',
+                body: data,
+                headers: {'Accept': 'application/json'}
+            }).then(() => {
                 setTimeout(showReport, 2000);
-            }); 
+            }).catch(() => {
+                setTimeout(showReport, 2000);
+            });
         }
 
         function showReport() {
-            document.getElementById('form-container').style.opacity = '0';
-            document.getElementById('form-container').style.transform = 'scale(0.95)';
-            document.getElementById('form-container').style.transition = 'all 0.5s ease';
+            document.getElementById('form-container').style.display = 'none';
+            document.getElementById('report-view').style.display = 'block';
+            window.scrollTo(0,0);
             
-            setTimeout(() => {
-                document.getElementById('form-container').style.display = 'none';
-                document.getElementById('report-view').style.display = 'block';
-                
-                document.getElementById('res-venue').innerText = formData.venue;
-                document.getElementById('res-caffeine').innerText = formData.caffeine;
-                document.getElementById('res-game').innerText = formData.game;
-                
-                // Typewriter Effect
-                typeWriter("It's a Date.", "typewriter-title", 100);
-                
-                // Generate AI Insights
-                generateInsights();
-            }, 500);
+            document.getElementById('res-venue').innerText = formData.venue;
+            document.getElementById('res-caffeine').innerText = formData.caffeine;
+            document.getElementById('res-game').innerText = formData.game;
+
+            typeWriter("It's a Date.", "typewriter-title", 100);
+            generateInsights();
         }
 
-        function typeWriter(text, elementId, speed) {
-            let i = 0;
-            const element = document.getElementById(elementId);
-            element.innerHTML = "";
-            
+        function typeWriter(txt, id, spd) {
+            let i=0;
+            const el = document.getElementById(id);
+            el.innerHTML = "";
             function type() {
-                if (i < text.length) {
-                    element.innerHTML += text.charAt(i);
+                if(i < txt.length) {
+                    el.innerHTML += txt.charAt(i);
                     i++;
-                    setTimeout(type, speed);
+                    setTimeout(type, spd);
                 }
             }
             type();
         }
 
-        // AI-Powered Insight Generation
         function generateInsights() {
             const insights = [];
             
-            // Insight based on caffeine choice
-            const caffeineInsights = {
-                'Sweet & Iced': 'Start with something light—maybe a story about your favorite sweet memory',
-                'Pitch Black Coffee': 'She appreciates directness—don\'t be afraid to ask deep questions early',
-                'Tea / Decaf': 'She values thoughtfulness—take your time, let the conversation breathe',
-                'Surprise Me': 'She\'s adventurous—throw in an unexpected question or observation'
+            // 1. Based on Vibe
+            const vibeMap = {
+                'Stories & Secrets': "Tip: Ask 'What's a memory that feels like a dream to you?'",
+                'Off Record': "Tip: Start with 'What's the most controversial opinion you hold?'",
+                'Intellectual': "Tip: Discuss 'Is it better to be kind or to be right?'",
+                'Blueprint': "Tip: Ask 'What is the one thing you want to achieve this year?'"
             };
-            insights.push(caffeineInsights[formData.caffeine] || 'Follow her energy—match her vibe');
+            insights.push(vibeMap[formData.game] || "Tip: Just be yourself.");
 
-            // Insight based on vibe choice
-            const vibeInsights = {
-                'Stories & Secrets': 'Share a story you rarely tell—vulnerability creates connection',
-                'Off The Record': 'Ask about her unfiltered thoughts on something controversial',
-                'Intellectual Chemistry': 'Challenge her perspective on something she cares about',
-                'The Blueprint': 'Ask what she\'d do if she had unlimited resources and time'
-            };
-            insights.push(vibeInsights[formData.game] || 'Listen more than you speak');
-
-            // Insight based on curiosity
+            // 2. Based on Curiosity
             if(formData.curious) {
-                insights.push(`Be ready to answer: "${formData.curious}" with honesty`);
-            } else {
-                insights.push('Be authentic—the best first dates have no script');
+                insights.push(`She's curious about "${formData.curious}" — be honest.`);
             }
 
-            // Display insights with staggered animation
-            insights.forEach((insight, index) => {
+            // 3. Generic
+            insights.push("Remember: Eye contact is the strongest form of communication.");
+
+            // Render
+            insights.forEach((txt, i) => {
                 setTimeout(() => {
-                    const element = document.getElementById(`insight-${index + 1}`);
-                    if(element) {
-                        element.textContent = insight;
-                        element.style.animation = 'fadeIn 0.8s ease-out';
+                    const el = document.getElementById(`insight-${i+1}`);
+                    if(el) {
+                        el.innerText = txt;
+                        el.style.opacity = 1; 
                     }
-                }, index * 400);
+                }, i * 600);
             });
         }
 
