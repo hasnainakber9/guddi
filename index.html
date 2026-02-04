@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposal for Thursday</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f0c11; /* Deep dark background */
+            --accent-color: #b07d62; /* Soft copper/rose gold */
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --text-color: #e0e0e0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Lato', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at 50% 0%, #2a1a2e 0%, #0f0c11 70%);
+            padding: 20px;
+        }
+
+        .container {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 10px;
+            color: var(--accent-color);
+            letter-spacing: 1px;
+        }
+
+        p.subtitle {
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            font-size: 0.95rem;
+        }
+
+        select, input[type="text"], textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Lato', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        /* Custom Radio Buttons for Vibe */
+        .vibe-options {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+
+        .vibe-option {
+            position: relative;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .vibe-option input {
+            display: none;
+        }
+
+        .vibe-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        .vibe-option input:checked + .vibe-card {
+            border-color: var(--accent-color);
+            background: rgba(176, 125, 98, 0.1);
+            opacity: 1;
+            transform: translateY(-2px);
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #b07d62, #8a5a44);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(176, 125, 98, 0.3);
+        }
+
+        /* Success Message Overlay */
+        #success-message {
+            display: none;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0f0c11;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .typewriter {
+            font-family: 'Courier New', monospace;
+            color: var(--accent-color);
+            margin-top: 20px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            text-align: left;
+            width: 80%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Subtle glow effect */
+        .glow-point {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: var(--accent-color);
+            filter: blur(80px);
+            opacity: 0.2;
+            border-radius: 50%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glow-point" style="top: -50px; left: -50px;"></div>
+    <div class="glow-point" style="bottom: -50px; right: -50px;"></div>
+
+    <div class="container">
+        <div id="form-container">
+            <h1>Thursday's Brief</h1>
+            <p class="subtitle">A requisition for your company tomorrow evening.</p>
+
+            <form id="dateForm" action="https://formspree.io/f/xgozggkq" method="POST">
+                
+                <div class="form-group">
+                    <label>1. The Vibe (Required)</label>
+                    <div class="vibe-options">
+                        <label class="vibe-option">
+                            <input type="radio" name="vibe" value="Low Key / Cozy" required>
+                            <div class="vibe-card">
+                                <span>☕</span>
+                                <span>Low Key</span>
+                            </div>
+                        </label>
+                        <label class="vibe-option">
+                            <input type="radio" name="vibe" value="Dinner / Classy">
+                            <div class="vibe-card">
+                                <span>🍷</span>
+                                <span>Classy</span>
+                            </div>
+                        </label>
+                        <label class="vibe-option">
+                            <input type="radio" name="vibe" value="Spontaneous / Fun">
+                            <div class="vibe-card">
+                                <span>✨</span>
+                                <span>Chaos</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="cuisine">2. Sustenance Preference</label>
+                    <select id="cuisine" name="cuisine" required>
+                        <option value="" disabled selected>Select an option...</option>
+                        <option value="Asian / Sushi">Asian / Sushi</option>
+                        <option value="Italian / Pasta">Italian / Pasta</option>
+                        <option value="Desi / Comfort">Desi / BBQ</option>
+                        <option value="Cafe / Coffee only">Just Coffee & Dessert</option>
+                        <option value="Surprise Me">Manager's Choice (Surprise Me)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="notes">3. Any specific constraints?</label>
+                    <input type="text" id="notes" name="notes" placeholder="e.g., 'Home by 11' or 'Craving chocolate'">
+                </div>
+
+                <button type="submit" id="submitBtn">Submit Brief</button>
+            </form>
+        </div>
+
+        <div id="success-message">
+            <h1 style="font-size: 1.5rem;">Brief Received</h1>
+            <p style="opacity: 0.7;">Processing data...</p>
+            <div class="typewriter" id="report-text"></div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("dateForm");
+        const successDiv = document.getElementById("success-message");
+        const formContainer = document.getElementById("form-container");
+        const reportText = document.getElementById("report-text");
+
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const btn = document.getElementById("submitBtn");
+            const originalText = btn.innerText;
+            btn.innerText = "Transmitting...";
+            
+            const data = new FormData(event.target);
+            
+            fetch(event.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    formContainer.style.display = "none";
+                    successDiv.style.display = "flex";
+                    typeWriter();
+                } else {
+                    btn.innerText = originalText;
+                    alert("Transmission failed. Please try again.");
+                }
+            }).catch(error => {
+                btn.innerText = originalText;
+                alert("Transmission failed. Please try again.");
+            });
+        }
+
+        form.addEventListener("submit", handleSubmit);
+
+        // Typewriter effect for the "Report"
+        const text = "> Data ingested successfully.\n> Calculating optimal trajectory...\n> Vibe check: PASSED.\n> Romance probability: HIGH.\n\n> The Manager will be in touch shortly with the final itinerary.";
+        let i = 0;
+
+        function typeWriter() {
+            if (i < text.length) {
+                // Handle newlines
+                if(text.charAt(i) === '\n') {
+                    reportText.innerHTML += "<br>";
+                } else {
+                    reportText.innerHTML += text.charAt(i);
+                }
+                i++;
+                setTimeout(typeWriter, 50);
+            }
+        }
+    </script>
+</body>
+</html>
