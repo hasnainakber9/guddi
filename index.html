@@ -4,24 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mission: Rida</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;900&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-deep: #050714;
-            --glass-bg: rgba(20, 20, 35, 0.7);
-            --border-glow: rgba(116, 185, 255, 0.3);
-            --primary: #a29bfe; 
-            --accent: #00f2ff; /* Cyber Blue */
-            --danger: #ff0055; /* Glitch Red */
-            --text-main: #ffffff;
+            /* DEEP COSMIC PALETTE */
+            --bg: #050714;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(162, 155, 254, 0.2);
+            --primary: #a29bfe; /* Lavender */
+            --accent: #00d2ff;  /* Cyan */
+            --glow: 0 0 20px rgba(162, 155, 254, 0.3);
+            --text: #fff;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: var(--bg-deep);
+            background-color: var(--bg);
             font-family: 'Outfit', sans-serif;
-            color: var(--text-main);
+            color: var(--text);
             height: 100vh;
             overflow: hidden;
             display: flex;
@@ -30,8 +31,8 @@
             perspective: 1000px;
         }
 
-        /* --- WARP SPEED BACKGROUND --- */
-        .star-field {
+        /* --- HYPERSPACE BACKGROUND --- */
+        #starfield {
             position: fixed;
             top: 50%; left: 50%;
             width: 2px; height: 2px;
@@ -41,312 +42,291 @@
         }
         .star {
             position: absolute;
-            width: 2px; height: 2px;
             background: #fff;
             border-radius: 50%;
             opacity: 0;
         }
 
-        /* WARP ANIMATION CLASS */
-        body.warp-active .star {
-            width: 4px;
-            height: 200px; /* Stretch into lines */
+        /* Warp Effect */
+        body.warp .star {
+            width: 3px; height: 100px;
             background: var(--accent);
             opacity: 1;
-            transition: height 0.2s, opacity 0.2s;
             box-shadow: 0 0 10px var(--accent);
+            transition: height 0.2s, opacity 0.2s;
         }
 
-        /* --- THE LOCK SCREEN (CANVAS) --- */
-        #lock-screen {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 7, 20, 0.95);
-            z-index: 100;
+        /* --- UI CONTAINER --- */
+        .container {
+            width: 100%;
+            max-width: 480px;
+            z-index: 10;
+            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .glass-panel {
+            background: rgba(15, 15, 25, 0.6);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
-            cursor: crosshair;
         }
-        
-        canvas { position: absolute; top: 0; left: 0; }
-        
-        .lock-text {
+
+        /* --- TYPOGRAPHY --- */
+        h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: var(--accent);
-            text-shadow: 0 0 20px var(--accent);
-            z-index: 101;
-            pointer-events: none;
-            margin-top: 300px; /* Push text below the constellation */
-            opacity: 0.8;
-            animation: pulseText 2s infinite;
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(162, 155, 254, 0.5);
         }
 
-        /* --- MAIN INTERFACE --- */
-        .container {
-            width: 100%;
-            max-width: 500px;
-            z-index: 10;
-            opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        .subtitle {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 30px;
+            letter-spacing: 1px;
         }
-        
-        .container.active { opacity: 1; transform: scale(1); }
 
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            border: 1px solid var(--border-glow);
-            border-radius: 20px;
-            padding: 40px 30px;
-            box-shadow: 0 0 40px rgba(0, 242, 255, 0.1);
+        /* --- INTERACTIVE ELEMENTS --- */
+        .game-btn {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            margin-bottom: 12px;
+            border-radius: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s;
             position: relative;
             overflow: hidden;
         }
 
-        /* LEGO HEADER */
-        .lego-header {
+        .game-btn:hover {
+            background: rgba(162, 155, 254, 0.1);
+            border-color: var(--primary);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(162, 155, 254, 0.2);
+        }
+
+        .game-btn:active { transform: scale(0.98); }
+
+        .emoji { font-size: 1.6rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.4)); }
+        .btn-text { font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; }
+        .btn-sub { font-size: 0.7rem; display: block; color: #888; margin-top: 2px; }
+
+        /* --- GAME 1: CONSTELLATION LOCK --- */
+        #lock-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 7, 20, 0.95);
+            z-index: 100;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
-            margin-bottom: 30px;
-            border-bottom: 2px solid rgba(255,255,255,0.1);
-            padding-bottom: 15px;
+            justify-content: center;
         }
-        .studs { display: flex; gap: 5px; }
-        .stud { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.2); box-shadow: inset 0 2px 2px rgba(255,255,255,0.3); }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            color: #fff;
-            text-shadow: 0 0 10px rgba(255,255,255,0.5);
-            line-height: 1;
+        canvas { position: absolute; top: 0; left: 0; }
+        .lock-msg { 
+            margin-top: 250px; font-family: 'Orbitron'; color: var(--accent); 
+            text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem; 
+            animation: pulse 2s infinite; pointer-events: none;
         }
 
-        .question-text {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 25px;
-            color: #e0e0e0;
+        /* --- GAME 2: STAR POPPER --- */
+        #star-game-overlay {
+            display: none; position: absolute; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.9); z-index: 50;
+            flex-direction: column; align-items: center; justify-content: center;
         }
-
-        /* --- LEGO BUTTONS --- */
-        .options-grid { display: grid; gap: 12px; }
-
-        .lego-btn {
-            background: rgba(255,255,255,0.05);
-            border-left: 4px solid rgba(255,255,255,0.2);
-            padding: 18px;
-            font-size: 1rem;
-            color: #fff;
+        .pop-star {
+            position: absolute; width: 40px; height: 40px;
+            background: radial-gradient(circle, #fff, var(--primary));
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--primary);
             cursor: pointer;
-            transition: all 0.1s;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 4px 0 rgba(0,0,0,0.3); /* The "Block" depth */
-            transform: translateY(0);
-            border-radius: 4px;
+            animation: float 3s infinite ease-in-out;
+            display: flex; justify-content: center; align-items: center; font-size: 1.2rem;
         }
-
-        .lego-btn:active {
-            transform: translateY(4px); /* Physical click feel */
-            box-shadow: 0 0 0 rgba(0,0,0,0);
-        }
-
-        .lego-btn:hover { background: rgba(255,255,255,0.1); border-left-color: var(--accent); }
-        
-        /* Chaos/Glitch Effect */
-        .glitch-hover:hover {
-            animation: glitch 0.3s infinite;
-            border-left-color: var(--danger);
-            color: var(--danger);
-            text-shadow: 2px 0 #fff, -2px 0 #000;
-        }
-
-        @keyframes glitch {
-            0% { transform: translate(0) translateY(0); }
-            20% { transform: translate(-2px, 2px) translateY(0); }
-            40% { transform: translate(-2px, -2px) translateY(0); }
-            60% { transform: translate(2px, 2px) translateY(0); }
-            80% { transform: translate(2px, -2px) translateY(0); }
-            100% { transform: translate(0) translateY(0); }
-        }
+        .pop-star:active { transform: scale(1.5); opacity: 0; transition: 0.1s; }
 
         /* --- INPUTS --- */
         input[type="text"] {
             width: 100%;
-            background: #111;
-            border: 2px solid #333;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid #444;
             padding: 15px;
-            color: var(--accent);
-            font-family: 'Orbitron';
+            color: #fff;
+            border-radius: 12px;
+            font-family: 'Outfit';
             font-size: 1rem;
             outline: none;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            margin-bottom: 15px;
         }
-        input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
 
-        .confirm-btn {
-            width: 100%;
-            margin-top: 15px;
-            padding: 15px;
-            background: var(--accent);
-            color: #000;
-            font-family: 'Orbitron';
-            font-weight: 900;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 0 20px var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: 0.2s;
+        .submit-btn {
+            width: 100%; padding: 16px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            color: #000; border: none; border-radius: 12px;
+            font-weight: 700; font-family: 'Orbitron'; letter-spacing: 1px;
+            cursor: pointer; transition: 0.3s;
         }
-        .confirm-btn:hover { background: #fff; transform: scale(1.02); }
+        .submit-btn:hover { box-shadow: 0 0 25px var(--primary); transform: translateY(-2px); }
 
-        /* --- REPORT (INSTRUCTION MANUAL STYLE) --- */
-        #report-view { display: none; }
-        .manual-page {
-            background: #fff;
-            color: #000;
-            padding: 20px;
-            transform: rotate(-1deg);
-            box-shadow: 0 0 30px rgba(0,0,0,0.5);
-        }
-        .step-row {
-            display: flex; justify-content: space-between; border-bottom: 2px solid #000; padding: 10px 0;
-            font-family: 'Orbitron'; font-weight: 700;
-        }
-
-        /* --- PARTICLES --- */
-        #particles { position: absolute; top:0; left:0; width:100%; height:100%; pointer-events: none; z-index: 50; }
-
-        @keyframes pulseText { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        /* --- ANIMATIONS --- */
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
         
+        /* HIDDEN FORM */
         #hidden-form { display: none; }
+        
+        /* REPORT */
+        #report-view { display: none; text-align: left; }
+        .report-item { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
+        .r-title { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
+        .r-data { font-size: 1.1rem; color: #fff; font-weight: 600; margin-top: 5px; }
+
     </style>
 </head>
 <body>
 
-    <div class="star-field" id="starField"></div>
+    <div id="starfield"></div>
 
-    <div id="lock-screen">
+    <div id="lock-overlay">
         <canvas id="lockCanvas"></canvas>
-        <div class="lock-text">Connect the Constellation</div>
-        <div style="font-size: 0.8rem; color: #666; margin-top: 10px;">(Drag between the stars)</div>
+        <div class="lock-msg">Trace the Stars to Unlock</div>
     </div>
 
-    <div class="container" id="app-container">
-        
+    <div id="star-game-overlay">
+        <h2 style="font-family:'Orbitron'; color:#fff; margin-bottom:10px;">Clear the Stardust</h2>
+        <p style="color:#aaa; font-size:0.9rem;">Pop 3 stars to proceed.</p>
+    </div>
+
+    <div class="container" id="main-ui" style="opacity: 0;">
         <div class="glass-panel">
             
-            <div class="lego-header">
-                <div class="studs">
-                    <div class="stud"></div><div class="stud"></div><div class="stud"></div>
-                </div>
-                <div style="font-family: 'Orbitron'; font-size: 0.7rem; color: var(--accent);">SYS.READY</div>
-            </div>
-
             <div class="step" id="step-1">
-                <h1>Phase 1</h1>
-                <div class="question-text">Select Fuel Source.</div>
-                <div class="options-grid">
-                    <div class="lego-btn" onclick="next(2, 'caffeine', 'Black')">
-                        <span style="font-size:1.5rem">🌑</span> Pitch Black (Strong)
+                <h1>Shuro Hojaye?</h1>
+                <p class="subtitle">Phase 1: Fuel Calibration</p>
+                
+                <div class="game-btn" onclick="next(2, 'caffeine', 'Black')">
+                    <span class="emoji">🌑</span>
+                    <div>
+                        <div class="btn-text">Pitch Black</div>
+                        <span class="btn-sub">Strong energy.</span>
                     </div>
-                    <div class="lego-btn" onclick="next(2, 'caffeine', 'Sweet')">
-                        <span style="font-size:1.5rem">✨</span> Sweet & Iced
+                </div>
+                <div class="game-btn" onclick="next(2, 'caffeine', 'Sweet')">
+                    <span class="emoji">✨</span>
+                    <div>
+                        <div class="btn-text">Sweet & Iced</div>
+                        <span class="btn-sub">Sugar rush mode.</span>
                     </div>
-                    <div class="lego-btn" onclick="next(2, 'caffeine', 'Tea')">
-                        <span style="font-size:1.5rem">🍵</span> Tea / Decaf
+                </div>
+                <div class="game-btn" onclick="next(2, 'caffeine', 'Tea')">
+                    <span class="emoji">🍵</span>
+                    <div>
+                        <div class="btn-text">Tea / Decaf</div>
+                        <span class="btn-sub">Cozy vibes only.</span>
                     </div>
                 </div>
             </div>
 
             <div class="step" id="step-2" style="display:none;">
-                <h1>Phase 2</h1>
-                <div class="question-text">Target Coordinates.</div>
-                <div class="options-grid">
-                    <div class="lego-btn" onclick="next(3, 'venue', 'Cote Rotie')">
-                        <span style="font-size:1.5rem">🕯️</span> Cote Rôtie (Intimate)
-                    </div>
-                    <div class="lego-btn" onclick="next(3, 'venue', 'Xanders')">
-                        <span style="font-size:1.5rem">🥗</span> Xander's (Lively)
-                    </div>
-                    <div class="lego-btn" onclick="next(3, 'venue', 'Koel')">
-                        <span style="font-size:1.5rem">🌿</span> Koel Cafe (Artsy)
-                    </div>
-                    <div class="lego-btn glitch-hover" onclick="next(3, 'venue', 'Surprise')">
-                        <span style="font-size:1.5rem">🔮</span> SURPRISE ME (Risk)
-                    </div>
+                <h1>Coordinates</h1>
+                <p class="subtitle">Phase 2: The Setting</p>
+                
+                <div class="game-btn" onclick="next(3, 'venue', 'Cote Rotie')">
+                    <span class="emoji">🕯️</span>
+                    <div><div class="btn-text">Cote Rôtie</div><span class="btn-sub">Intimate & Warm.</span></div>
+                </div>
+                <div class="game-btn" onclick="next(3, 'venue', 'Xanders')">
+                    <span class="emoji">🥗</span>
+                    <div><div class="btn-text">Xander's</div><span class="btn-sub">Lively & Safe.</span></div>
+                </div>
+                <div class="game-btn" onclick="next(3, 'venue', 'Koel')">
+                    <span class="emoji">🌿</span>
+                    <div><div class="btn-text">Koel Cafe</div><span class="btn-sub">Zen & Artsy.</span></div>
+                </div>
+                <div class="game-btn" onclick="next(3, 'venue', 'Surprise')">
+                    <span class="emoji">🔮</span>
+                    <div><div class="btn-text">Surprise Me</div><span class="btn-sub">I'll handle it.</span></div>
                 </div>
             </div>
 
             <div class="step" id="step-3" style="display:none;">
-                <h1>Phase 3</h1>
-                <div class="question-text">Side Quest Selection.</div>
-                <div style="font-size:0.8rem; color: #888; margin-bottom: 15px;">Pick a tiny game to play at the table:</div>
-                <div class="options-grid">
-                    <div class="lego-btn" onclick="next(4, 'game', 'Thumb War')">
-                        <span style="font-size:1.5rem">👍</span> Ultimate Thumb War
+                <h1>Tiny Games</h1>
+                <p class="subtitle">Phase 3: Choose our Side Quest</p>
+                <p style="text-align:center; font-size:0.8rem; color:#aaa; margin-bottom:20px;">Pick a low-key game for the table:</p>
+
+                <div class="game-btn" onclick="next(4, 'game', 'Mind Meld')">
+                    <span class="emoji">🧠</span>
+                    <div>
+                        <div class="btn-text">Mind Meld</div>
+                        <span class="btn-sub">We say a word at the same time.</span>
                     </div>
-                    <div class="lego-btn" onclick="next(4, 'game', '20 Questions')">
-                        <span style="font-size:1.5rem">❓</span> 20 Questions (Rapid Fire)
+                </div>
+                <div class="game-btn" onclick="next(4, 'game', 'Strawberry Test')">
+                    <span class="emoji">🍓</span>
+                    <div>
+                        <div class="btn-text">The Strawberry Test</div>
+                        <span class="btn-sub">A psychological love test.</span>
                     </div>
-                    <div class="lego-btn" onclick="next(4, 'game', 'Staring Contest')">
-                        <span style="font-size:1.5rem">👀</span> Staring Contest (I win)
+                </div>
+                <div class="game-btn" onclick="next(4, 'game', 'Thumb War')">
+                    <span class="emoji">👍</span>
+                    <div>
+                        <div class="btn-text">Ultimate Thumb War</div>
+                        <span class="btn-sub">Old school rivalry.</span>
                     </div>
                 </div>
             </div>
 
             <div class="step" id="step-4" style="display:none;">
-                <h1>Phase 4</h1>
-                <div class="question-text">Identify Dealbreakers.</div>
+                <h1>Final Sync</h1>
+                <p class="subtitle">Any red flags?</p>
+                
                 <input type="text" id="input-ick" placeholder="What gives you the ick?">
-                <button class="confirm-btn" onclick="submitInput('ick', 'input-ick', 5)">Record Data</button>
-            </div>
-
-            <div class="step" id="step-5" style="display:none;">
-                <h1>Final</h1>
-                <div class="question-text">One Golden Rule?</div>
-                <input type="text" id="input-rule" placeholder="e.g. 'Don't be late'">
-                <button class="confirm-btn" onclick="submitInput('rule', 'input-rule', 6)">INITIATE LAUNCH</button>
+                <input type="text" id="input-rule" placeholder="One golden rule for me?">
+                
+                <button class="submit-btn" onclick="finish()">INITIATE LAUNCH 🚀</button>
             </div>
 
             <div id="report-view">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <div style="font-size: 3rem;">🚀</div>
-                    <h1 style="color: #000; text-shadow: none;">Mission Go.</h1>
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <h1 style="font-size: 2.5rem; text-shadow: 0 0 30px var(--primary);">It's a Date.</h1>
+                    <p style="color: #aaa;">Mission Accepted.</p>
                 </div>
                 
-                <div class="manual-page">
-                    <div style="text-align:center; font-weight:900; font-size:1.2rem; border-bottom:4px solid #000; padding-bottom:10px; margin-bottom:20px;">
-                        INSTRUCTION MANUAL
-                    </div>
-                    
-                    <div class="step-row">
-                        <span>01. LOC</span>
-                        <span id="res-venue"></span>
-                    </div>
-                    <div class="step-row">
-                        <span>02. FUEL</span>
-                        <span id="res-caffeine"></span>
-                    </div>
-                    <div class="step-row" style="color: var(--danger);">
-                        <span>03. QUEST</span>
-                        <span id="res-game"></span>
-                    </div>
-                    
-                    <div style="margin-top:20px; font-size:0.8rem; font-family:'Outfit'; text-align:center;">
-                        Project "Date Night" approved.<br>Screenshot this document.
-                    </div>
+                <div class="report-item">
+                    <div class="r-title">LOCATION</div>
+                    <div class="r-data" id="res-venue"></div>
+                </div>
+                <div class="report-item">
+                    <div class="r-title">FUEL</div>
+                    <div class="r-data" id="res-caffeine"></div>
+                </div>
+                <div class="report-item">
+                    <div class="r-title">SIDE QUEST</div>
+                    <div class="r-data" id="res-game" style="color: var(--accent);"></div>
+                </div>
+
+                <div style="text-align:center; margin-top:30px; font-size:0.8rem; color:#666;">
+                    Screenshot this & send to HQ.
                 </div>
             </div>
 
@@ -362,158 +342,162 @@
     </form>
 
     <script>
-        // --- STAR FIELD GENERATION ---
-        const starField = document.getElementById('starField');
-        for(let i=0; i<100; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            // Random scatter
-            const x = (Math.random() - 0.5) * window.innerWidth;
-            const y = (Math.random() - 0.5) * window.innerHeight;
+        // --- STARFIELD ---
+        const starField = document.getElementById('starfield');
+        for(let i=0; i<150; i++) {
+            const s = document.createElement('div');
+            s.className = 'star';
+            const x = (Math.random() - 0.5) * window.innerWidth * 1.5;
+            const y = (Math.random() - 0.5) * window.innerHeight * 1.5;
             const z = Math.random() * 800;
-            star.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
-            starField.appendChild(star);
+            s.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
+            s.style.width = Math.random() * 3 + 'px';
+            s.style.height = s.style.width;
+            starField.appendChild(s);
         }
 
-        // --- CANVAS LOCK LOGIC ---
+        // --- GAME 1: UNLOCK ---
         const canvas = document.getElementById('lockCanvas');
         const ctx = canvas.getContext('2d');
-        const lockScreen = document.getElementById('lock-screen');
-        const app = document.getElementById('app-container');
+        const lockOverlay = document.getElementById('lock-overlay');
+        const mainUI = document.getElementById('main-ui');
         
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // Define 3 Stars (Constellation)
         const points = [
-            {x: window.innerWidth/2 - 100, y: window.innerHeight/2 + 50, active: false},
             {x: window.innerWidth/2, y: window.innerHeight/2 - 100, active: false},
+            {x: window.innerWidth/2 - 100, y: window.innerHeight/2 + 50, active: false},
             {x: window.innerWidth/2 + 100, y: window.innerHeight/2 + 50, active: false}
         ];
 
-        let isDragging = false;
-        let lastPos = {x:0, y:0};
+        let dragging = false;
 
-        function drawConstellation() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        function draw() {
+            ctx.clearRect(0,0,canvas.width,canvas.height);
             
-            // Draw connection lines
+            // Draw Lines
             ctx.beginPath();
-            ctx.strokeStyle = "rgba(116, 185, 255, 0.5)";
+            ctx.strokeStyle = 'rgba(162, 155, 254, 0.5)';
             ctx.lineWidth = 2;
-            
-            let activePoints = points.filter(p => p.active);
-            if(activePoints.length > 1) {
-                ctx.moveTo(activePoints[0].x, activePoints[0].y);
-                for(let i=1; i<activePoints.length; i++) {
-                    ctx.lineTo(activePoints[i].x, activePoints[i].y);
-                }
-            }
-            // Draw current drag line
-            if(isDragging && activePoints.length > 0) {
-                ctx.moveTo(activePoints[activePoints.length-1].x, activePoints[activePoints.length-1].y);
-                ctx.lineTo(lastPos.x, lastPos.y);
+            const active = points.filter(p => p.active);
+            if(active.length > 0) {
+                ctx.moveTo(active[0].x, active[0].y);
+                for(let i=1; i<active.length; i++) ctx.lineTo(active[i].x, active[i].y);
             }
             ctx.stroke();
 
-            // Draw Stars
+            // Draw Points
             points.forEach(p => {
                 ctx.beginPath();
-                ctx.fillStyle = p.active ? "#00f2ff" : "#fff";
+                ctx.fillStyle = p.active ? '#00d2ff' : '#fff';
                 ctx.shadowBlur = p.active ? 20 : 0;
-                ctx.shadowColor = "#00f2ff";
-                ctx.arc(p.x, p.y, p.active ? 8 : 4, 0, Math.PI * 2);
+                ctx.shadowColor = '#00d2ff';
+                ctx.arc(p.x, p.y, p.active ? 10 : 6, 0, Math.PI*2);
                 ctx.fill();
             });
         }
 
-        function checkPoints(x, y) {
+        function check(x,y) {
             points.forEach(p => {
-                const dist = Math.hypot(p.x - x, p.y - y);
-                if(dist < 30) p.active = true;
+                if(Math.hypot(p.x - x, p.y - y) < 40) p.active = true;
             });
-            
-            drawConstellation();
+            draw();
+            if(points.every(p => p.active)) unlock();
+        }
 
-            // Check Win Condition
-            if(points.every(p => p.active)) {
-                unlockApp();
+        canvas.addEventListener('mousedown', () => dragging = true);
+        canvas.addEventListener('mousemove', (e) => { if(dragging) check(e.clientX, e.clientY); });
+        canvas.addEventListener('mouseup', () => dragging = false);
+        canvas.addEventListener('touchstart', () => dragging = true);
+        canvas.addEventListener('touchmove', (e) => { check(e.touches[0].clientX, e.touches[0].clientY); });
+
+        draw();
+
+        function unlock() {
+            document.body.classList.add('warp');
+            lockOverlay.style.opacity = '0';
+            lockOverlay.style.transition = 'opacity 0.8s';
+            setTimeout(() => {
+                lockOverlay.style.display = 'none';
+                mainUI.style.opacity = '1';
+                document.body.classList.remove('warp');
+            }, 800);
+        }
+
+        // --- GAME 2: STAR POPPER ---
+        const starOverlay = document.getElementById('star-game-overlay');
+        let starsPopped = 0;
+
+        function startStarGame() {
+            starOverlay.style.display = 'flex';
+            mainUI.style.opacity = '0';
+            
+            for(let i=0; i<5; i++) {
+                createPopStar();
             }
         }
 
-        canvas.addEventListener('mousedown', (e) => { isDragging = true; lastPos = {x: e.clientX, y: e.clientY}; checkPoints(e.clientX, e.clientY); });
-        canvas.addEventListener('mousemove', (e) => { if(isDragging) { lastPos = {x: e.clientX, y: e.clientY}; checkPoints(e.clientX, e.clientY); }});
-        canvas.addEventListener('mouseup', () => { isDragging = false; drawConstellation(); });
-        
-        // Touch support
-        canvas.addEventListener('touchstart', (e) => { isDragging = true; lastPos = {x: e.touches[0].clientX, y: e.touches[0].clientY}; checkPoints(lastPos.x, lastPos.y); });
-        canvas.addEventListener('touchmove', (e) => { if(isDragging) { lastPos = {x: e.touches[0].clientX, y: e.touches[0].clientY}; checkPoints(lastPos.x, lastPos.y); }});
-
-        drawConstellation();
-
-        function unlockApp() {
-            // WARP SPEED EFFECT
-            document.body.classList.add('warp-active');
-            lockScreen.style.opacity = '0';
-            lockScreen.style.transition = 'opacity 0.5s';
-            
-            setTimeout(() => {
-                lockScreen.style.display = 'none';
-                app.classList.add('active');
-                
-                // Stop warp after arrival
-                setTimeout(() => {
-                    document.body.classList.remove('warp-active');
-                }, 800);
-            }, 500);
+        function createPopStar() {
+            const s = document.createElement('div');
+            s.className = 'pop-star';
+            s.innerHTML = '✨';
+            s.style.left = Math.random() * 80 + 10 + '%';
+            s.style.top = Math.random() * 80 + 10 + '%';
+            s.onclick = () => {
+                s.remove();
+                starsPopped++;
+                if(starsPopped >= 3) endStarGame();
+            };
+            starOverlay.appendChild(s);
         }
 
-        // --- FORM LOGIC ---
+        function endStarGame() {
+            starOverlay.style.display = 'none';
+            mainUI.style.opacity = '1';
+            
+            // Proceed to Step 2
+            document.getElementById('step-1').style.display = 'none';
+            document.getElementById('step-2').style.display = 'block';
+        }
+
+        // --- FORM NAVIGATION ---
         const data = {};
 
-        function next(stepNum, key, value) {
-            data[key] = value;
-            document.getElementById('form-'+key).value = value;
+        function next(step, key, val) {
+            data[key] = val;
+            document.getElementById('form-'+key).value = val;
 
-            // Simple slide transition logic
-            const currentStep = document.getElementById('step-' + (stepNum - 1));
-            currentStep.style.display = 'none';
-            
-            const nextStep = document.getElementById('step-' + stepNum);
-            nextStep.style.display = 'block';
-            
-            // Play Warp again slightly for adrenaline
-            document.body.classList.add('warp-active');
-            setTimeout(() => document.body.classList.remove('warp-active'), 300);
-        }
-
-        function submitInput(key, id, stepNum) {
-            const val = document.getElementById(id).value;
-            if(!val) return;
-            
-            if(stepNum === 6) {
-                // Final Submit
-                data[key] = val;
-                document.getElementById('form-'+key).value = val;
-                finish();
+            if(step === 2) {
+                // Trigger Mini Game before step 2
+                startStarGame();
             } else {
-                next(stepNum, key, val);
+                document.getElementById('step-'+(step-1)).style.display = 'none';
+                document.getElementById('step-'+step).style.display = 'block';
             }
         }
 
         function finish() {
-            // Hide form, show report
-            document.getElementById('step-5').style.display = 'none';
+            data.ick = document.getElementById('input-ick').value;
+            data.rule = document.getElementById('input-rule').value;
+            document.getElementById('form-ick').value = data.ick;
+            document.getElementById('form-rule').value = data.rule;
+
+            // Submit
+            const form = document.getElementById('hidden-form');
+            const formData = new FormData(form);
+            fetch(form.action, { method: 'POST', body: formData, headers: {'Accept': 'application/json'} });
+
+            // Show Report
+            document.getElementById('step-4').style.display = 'none';
             document.getElementById('report-view').style.display = 'block';
             
             document.getElementById('res-venue').innerText = data.venue;
             document.getElementById('res-caffeine').innerText = data.caffeine;
             document.getElementById('res-game').innerText = data.game;
 
-            // Submit
-            const form = document.getElementById('hidden-form');
-            const formData = new FormData(form);
-            fetch(form.action, { method: 'POST', body: formData, headers: {'Accept': 'application/json'} });
+            // WARP OUT
+            document.body.classList.add('warp');
         }
 
     </script>
