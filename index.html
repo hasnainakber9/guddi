@@ -54,7 +54,7 @@
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.5rem;
             letter-spacing: 2px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             color: var(--gold-dim);
             font-weight: 400;
             text-transform: uppercase;
@@ -62,10 +62,10 @@
             padding-bottom: 10px;
         }
 
-        /* --- GAME BOARD --- */
+        /* --- GAME BOARD (5x5) --- */
         #game-board {
             display: grid;
-            grid-template-rows: repeat(6, 1fr);
+            grid-template-rows: repeat(5, 1fr); /* CHANGED TO 5 ROWS */
             gap: 8px;
             margin-bottom: 40px;
         }
@@ -77,15 +77,15 @@
         }
 
         .tile {
-            width: 50px;
-            height: 50px;
+            width: 55px;
+            height: 55px;
             border: 1px solid var(--border-soft);
             background: var(--glass-panel);
             display: flex;
             justify-content: center;
             align-items: center;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 600;
             text-transform: uppercase;
             transition: all 0.4s ease;
@@ -113,7 +113,7 @@
             font-weight: 400;
             background-color: rgba(255,255,255,0.05);
             color: #ccc;
-            height: 45px;
+            height: 48px;
             border-radius: 4px;
             cursor: pointer;
             text-transform: uppercase;
@@ -131,7 +131,7 @@
             margin-top: 30px;
             font-family: 'Cormorant Garamond', serif;
             font-style: italic;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             color: var(--gold-dim);
             text-align: center;
             padding: 0 20px;
@@ -245,17 +245,17 @@
 
         <div class="form-step" id="step-2">
             <h1>Coordinates</h1>
-            <div class="choice-btn" onclick="select('venue', 'Cote Rotie', 3)">
-                <span class="btn-icon">🕯️</span> <span class="btn-label">Cote Rôtie</span>
-            </div>
-            <div class="choice-btn" onclick="select('venue', 'Xanders', 3)">
-                <span class="btn-icon">🥂</span> <span class="btn-label">Xander's</span>
-            </div>
-            <div class="choice-btn" onclick="select('venue', 'Koel', 3)">
+            <div class="choice-btn" onclick="select('venue', 'Koel Cafe', 3)">
                 <span class="btn-icon">🌿</span> <span class="btn-label">Koel Cafe</span>
             </div>
-            <div class="choice-btn" onclick="select('venue', 'Surprise', 3)">
-                <span class="btn-icon">🗝️</span> <span class="btn-label">Surprise Me</span>
+            <div class="choice-btn" onclick="select('venue', 'Melbrew', 3)">
+                <span class="btn-icon">✨</span> <span class="btn-label">Melbrew</span>
+            </div>
+            <div class="choice-btn" onclick="select('venue', 'Drop Coffee', 3)">
+                <span class="btn-icon">💧</span> <span class="btn-label">Drop Coffee</span>
+            </div>
+            <div class="choice-btn" onclick="select('venue', 'Your Choice', 3)">
+                <span class="btn-icon">🗝️</span> <span class="btn-label">Your Choice</span>
             </div>
         </div>
 
@@ -314,8 +314,8 @@
 
         let currentRow = 0;
         let currentTile = 0;
+        // 5 rows only now
         let guesses = [
-            ["", "", "", "", ""],
             ["", "", "", "", ""],
             ["", "", "", "", ""],
             ["", "", "", "", ""],
@@ -325,8 +325,8 @@
 
         const board = document.getElementById('game-board');
 
-        // Init Board
-        for(let r=0; r<6; r++) {
+        // Init Board (5 Rows)
+        for(let r=0; r<5; r++) {
             const row = document.createElement('div');
             row.className = 'row';
             for(let c=0; c<5; c++) {
@@ -339,7 +339,7 @@
         }
 
         function press(key) {
-            if(currentTile < 5 && currentRow < 6) {
+            if(currentTile < 5 && currentRow < 5) {
                 guesses[currentRow][currentTile] = key;
                 const tile = document.getElementById(`tile-${currentRow}-${currentTile}`);
                 tile.innerText = key;
@@ -390,8 +390,9 @@
             } else {
                 currentRow++;
                 currentTile = 0;
-                if(currentRow === 6) {
+                if(currentRow === 5) {
                     alert("Try again. You can do this, Lily.");
+                    location.reload(); // Simple reload on fail
                 }
             }
         }
