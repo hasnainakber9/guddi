@@ -3,26 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mission: Rida</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;900&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Starlight: Rida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,600&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* DEEP COSMIC PALETTE */
-            --bg: #050714;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(162, 155, 254, 0.2);
-            --primary: #a29bfe; /* Lavender */
-            --accent: #00d2ff;  /* Cyan */
-            --glow: 0 0 20px rgba(162, 155, 254, 0.3);
-            --text: #fff;
+            /* VELVET COSMOS PALETTE */
+            --bg-deep: #050508;
+            --glass-panel: rgba(20, 20, 25, 0.6);
+            --border-soft: rgba(255, 255, 255, 0.08);
+            --gold-dim: #8a7e68;
+            --gold-bright: #d4af37;
+            --starlight: #e2e2e2;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-tap-highlight-color: transparent; }
 
         body {
-            background-color: var(--bg);
-            font-family: 'Outfit', sans-serif;
-            color: var(--text);
+            background-color: var(--bg-deep);
+            color: var(--starlight);
+            font-family: 'Montserrat', sans-serif;
             height: 100vh;
             overflow: hidden;
             display: flex;
@@ -31,50 +30,76 @@
             perspective: 1000px;
         }
 
-        /* --- HYPERSPACE BACKGROUND --- */
-        #starfield {
-            position: fixed;
-            top: 50%; left: 50%;
-            width: 2px; height: 2px;
-            transform-style: preserve-3d;
-            perspective: 800px;
+        /* --- BACKGROUND ATMOSPHERE --- */
+        .ambient-glow {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: radial-gradient(circle at 50% 120%, #1a1025, #000 60%);
+            z-index: -2;
+        }
+        
+        .drifting-stars {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 50px 50px, #fff, transparent),
+                radial-gradient(1px 1px at 100px 150px, #fff, transparent),
+                radial-gradient(1px 1px at 200px 50px, #fff, transparent);
+            background-size: 300px 300px;
+            opacity: 0.3;
+            animation: drift 100s linear infinite;
             z-index: -1;
         }
-        .star {
-            position: absolute;
-            background: #fff;
-            border-radius: 50%;
+
+        /* --- THE LOCK SCREEN (ELEGANT CANVAS) --- */
+        #lock-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 100;
+            background: rgba(5, 5, 8, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1.5s ease;
+        }
+        
+        .lock-instruction {
+            margin-top: 300px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            color: var(--gold-dim);
+            letter-spacing: 2px;
             opacity: 0;
+            animation: fadeInSlow 3s forwards 1s;
         }
 
-        /* Warp Effect */
-        body.warp .star {
-            width: 3px; height: 100px;
-            background: var(--accent);
-            opacity: 1;
-            box-shadow: 0 0 10px var(--accent);
-            transition: height 0.2s, opacity 0.2s;
+        /* --- FOG GAME LAYER --- */
+        #fog-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 50;
+            display: none; /* Active later */
+            cursor: pointer;
         }
 
-        /* --- UI CONTAINER --- */
-        .container {
+        /* --- MAIN UI CARD --- */
+        .card-container {
             width: 100%;
             max-width: 480px;
+            position: relative;
             z-index: 10;
-            transition: all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 1s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
 
-        .glass-panel {
-            background: rgba(15, 15, 25, 0.6);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--border);
-            border-radius: 24px;
-            padding: 30px;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-            position: relative;
-            overflow: hidden;
-            min-height: 500px;
+        .glass-card {
+            background: var(--glass-panel);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--border-soft);
+            border-radius: 4px; /* Slightly sharper corners for elegance */
+            padding: 50px 40px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            min-height: 550px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -82,251 +107,204 @@
 
         /* --- TYPOGRAPHY --- */
         h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            color: var(--starlight);
             margin-bottom: 10px;
-            background: linear-gradient(to right, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 20px rgba(162, 155, 254, 0.5);
+            letter-spacing: -0.5px;
+            text-align: center;
         }
 
         .subtitle {
             text-align: center;
-            font-size: 0.9rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--gold-dim);
+            margin-bottom: 40px;
+        }
+
+        /* --- ELEGANT BUTTONS --- */
+        .choice-btn {
+            display: flex;
+            align-items: center;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            cursor: pointer;
+            transition: all 0.4s ease;
             color: #888;
-            margin-bottom: 30px;
-            letter-spacing: 1px;
         }
 
-        /* --- INTERACTIVE ELEMENTS --- */
-        .game-btn {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 20px;
-            margin-bottom: 12px;
-            border-radius: 16px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+        .choice-btn:hover {
+            padding-left: 10px;
+            color: #fff;
+            border-bottom-color: var(--gold-dim);
         }
 
-        .game-btn:hover {
-            background: rgba(162, 155, 254, 0.1);
-            border-color: var(--primary);
-            transform: scale(1.02);
-            box-shadow: 0 0 20px rgba(162, 155, 254, 0.2);
-        }
+        .choice-btn:last-child { border-bottom: none; }
 
-        .game-btn:active { transform: scale(0.98); }
-
-        .emoji { font-size: 1.6rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.4)); }
-        .btn-text { font-size: 1rem; font-weight: 600; letter-spacing: 0.5px; }
-        .btn-sub { font-size: 0.7rem; display: block; color: #888; margin-top: 2px; }
-
-        /* --- GAME 1: CONSTELLATION LOCK --- */
-        #lock-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(5, 7, 20, 0.95);
-            z-index: 100;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        canvas { position: absolute; top: 0; left: 0; }
-        .lock-msg { 
-            margin-top: 250px; font-family: 'Orbitron'; color: var(--accent); 
-            text-transform: uppercase; letter-spacing: 3px; font-size: 0.9rem; 
-            animation: pulse 2s infinite; pointer-events: none;
-        }
-
-        /* --- GAME 2: STAR POPPER --- */
-        #star-game-overlay {
-            display: none; position: absolute; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.9); z-index: 50;
-            flex-direction: column; align-items: center; justify-content: center;
-        }
-        .pop-star {
-            position: absolute; width: 40px; height: 40px;
-            background: radial-gradient(circle, #fff, var(--primary));
-            border-radius: 50%;
-            box-shadow: 0 0 15px var(--primary);
-            cursor: pointer;
-            animation: float 3s infinite ease-in-out;
-            display: flex; justify-content: center; align-items: center; font-size: 1.2rem;
-        }
-        .pop-star:active { transform: scale(1.5); opacity: 0; transition: 0.1s; }
+        .btn-icon { font-size: 1.2rem; margin-right: 20px; opacity: 0.7; }
+        .btn-label { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; }
+        .btn-sub { display: none; } /* Keeping it ultra clean */
 
         /* --- INPUTS --- */
         input[type="text"] {
             width: 100%;
-            background: rgba(0,0,0,0.3);
-            border: 1px solid #444;
-            padding: 15px;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            padding: 15px 0;
             color: #fff;
-            border-radius: 12px;
-            font-family: 'Outfit';
-            font-size: 1rem;
+            font-family: 'Cormorant Garamond';
+            font-size: 1.5rem;
             outline: none;
-            margin-bottom: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            transition: border-color 0.5s;
         }
-        input[type="text"]:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0, 210, 255, 0.2); }
+        input[type="text"]:focus { border-bottom-color: var(--gold-bright); }
+        input[type="text"]::placeholder { color: #333; font-style: italic; }
 
-        .submit-btn {
-            width: 100%; padding: 16px;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            color: #000; border: none; border-radius: 12px;
-            font-weight: 700; font-family: 'Orbitron'; letter-spacing: 1px;
-            cursor: pointer; transition: 0.3s;
+        .finish-btn {
+            background: transparent;
+            border: 1px solid var(--gold-dim);
+            color: var(--gold-dim);
+            padding: 15px 40px;
+            font-family: 'Montserrat';
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0 auto;
+            display: block;
+            cursor: pointer;
+            transition: 0.5s;
         }
-        .submit-btn:hover { box-shadow: 0 0 25px var(--primary); transform: translateY(-2px); }
+        .finish-btn:hover {
+            border-color: var(--gold-bright);
+            color: var(--gold-bright);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+        }
 
         /* --- ANIMATIONS --- */
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        @keyframes drift { from { background-position: 0 0; } to { background-position: 0 1000px; } }
+        @keyframes fadeInSlow { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
         /* HIDDEN FORM */
         #hidden-form { display: none; }
         
         /* REPORT */
-        #report-view { display: none; text-align: left; }
-        .report-item { margin-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-        .r-title { font-size: 0.7rem; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
-        .r-data { font-size: 1.1rem; color: #fff; font-weight: 600; margin-top: 5px; }
+        #report-view { display: none; text-align: center; }
+        .r-line { margin-bottom: 20px; }
+        .r-lbl { font-size: 0.6rem; color: var(--gold-dim); letter-spacing: 2px; text-transform: uppercase; }
+        .r-val { font-family: 'Cormorant Garamond'; font-size: 1.8rem; color: #fff; margin-top: 5px; }
+
+        /* WARP EFFECT (Subtle) */
+        .warp-speed {
+            position: fixed; top: 50%; left: 50%; width: 2px; height: 2px;
+            z-index: 200; pointer-events: none; opacity: 0;
+            box-shadow: 0 0 50px #fff;
+            transition: all 2s ease-in;
+        }
+        body.launching .warp-speed {
+            width: 100vw; height: 2px;
+            opacity: 1;
+            box-shadow: 0 0 100px #fff, 0 0 200px var(--gold-bright);
+            background: #fff;
+        }
 
     </style>
 </head>
 <body>
 
-    <div id="starfield"></div>
+    <div class="ambient-glow"></div>
+    <div class="drifting-stars"></div>
+    
+    <div class="warp-speed"></div>
 
-    <div id="lock-overlay">
-        <canvas id="lockCanvas"></canvas>
-        <div class="lock-msg">Trace the Stars to Unlock</div>
+    <div id="lock-layer">
+        <canvas id="constellation"></canvas>
+        <div class="lock-instruction">Connect the stars</div>
     </div>
 
-    <div id="star-game-overlay">
-        <h2 style="font-family:'Orbitron'; color:#fff; margin-bottom:10px;">Clear the Stardust</h2>
-        <p style="color:#aaa; font-size:0.9rem;">Pop 3 stars to proceed.</p>
-    </div>
+    <canvas id="fog-layer"></canvas>
 
-    <div class="container" id="main-ui" style="opacity: 0;">
-        <div class="glass-panel">
+    <div class="card-container" id="main-ui">
+        <div class="glass-card">
             
             <div class="step" id="step-1">
                 <h1>Shuro Hojaye?</h1>
-                <p class="subtitle">Phase 1: Fuel Calibration</p>
+                <p class="subtitle">Phase I: The Fuel</p>
                 
-                <div class="game-btn" onclick="next(2, 'caffeine', 'Black')">
-                    <span class="emoji">🌑</span>
-                    <div>
-                        <div class="btn-text">Pitch Black</div>
-                        <span class="btn-sub">Strong energy.</span>
-                    </div>
+                <div class="choice-btn" onclick="next(2, 'caffeine', 'Black')">
+                    <span class="btn-icon">🌑</span> <span class="btn-label">Pitch Black</span>
                 </div>
-                <div class="game-btn" onclick="next(2, 'caffeine', 'Sweet')">
-                    <span class="emoji">✨</span>
-                    <div>
-                        <div class="btn-text">Sweet & Iced</div>
-                        <span class="btn-sub">Sugar rush mode.</span>
-                    </div>
+                <div class="choice-btn" onclick="next(2, 'caffeine', 'Sweet')">
+                    <span class="btn-icon">✨</span> <span class="btn-label">Sweet & Iced</span>
                 </div>
-                <div class="game-btn" onclick="next(2, 'caffeine', 'Tea')">
-                    <span class="emoji">🍵</span>
-                    <div>
-                        <div class="btn-text">Tea / Decaf</div>
-                        <span class="btn-sub">Cozy vibes only.</span>
-                    </div>
+                <div class="choice-btn" onclick="next(2, 'caffeine', 'Tea')">
+                    <span class="btn-icon">🍵</span> <span class="btn-label">Tea / Decaf</span>
                 </div>
             </div>
 
             <div class="step" id="step-2" style="display:none;">
                 <h1>Coordinates</h1>
-                <p class="subtitle">Phase 2: The Setting</p>
+                <p class="subtitle">Phase II: The Setting</p>
                 
-                <div class="game-btn" onclick="next(3, 'venue', 'Cote Rotie')">
-                    <span class="emoji">🕯️</span>
-                    <div><div class="btn-text">Cote Rôtie</div><span class="btn-sub">Intimate & Warm.</span></div>
+                <div class="choice-btn" onclick="next(3, 'venue', 'Cote Rotie')">
+                    <span class="btn-icon">🕯️</span> <span class="btn-label">Cote Rôtie</span>
                 </div>
-                <div class="game-btn" onclick="next(3, 'venue', 'Xanders')">
-                    <span class="emoji">🥗</span>
-                    <div><div class="btn-text">Xander's</div><span class="btn-sub">Lively & Safe.</span></div>
+                <div class="choice-btn" onclick="next(3, 'venue', 'Xanders')">
+                    <span class="btn-icon">🥂</span> <span class="btn-label">Xander's</span>
                 </div>
-                <div class="game-btn" onclick="next(3, 'venue', 'Koel')">
-                    <span class="emoji">🌿</span>
-                    <div><div class="btn-text">Koel Cafe</div><span class="btn-sub">Zen & Artsy.</span></div>
+                <div class="choice-btn" onclick="next(3, 'venue', 'Koel')">
+                    <span class="btn-icon">🌿</span> <span class="btn-label">Koel Cafe</span>
                 </div>
-                <div class="game-btn" onclick="next(3, 'venue', 'Surprise')">
-                    <span class="emoji">🔮</span>
-                    <div><div class="btn-text">Surprise Me</div><span class="btn-sub">I'll handle it.</span></div>
+                <div class="choice-btn" onclick="next(3, 'venue', 'Surprise')">
+                    <span class="btn-icon">🗝️</span> <span class="btn-label">Surprise Me</span>
                 </div>
             </div>
 
             <div class="step" id="step-3" style="display:none;">
-                <h1>Tiny Games</h1>
-                <p class="subtitle">Phase 3: Choose our Side Quest</p>
-                <p style="text-align:center; font-size:0.8rem; color:#aaa; margin-bottom:20px;">Pick a low-key game for the table:</p>
-
-                <div class="game-btn" onclick="next(4, 'game', 'Mind Meld')">
-                    <span class="emoji">🧠</span>
-                    <div>
-                        <div class="btn-text">Mind Meld</div>
-                        <span class="btn-sub">We say a word at the same time.</span>
-                    </div>
+                <h1>Interlude</h1>
+                <p class="subtitle">Phase III: A Small Game</p>
+                
+                <div class="choice-btn" onclick="next(4, 'game', 'Mind Meld')">
+                    <span class="btn-icon">🧠</span> <span class="btn-label">Mind Meld</span>
                 </div>
-                <div class="game-btn" onclick="next(4, 'game', 'Strawberry Test')">
-                    <span class="emoji">🍓</span>
-                    <div>
-                        <div class="btn-text">The Strawberry Test</div>
-                        <span class="btn-sub">A psychological love test.</span>
-                    </div>
+                <div class="choice-btn" onclick="next(4, 'game', 'Strawberry Test')">
+                    <span class="btn-icon">🍓</span> <span class="btn-label">Strawberry Test</span>
                 </div>
-                <div class="game-btn" onclick="next(4, 'game', 'Thumb War')">
-                    <span class="emoji">👍</span>
-                    <div>
-                        <div class="btn-text">Ultimate Thumb War</div>
-                        <span class="btn-sub">Old school rivalry.</span>
-                    </div>
+                <div class="choice-btn" onclick="next(4, 'game', '20 Questions')">
+                    <span class="btn-icon">❓</span> <span class="btn-label">20 Questions</span>
                 </div>
             </div>
 
             <div class="step" id="step-4" style="display:none;">
-                <h1>Final Sync</h1>
-                <p class="subtitle">Any red flags?</p>
+                <h1>Alignment</h1>
+                <p class="subtitle">Final Calibration</p>
                 
-                <input type="text" id="input-ick" placeholder="What gives you the ick?">
-                <input type="text" id="input-rule" placeholder="One golden rule for me?">
+                <input type="text" id="input-ick" placeholder="What is your biggest Ick?">
+                <input type="text" id="input-rule" placeholder="One golden rule?">
                 
-                <button class="submit-btn" onclick="finish()">INITIATE LAUNCH 🚀</button>
+                <button class="finish-btn" onclick="finish()">Confirm Date</button>
             </div>
 
             <div id="report-view">
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <h1 style="font-size: 2.5rem; text-shadow: 0 0 30px var(--primary);">It's a Date.</h1>
-                    <p style="color: #aaa;">Mission Accepted.</p>
+                <h1 style="font-size:3.5rem; margin-bottom: 40px;">It's a Date.</h1>
+                
+                <div class="r-line">
+                    <div class="r-lbl">Location</div>
+                    <div class="r-val" id="res-venue"></div>
+                </div>
+                <div class="r-line">
+                    <div class="r-lbl">Activity</div>
+                    <div class="r-val" id="res-game"></div>
                 </div>
                 
-                <div class="report-item">
-                    <div class="r-title">LOCATION</div>
-                    <div class="r-data" id="res-venue"></div>
-                </div>
-                <div class="report-item">
-                    <div class="r-title">FUEL</div>
-                    <div class="r-data" id="res-caffeine"></div>
-                </div>
-                <div class="report-item">
-                    <div class="r-title">SIDE QUEST</div>
-                    <div class="r-data" id="res-game" style="color: var(--accent);"></div>
-                </div>
-
-                <div style="text-align:center; margin-top:30px; font-size:0.8rem; color:#666;">
-                    Screenshot this & send to HQ.
+                <div style="margin-top: 50px; font-size: 0.7rem; color: #555; letter-spacing: 1px;">
+                    TRANSMISSION RECEIVED
                 </div>
             </div>
 
@@ -342,126 +320,143 @@
     </form>
 
     <script>
-        // --- STARFIELD ---
-        const starField = document.getElementById('starfield');
-        for(let i=0; i<150; i++) {
-            const s = document.createElement('div');
-            s.className = 'star';
-            const x = (Math.random() - 0.5) * window.innerWidth * 1.5;
-            const y = (Math.random() - 0.5) * window.innerHeight * 1.5;
-            const z = Math.random() * 800;
-            s.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
-            s.style.width = Math.random() * 3 + 'px';
-            s.style.height = s.style.width;
-            starField.appendChild(s);
-        }
-
-        // --- GAME 1: UNLOCK ---
-        const canvas = document.getElementById('lockCanvas');
-        const ctx = canvas.getContext('2d');
-        const lockOverlay = document.getElementById('lock-overlay');
-        const mainUI = document.getElementById('main-ui');
+        // --- 1. CONSTELLATION LOCK ---
+        const cCanvas = document.getElementById('constellation');
+        const cCtx = cCanvas.getContext('2d');
+        const lockLayer = document.getElementById('lock-layer');
+        const mainUi = document.getElementById('main-ui');
         
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        cCanvas.width = window.innerWidth;
+        cCanvas.height = window.innerHeight;
 
-        const points = [
-            {x: window.innerWidth/2, y: window.innerHeight/2 - 100, active: false},
-            {x: window.innerWidth/2 - 100, y: window.innerHeight/2 + 50, active: false},
-            {x: window.innerWidth/2 + 100, y: window.innerHeight/2 + 50, active: false}
+        // Elegant, thin lines. Golden hue.
+        const stars = [
+            {x: window.innerWidth/2, y: window.innerHeight/2 - 120, active: false},
+            {x: window.innerWidth/2 - 80, y: window.innerHeight/2, active: false},
+            {x: window.innerWidth/2 + 80, y: window.innerHeight/2, active: false},
+            {x: window.innerWidth/2, y: window.innerHeight/2 + 120, active: false}
         ];
 
-        let dragging = false;
+        let isDrawing = false;
 
-        function draw() {
-            ctx.clearRect(0,0,canvas.width,canvas.height);
+        function drawLock() {
+            cCtx.clearRect(0,0,cCanvas.width, cCanvas.height);
             
-            // Draw Lines
-            ctx.beginPath();
-            ctx.strokeStyle = 'rgba(162, 155, 254, 0.5)';
-            ctx.lineWidth = 2;
-            const active = points.filter(p => p.active);
+            // Draw connections
+            cCtx.beginPath();
+            cCtx.strokeStyle = 'rgba(212, 175, 55, 0.4)'; // Gold
+            cCtx.lineWidth = 1;
+            
+            const active = stars.filter(s => s.active);
             if(active.length > 0) {
-                ctx.moveTo(active[0].x, active[0].y);
-                for(let i=1; i<active.length; i++) ctx.lineTo(active[i].x, active[i].y);
+                cCtx.moveTo(active[0].x, active[0].y);
+                for(let i=1; i<active.length; i++) cCtx.lineTo(active[i].x, active[i].y);
             }
-            ctx.stroke();
+            cCtx.stroke();
 
-            // Draw Points
-            points.forEach(p => {
-                ctx.beginPath();
-                ctx.fillStyle = p.active ? '#00d2ff' : '#fff';
-                ctx.shadowBlur = p.active ? 20 : 0;
-                ctx.shadowColor = '#00d2ff';
-                ctx.arc(p.x, p.y, p.active ? 10 : 6, 0, Math.PI*2);
-                ctx.fill();
+            // Draw Stars
+            stars.forEach(s => {
+                cCtx.beginPath();
+                cCtx.fillStyle = s.active ? '#d4af37' : '#555';
+                cCtx.arc(s.x, s.y, 4, 0, Math.PI*2);
+                cCtx.fill();
+                
+                // Glow
+                if(s.active) {
+                    cCtx.shadowBlur = 15;
+                    cCtx.shadowColor = '#d4af37';
+                } else {
+                    cCtx.shadowBlur = 0;
+                }
             });
         }
 
-        function check(x,y) {
-            points.forEach(p => {
-                if(Math.hypot(p.x - x, p.y - y) < 40) p.active = true;
+        function checkLock(x,y) {
+            stars.forEach(s => {
+                if(Math.hypot(s.x - x, s.y - y) < 40) s.active = true;
             });
-            draw();
-            if(points.every(p => p.active)) unlock();
+            drawLock();
+            if(stars.every(s => s.active)) unlock();
         }
 
-        canvas.addEventListener('mousedown', () => dragging = true);
-        canvas.addEventListener('mousemove', (e) => { if(dragging) check(e.clientX, e.clientY); });
-        canvas.addEventListener('mouseup', () => dragging = false);
-        canvas.addEventListener('touchstart', () => dragging = true);
-        canvas.addEventListener('touchmove', (e) => { check(e.touches[0].clientX, e.touches[0].clientY); });
+        cCanvas.addEventListener('mousedown', () => isDrawing = true);
+        cCanvas.addEventListener('mousemove', (e) => { if(isDrawing) checkLock(e.clientX, e.clientY); });
+        cCanvas.addEventListener('mouseup', () => isDrawing = false);
+        cCanvas.addEventListener('touchstart', () => isDrawing = true);
+        cCanvas.addEventListener('touchmove', (e) => { checkLock(e.touches[0].clientX, e.touches[0].clientY); });
 
-        draw();
+        drawLock();
 
         function unlock() {
-            document.body.classList.add('warp');
-            lockOverlay.style.opacity = '0';
-            lockOverlay.style.transition = 'opacity 0.8s';
+            lockLayer.style.opacity = '0';
             setTimeout(() => {
-                lockOverlay.style.display = 'none';
-                mainUI.style.opacity = '1';
-                document.body.classList.remove('warp');
-            }, 800);
+                lockLayer.style.display = 'none';
+                mainUi.style.opacity = '1';
+                mainUi.style.transform = 'translateY(0)';
+            }, 1000);
         }
 
-        // --- GAME 2: STAR POPPER ---
-        const starOverlay = document.getElementById('star-game-overlay');
-        let starsPopped = 0;
 
-        function startStarGame() {
-            starOverlay.style.display = 'flex';
-            mainUI.style.opacity = '0';
+        // --- 2. FOG GAME (Interlude) ---
+        // This runs between Step 1 and 2
+        const fCanvas = document.getElementById('fog-layer');
+        const fCtx = fCanvas.getContext('2d');
+        let fogActive = false;
+
+        fCanvas.width = window.innerWidth;
+        fCanvas.height = window.innerHeight;
+
+        function initFog() {
+            fogActive = true;
+            fCanvas.style.display = 'block';
+            mainUi.style.opacity = '0'; // Hide UI momentarily
             
-            for(let i=0; i<5; i++) {
-                createPopStar();
-            }
-        }
-
-        function createPopStar() {
-            const s = document.createElement('div');
-            s.className = 'pop-star';
-            s.innerHTML = '✨';
-            s.style.left = Math.random() * 80 + 10 + '%';
-            s.style.top = Math.random() * 80 + 10 + '%';
-            s.onclick = () => {
-                s.remove();
-                starsPopped++;
-                if(starsPopped >= 3) endStarGame();
-            };
-            starOverlay.appendChild(s);
-        }
-
-        function endStarGame() {
-            starOverlay.style.display = 'none';
-            mainUI.style.opacity = '1';
+            // Fill with elegant dark fog
+            fCtx.fillStyle = 'rgba(10, 10, 15, 0.98)';
+            fCtx.fillRect(0, 0, fCanvas.width, fCanvas.height);
             
-            // Proceed to Step 2
-            document.getElementById('step-1').style.display = 'none';
-            document.getElementById('step-2').style.display = 'block';
+            // Text instruction
+            fCtx.fillStyle = '#8a7e68';
+            fCtx.font = '20px Montserrat';
+            fCtx.textAlign = 'center';
+            fCtx.fillText("Clear the mist to proceed...", fCanvas.width/2, fCanvas.height/2);
+            
+            fCtx.globalCompositeOperation = 'destination-out';
         }
 
-        // --- FORM NAVIGATION ---
+        function clearFog(x, y) {
+            if(!fogActive) return;
+            fCtx.beginPath();
+            fCtx.arc(x, y, 60, 0, Math.PI*2); // Brush size
+            fCtx.fill();
+            
+            // Check if enough cleared (simple timer hack for smoothness)
+        }
+        
+        // Simple counter to finish fog game
+        let clearCount = 0;
+        function trackClear() {
+            clearCount++;
+            if(clearCount > 100) endFog(); // approx 2 seconds of movement
+        }
+
+        fCanvas.addEventListener('mousemove', (e) => { clearFog(e.clientX, e.clientY); trackClear(); });
+        fCanvas.addEventListener('touchmove', (e) => { clearFog(e.touches[0].clientX, e.touches[0].clientY); trackClear(); });
+
+        function endFog() {
+            fogActive = false;
+            fCanvas.style.transition = 'opacity 1s';
+            fCanvas.style.opacity = '0';
+            setTimeout(() => {
+                fCanvas.style.display = 'none';
+                mainUi.style.opacity = '1';
+                document.getElementById('step-1').style.display = 'none';
+                document.getElementById('step-2').style.display = 'block';
+            }, 1000);
+        }
+
+
+        // --- 3. FORM NAVIGATION ---
         const data = {};
 
         function next(step, key, val) {
@@ -469,11 +464,19 @@
             document.getElementById('form-'+key).value = val;
 
             if(step === 2) {
-                // Trigger Mini Game before step 2
-                startStarGame();
+                // Trigger Fog Game instead of direct transition
+                initFog();
             } else {
-                document.getElementById('step-'+(step-1)).style.display = 'none';
-                document.getElementById('step-'+step).style.display = 'block';
+                // Standard fade
+                const curr = document.getElementById('step-' + (step-1));
+                const nxt = document.getElementById('step-' + step);
+                
+                curr.style.display = 'none';
+                nxt.style.opacity = '0';
+                nxt.style.display = 'block';
+                
+                // Slight delay for fade in
+                setTimeout(() => nxt.style.opacity = '1', 50);
             }
         }
 
@@ -493,11 +496,12 @@
             document.getElementById('report-view').style.display = 'block';
             
             document.getElementById('res-venue').innerText = data.venue;
-            document.getElementById('res-caffeine').innerText = data.caffeine;
             document.getElementById('res-game').innerText = data.game;
 
-            // WARP OUT
-            document.body.classList.add('warp');
+            // ADRENALINE KICK (Warp Launch)
+            setTimeout(() => {
+                document.body.classList.add('launching');
+            }, 500);
         }
 
     </script>
