@@ -3,27 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calibration: Rida</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Cosmic Alignment: Rida</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Sleek, Intimate, "Night Mode" Gaming Vibe */
-            --bg-color: #0f0c11;
-            --card-bg: rgba(30, 30, 35, 0.85);
-            --primary: #c4a484; /* Muted Gold/Latte */
-            --accent: #d4a373; 
-            --text-main: #eaeaea;
-            --text-muted: #999;
-            --success: #4cd964;
+            /* COSMIC PALETTE */
+            --bg-deep: #050714;
+            --glass-bg: rgba(20, 20, 35, 0.7);
+            --border-glow: rgba(162, 155, 254, 0.3);
+            --primary: #a29bfe; /* Soft Purple */
+            --accent: #74b9ff;  /* Electric Blue */
+            --text-main: #ffffff;
+            --text-dim: #b2bec3;
+            --neon-glow: 0 0 15px rgba(162, 155, 254, 0.4);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--bg-color);
+            background-color: var(--bg-deep);
             background-image: 
-                radial-gradient(circle at 10% 20%, #1a1500 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, #1a1008 0%, transparent 40%);
+                radial-gradient(circle at 20% 30%, #2d3436 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, #2d3436 0%, transparent 20%);
             font-family: 'Outfit', sans-serif;
             color: var(--text-main);
             min-height: 100vh;
@@ -31,29 +32,66 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            overflow: hidden; /* Prevent scrolling */
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* DYNAMIC STARS BACKGROUND */
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            background: transparent;
+            z-index: -1;
+        }
+        .stars::after {
+            content: "";
+            position: absolute;
+            top: -50%; left: -50%; width: 200%; height: 200%;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #fff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #fff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 4s infinite linear;
+            opacity: 0.3;
+        }
+
+        /* AURORA GRADIENT BLOB */
+        .aurora {
+            position: absolute;
+            width: 500px; height: 500px;
+            background: linear-gradient(180deg, rgba(162, 155, 254, 0.15), rgba(116, 185, 255, 0.1));
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: -1;
+            animation: floatBlob 10s infinite alternate;
         }
 
         .container {
             width: 100%;
             max-width: 500px;
-            position: relative;
             perspective: 1000px;
+            z-index: 10;
         }
 
-        /* CARD CONTAINER */
+        /* GLASS PANEL */
         .glass-panel {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 24px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border-glow);
+            border-radius: 30px;
             padding: 40px 30px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            min-height: 500px;
+            box-shadow: var(--neon-glow);
+            min-height: 520px;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            position: relative;
             transition: all 0.5s ease;
         }
 
@@ -61,164 +99,207 @@
         .progress-container {
             position: absolute;
             top: 0; left: 0; width: 100%;
-            height: 6px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 24px 24px 0 0;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 30px 30px 0 0;
             overflow: hidden;
         }
         .progress-bar {
             height: 100%;
             width: 0%;
             background: linear-gradient(90deg, var(--primary), var(--accent));
-            transition: width 0.5s ease;
+            box-shadow: 0 0 10px var(--primary);
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         /* TYPOGRAPHY */
         h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            color: var(--primary);
+            font-family: 'Cinzel', serif;
+            font-size: 2.2rem;
+            background: linear-gradient(to right, #fff, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 10px;
-            line-height: 1.2;
+            letter-spacing: 1px;
         }
         
+        .question-label {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 0 0 5px rgba(116, 185, 255, 0.5);
+        }
+
         .question-text {
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-bottom: 30px;
-            line-height: 1.4;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 300; /* Thinner font for elegance */
+            margin-bottom: 35px;
+            line-height: 1.3;
         }
 
         .ai-comment {
             font-size: 1rem;
             color: var(--primary);
             font-style: italic;
-            margin-top: 15px;
+            margin-top: 20px;
             min-height: 24px;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.4s;
+            text-shadow: 0 0 8px rgba(162, 155, 254, 0.3);
         }
 
-        /* OPTIONS GRID */
+        /* OPTIONS */
         .options-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 12px;
+            gap: 15px;
         }
 
         .option-btn {
             background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            padding: 18px;
-            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 20px;
+            border-radius: 16px;
             text-align: left;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.3s;
             display: flex;
             align-items: center;
             gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 0%; height: 100%;
+            background: linear-gradient(90deg, rgba(162, 155, 254, 0.1), transparent);
+            transition: width 0.3s;
         }
 
         .option-btn:hover {
-            background: rgba(196, 164, 132, 0.1);
             border-color: var(--primary);
             transform: translateX(5px);
+            box-shadow: 0 0 15px rgba(162, 155, 254, 0.15);
         }
+        .option-btn:hover::before { width: 100%; }
 
-        .emoji { font-size: 1.4rem; }
-        .opt-text { font-size: 1rem; font-weight: 500; }
+        .emoji { font-size: 1.5rem; filter: drop-shadow(0 0 5px rgba(255,255,255,0.3)); }
+        .opt-text { font-size: 1.05rem; letter-spacing: 0.5px; z-index: 1; }
 
-        /* TEXT INPUTS */
-        .text-input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+        /* INPUTS */
+        .input-wrapper { position: relative; }
         
         input[type="text"] {
-            background: rgba(0,0,0,0.2);
-            border: 1px solid rgba(255,255,255,0.15);
+            width: 100%;
+            background: rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.1);
             padding: 20px;
-            border-radius: 12px;
+            border-radius: 16px;
             color: #fff;
             font-family: 'Outfit';
             font-size: 1.1rem;
             outline: none;
+            transition: 0.3s;
         }
         
-        input[type="text"]:focus { border-color: var(--primary); }
+        input[type="text"]:focus { 
+            border-color: var(--accent); 
+            box-shadow: 0 0 15px rgba(116, 185, 255, 0.2);
+        }
 
         .next-btn {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary), var(--accent));
             color: #000;
             border: none;
-            padding: 15px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 16px;
             font-weight: 700;
             cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
             font-size: 1rem;
-            margin-top: 10px;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+        
+        .next-btn:hover {
+            box-shadow: 0 0 20px rgba(162, 155, 254, 0.5);
+            transform: scale(1.02);
         }
 
         /* ANIMATIONS */
-        .fade-in { animation: fadeIn 0.5s forwards; }
-        .fade-out { animation: fadeOut 0.5s forwards; }
+        @keyframes twinkle { 0% { transform: translateY(0); } 100% { transform: translateY(-200px); } }
+        @keyframes floatBlob { 0% { transform: translate(-20px, -20px); } 100% { transform: translate(20px, 20px); } }
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+        
+        .fade-in { animation: enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        .fade-out { animation: exit 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-10px); } }
+        @keyframes enter { from { opacity: 0; transform: translateY(20px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        @keyframes exit { from { opacity: 1; transform: translateY(0) scale(1); } to { opacity: 0; transform: translateY(-20px) scale(0.95); } }
 
-        /* REPORT VIEW */
-        #report-view { display: none; text-align: left; }
-        .report-line { 
-            padding: 15px; 
-            border-bottom: 1px solid rgba(255,255,255,0.05); 
-            display: flex; 
+        /* REPORT STYLES */
+        .report-grid {
+            display: grid;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .report-card {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 3px solid var(--accent);
+            display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .report-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
-        .report-val { font-size: 1.1rem; font-weight: 600; color: var(--primary); }
+        .r-label { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; }
+        .r-val { font-size: 1.1rem; color: #fff; font-weight: 600; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
 
-        /* HIDDEN FORM */
         #hidden-form { display: none; }
     </style>
 </head>
 <body>
 
+    <div class="stars"></div>
+    <div class="aurora"></div>
+
     <div class="container">
         
         <div class="glass-panel" id="main-panel">
             
-            <div class="progress-container">
-                <div class="progress-bar" id="progress"></div>
-            </div>
+            <div class="progress-container"><div class="progress-bar" id="progress"></div></div>
 
             <div class="step fade-in" id="step-0">
-                <div style="text-align: center;">
-                    <div style="font-size: 3rem; margin-bottom: 10px;">👋</div>
-                    <h1>Hi, Rida</h1>
-                    <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 30px;">
-                        I want our first date to be perfect.<br>
-                        I've built this little protocol to get the vibe right.<br>
-                        Ready to calibrate?
+                <div style="text-align: center; padding: 20px 0;">
+                    <div style="font-size: 4rem; margin-bottom: 20px; filter: drop-shadow(0 0 10px rgba(162, 155, 254, 0.6));">🪐</div>
+                    <h1>Star Map: Rida</h1>
+                    <p style="color: var(--text-dim); line-height: 1.8; font-size: 1.1rem; margin-bottom: 40px;">
+                        The universe is vast, but our date shouldn't be random.<br>
+                        Let's align the stars (and the coffee).
                     </p>
-                    <button class="next-btn" onclick="nextStep(1)">Let's Play</button>
+                    <button class="next-btn" onclick="nextStep(1)">Initialize Protocol</button>
                 </div>
             </div>
 
             <div class="step" id="step-1" style="display:none;">
-                <div class="report-label">QUESTION 01 // THE FUEL</div>
-                <div class="question-text">How serious are you about your coffee?</div>
+                <div class="question-label">Phase 01 // Cosmic Fuel</div>
+                <div class="question-text">How do you take your stardust?</div>
                 <div class="options-grid">
-                    <div class="option-btn" onclick="selectOption('caffeine', 'Purist', 'Oof, a purist. I respect the hustle.', 2)">
-                        <span class="emoji">☕</span>
-                        <span class="opt-text">Serious / Black Coffee</span>
+                    <div class="option-btn" onclick="selectOption('caffeine', 'Purist', 'A purist. The universe respects that.', 2)">
+                        <span class="emoji">🌑</span>
+                        <span class="opt-text">Pitch Black (Strong Coffee)</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('caffeine', 'Sweet', 'Sugar rush detected. High energy date incoming.', 2)">
-                        <span class="emoji">🥤</span>
-                        <span class="opt-text">Sweet / Iced Latte</span>
+                    <div class="option-btn" onclick="selectOption('caffeine', 'Sweet', 'Sugar rush detected. Orbit velocity increasing.', 2)">
+                        <span class="emoji">✨</span>
+                        <span class="opt-text">Sweet & Iced</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('caffeine', 'Tea', 'Tea person? Elegant choice.', 2)">
+                    <div class="option-btn" onclick="selectOption('caffeine', 'Tea', 'Calm energy. Very Zen Mode.', 2)">
                         <span class="emoji">🍵</span>
                         <span class="opt-text">Tea / Decaf</span>
                     </div>
@@ -227,14 +308,14 @@
             </div>
 
             <div class="step" id="step-2" style="display:none;">
-                <div class="report-label">QUESTION 02 // SUGAR POLICY</div>
-                <div class="question-text">Are we getting dessert?</div>
+                <div class="question-label">Phase 02 // Sweet Tooth</div>
+                <div class="question-text">Is dessert written in the stars?</div>
                 <div class="options-grid">
-                    <div class="option-btn" onclick="selectOption('dessert', 'Mandatory', 'Green flag. I am ordering two.', 3)">
+                    <div class="option-btn" onclick="selectOption('dessert', 'Mandatory', 'Excellent. Calories do not count in space.', 3)">
                         <span class="emoji">🍰</span>
                         <span class="opt-text">Mandatory.</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('dessert', 'Maybe', 'Playing hard to get with the calories. I see you.', 3)">
+                    <div class="option-btn" onclick="selectOption('dessert', 'Maybe', 'We will see what the galaxy offers.', 3)">
                         <span class="emoji">🥐</span>
                         <span class="opt-text">Maybe we share?</span>
                     </div>
@@ -243,99 +324,107 @@
             </div>
 
             <div class="step" id="step-3" style="display:none;">
-                <div class="report-label">QUESTION 03 // THE SETTING</div>
-                <div class="question-text">Pick our battlefield (Venue).</div>
+                <div class="question-label">Phase 03 // The Coordinates</div>
+                <div class="question-text">Where should we land?</div>
                 <div class="options-grid" style="grid-template-columns: 1fr 1fr;">
-                    <div class="option-btn" onclick="selectOption('venue', 'Cote Rotie', 'Classy choice. I will wear the good shirt.', 4)">
+                    <div class="option-btn" onclick="selectOption('venue', 'Cote Rotie', 'Intimate vibes. The lighting there is stellar.', 4)">
                         <span class="emoji">🕯️</span> <span class="opt-text">Cote Rôtie</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('venue', 'Xanders', 'Xanders is a vibe. No awkward silences there.', 4)">
+                    <div class="option-btn" onclick="selectOption('venue', 'Xanders', 'Lively energy. A social constellation.', 4)">
                         <span class="emoji">🥗</span> <span class="opt-text">Xander's</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('venue', 'Koel', 'Artsy and quiet. I like your style.', 4)">
+                    <div class="option-btn" onclick="selectOption('venue', 'Koel', 'Artsy. Nature and vibes aligning.', 4)">
                         <span class="emoji">🌿</span> <span class="opt-text">Koel Cafe</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('venue', 'Surprise', 'Bold move trusting me. Challenge accepted.', 4)">
-                        <span class="emoji">🎁</span> <span class="opt-text">Surprise Me</span>
+                    <div class="option-btn" onclick="selectOption('venue', 'Surprise', 'Brave choice. Leaving it to fate (and me).', 4)">
+                        <span class="emoji">🔮</span> <span class="opt-text">Surprise Me</span>
                     </div>
                 </div>
                 <div class="ai-comment" id="comment-3"></div>
             </div>
 
             <div class="step" id="step-4" style="display:none;">
-                <div class="report-label">QUESTION 04 // THE VIBE</div>
-                <div class="question-text">What's the agenda?</div>
+                <div class="question-label">Phase 04 // Transmission</div>
+                <div class="question-text">Select conversation frequency.</div>
                 <div class="options-grid">
-                    <div class="option-btn" onclick="selectOption('topic', 'Lore', 'Buckle up. We are going deep.', 5)">
+                    <div class="option-btn" onclick="selectOption('topic', 'Lore', 'Deep conversations only. No small talk allowed.', 5)">
                         <span class="emoji">📜</span>
                         <span class="opt-text">Deep Life Lore</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('topic', 'Fun', 'I hope you can handle my roasting.', 5)">
-                        <span class="emoji">🤡</span>
-                        <span class="opt-text">Roasting & Laughs</span>
+                    <div class="option-btn" onclick="selectOption('topic', 'Fun', 'Roasting shields active. I am ready.', 5)">
+                        <span class="emoji">☄️</span>
+                        <span class="opt-text">Roasting & Chaos</span>
                     </div>
-                    <div class="option-btn" onclick="selectOption('topic', 'Work', 'Ambitious. Taking notes.', 5)">
-                        <span class="emoji">💼</span>
-                        <span class="opt-text">Work & Dreams</span>
+                    <div class="option-btn" onclick="selectOption('topic', 'Work', 'Ambitions high. Power couple energy.', 5)">
+                        <span class="emoji">🚀</span>
+                        <span class="opt-text">Future Ambitions</span>
                     </div>
                 </div>
                 <div class="ai-comment" id="comment-4"></div>
             </div>
 
             <div class="step" id="step-5" style="display:none;">
-                <div class="report-label">QUESTION 05 // COMPLIANCE CHECK</div>
+                <div class="question-label">Phase 05 // Red Flags</div>
                 <div class="question-text">What gives you the "Ick"?</div>
-                <div class="text-input-group">
+                <div class="input-wrapper">
                     <input type="text" id="input-ick" placeholder="e.g. Loud chewing, bad parking...">
-                    <button class="next-btn" onclick="submitText('ick', 'input-ick', 'Noted. I will be on my best behavior.', 6)">Confirm</button>
+                    <button class="next-btn" onclick="submitText('ick', 'input-ick', 'Scanning memory banks... Ick noted and deleted.', 6)">Confirm Entry</button>
                 </div>
                 <div class="ai-comment" id="comment-5"></div>
             </div>
 
             <div class="step" id="step-6" style="display:none;">
-                <div class="report-label">FINAL QUESTION</div>
+                <div class="question-label">Final Phase // Directive</div>
                 <div class="question-text">One golden rule for me?</div>
-                <div class="text-input-group">
+                <div class="input-wrapper">
                     <input type="text" id="input-rule" placeholder="e.g. 'Don't be late'">
-                    <button class="next-btn" onclick="submitText('rule', 'input-rule', 'Loud and clear.', 7)">Finish Calibration</button>
+                    <button class="next-btn" onclick="submitText('rule', 'input-rule', 'Directive received. Calibration complete.', 7)">Launch Date</button>
                 </div>
                 <div class="ai-comment" id="comment-6"></div>
             </div>
 
-            <div class="step" id="step-7" style="display:none; text-align: center;">
-                <div style="font-size: 3rem; animation: pulse 1s infinite;">⚙️</div>
-                <h2 style="margin-top: 20px;">Processing Data...</h2>
-                <p style="color: var(--text-muted);">Calculating optimal date trajectory...</p>
+            <div class="step" id="step-7" style="display:none; text-align: center; padding-top: 40px;">
+                <div style="font-size: 3rem; animation: pulse 1s infinite; margin-bottom: 20px;">💫</div>
+                <h2 style="font-family: 'Cinzel'; font-size: 1.5rem;">Aligning Stars...</h2>
+                <p style="color: var(--text-dim); margin-top: 10px;">Generating cosmic trajectory.</p>
             </div>
 
-            <div id="report-view">
+            <div id="report-view" style="display: none;">
                 <div style="text-align: center; margin-bottom: 30px;">
-                    <div style="font-size: 3rem; margin-bottom: 10px;">✅</div>
+                    <div style="font-size: 3rem; margin-bottom: 10px;">✨</div>
                     <h1>It's a Date.</h1>
-                    <p style="color: var(--text-muted);">Here is the official strategy.</p>
+                    <p style="color: var(--text-dim);">The universe has spoken. Here is the plan.</p>
                 </div>
 
-                <div class="report-line">
-                    <span class="report-label">Venue</span>
-                    <span class="report-val" id="res-venue"></span>
+                <div class="report-grid">
+                    <div class="report-card">
+                        <div>
+                            <div class="r-label">Coordinates</div>
+                            <div class="r-val" id="res-venue"></div>
+                        </div>
+                        <div style="font-size: 1.5rem;">📍</div>
+                    </div>
+                    <div class="report-card">
+                        <div>
+                            <div class="r-label">Fuel Source</div>
+                            <div class="r-val" id="res-caffeine"></div>
+                        </div>
+                        <div style="font-size: 1.5rem;">☕</div>
+                    </div>
+                    <div class="report-card">
+                        <div>
+                            <div class="r-label">Vibe Frequency</div>
+                            <div class="r-val" id="res-topic"></div>
+                        </div>
+                        <div style="font-size: 1.5rem;">📡</div>
+                    </div>
                 </div>
-                <div class="report-line">
-                    <span class="report-label">The Fuel</span>
-                    <span class="report-val" id="res-caffeine"></span>
-                </div>
-                <div class="report-line">
-                    <span class="report-label">Vibe Check</span>
-                    <span class="report-val" id="res-topic"></span>
-                </div>
-                <div class="report-line">
-                    <span class="report-label">Sugar Policy</span>
-                    <span class="report-val" id="res-dessert"></span>
-                </div>
-                
-                <div style="margin-top: 30px; text-align: center;">
-                    <p style="font-size: 0.9rem; margin-bottom: 10px; color: var(--text-muted); font-style: italic;">
-                        Screenshot this & send it to me.
+
+                <div style="margin-top: 40px; text-align: center;">
+                    <p style="font-size: 0.9rem; margin-bottom: 15px; color: var(--text-dim); font-style: italic;">
+                        Screenshot this prophecy & send it to me.
                     </p>
+                    <div style="font-family: 'Cinzel'; color: var(--accent); font-size: 1.2rem;">See you soon.</div>
                 </div>
             </div>
 
@@ -353,95 +442,68 @@
     </div>
 
     <script>
-        // State
         const data = {};
 
         function nextStep(stepNum) {
-            // Fade out current
             const currents = document.querySelectorAll('.step');
             currents.forEach(el => {
                 if(el.style.display !== 'none') {
                     el.classList.add('fade-out');
-                    setTimeout(() => { el.style.display = 'none'; el.classList.remove('fade-out'); }, 400);
+                    setTimeout(() => { el.style.display = 'none'; el.classList.remove('fade-out'); }, 500);
                 }
             });
 
-            // Update Progress
             const progress = (stepNum / 7) * 100;
             document.getElementById('progress').style.width = progress + "%";
 
-            // Fade in next (with delay)
             setTimeout(() => {
                 const next = document.getElementById('step-' + stepNum);
                 next.style.display = 'block';
                 next.classList.add('fade-in');
-                
-                // If it's the processing step, trigger finish
-                if(stepNum === 7) {
-                    finish();
-                }
-            }, 400);
+                if(stepNum === 7) finish();
+            }, 500);
         }
 
         function selectOption(key, value, comment, nextStepNum) {
-            // Save data
             data[key] = value;
             document.getElementById('form-' + key).value = value;
-
-            // Show reactive comment
+            
             const commentEl = document.getElementById('comment-' + (nextStepNum - 1));
             commentEl.innerText = comment;
             commentEl.style.opacity = '1';
 
-            // Wait a bit, then move on
-            setTimeout(() => {
-                nextStep(nextStepNum);
-            }, 1500);
+            setTimeout(() => { nextStep(nextStepNum); }, 1500);
         }
 
         function submitText(key, inputId, comment, nextStepNum) {
             const val = document.getElementById(inputId).value;
-            if(!val) {
-                alert("Say something!");
-                return;
-            }
+            if(!val) { alert("The universe awaits your answer."); return; }
             
             data[key] = val;
             document.getElementById('form-' + key).value = val;
-
+            
             const commentEl = document.getElementById('comment-' + (nextStepNum - 1));
             commentEl.innerText = comment;
             commentEl.style.opacity = '1';
 
-            setTimeout(() => {
-                nextStep(nextStepNum);
-            }, 1500);
+            setTimeout(() => { nextStep(nextStepNum); }, 1500);
         }
 
         function finish() {
-            // 1. Submit Formspree in background
             const form = document.getElementById('hidden-form');
             const formData = new FormData(form);
-            
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
+            fetch(form.action, { method: 'POST', body: formData, headers: {'Accept': 'application/json'} });
 
-            // 2. Populate Report
             document.getElementById('res-venue').innerText = data.venue;
             document.getElementById('res-caffeine').innerText = data.caffeine;
             document.getElementById('res-topic').innerText = data.topic;
-            document.getElementById('res-dessert').innerText = data.dessert;
 
-            // 3. Show Report after fake delay
             setTimeout(() => {
                 document.getElementById('step-7').style.display = 'none';
                 const report = document.getElementById('report-view');
                 report.style.display = 'block';
                 report.classList.add('fade-in');
-            }, 2000);
+            }, 2500);
         }
     </script>
 </body>
