@@ -3,439 +3,408 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thursday: The Proposal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Space+Grotesk:wght@300;400;600&display=swap" rel="stylesheet">
+    <title>Vibe Check: Malaika</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;800&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #050505;
-            --glass: rgba(30, 30, 30, 0.6);
-            --border: rgba(255, 255, 255, 0.08);
-            --accent: #d4af37; /* Metallic Gold */
-            --accent-dim: rgba(212, 175, 55, 0.1);
-            --text: #e0e0e0;
-            --success: #4caf50;
+            /* Warm, Sunset, "Golden Hour" Palette */
+            --bg-gradient: linear-gradient(135deg, #FF9A9E 0%, #FECFEF 99%, #FECFEF 100%); 
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --primary: #c75b5b; /* Muted Rose/Terracotta */
+            --text-dark: #2d1b2d;
+            --text-light: #665c66;
+            --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Space Grotesk', sans-serif;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #ffd1ff);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            font-family: 'Outfit', sans-serif;
+            color: var(--text-dark);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-image: 
-                radial-gradient(circle at 50% 0%, #1a1500 0%, transparent 60%),
-                linear-gradient(0deg, #000 0%, transparent 100%);
             padding: 20px;
         }
 
-        .main-container {
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
             width: 100%;
-            max-width: 700px;
+            max-width: 600px;
             perspective: 1000px;
         }
 
-        /* CARD STYLES */
+        /* CARD STYLING */
         .card {
-            background: var(--glass);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: var(--shadow);
+            transition: all 0.5s ease;
             position: relative;
             overflow: hidden;
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s;
         }
 
-        h1, h2, h3 {
-            font-family: 'Cinzel', serif;
-            color: var(--accent);
-            margin-bottom: 10px;
+        /* HEADER */
+        header { text-align: center; margin-bottom: 30px; }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--primary);
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
-        h1 { font-size: 2rem; text-align: center; letter-spacing: 2px; }
-        .subtitle { text-align: center; opacity: 0.6; margin-bottom: 40px; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; }
+        .status-badge {
+            display: inline-block;
+            background: #ffdbdb;
+            color: #d63031;
+            padding: 6px 14px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
 
         /* FORM ELEMENTS */
-        .section-label {
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #888;
+        .question-group { margin-bottom: 35px; }
+        
+        .label-title {
+            font-size: 1.1rem;
+            font-weight: 600;
             margin-bottom: 15px;
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 5px;
-        }
-
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
-        .grid-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px; }
-
-        /* Custom Radio Cards */
-        .radio-card input { display: none; }
-        .radio-box {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--border);
-            padding: 20px;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: center;
-            height: 100%;
+            color: var(--text-dark);
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            align-items: center;
             gap: 8px;
         }
-        .radio-box:hover { background: rgba(255,255,255,0.06); }
-        .radio-card input:checked + .radio-box {
-            border-color: var(--accent);
-            background: var(--accent-dim);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
-        }
-        .emoji { font-size: 1.8rem; }
-        .label-text { font-weight: 600; font-size: 0.95rem; }
-        .desc-text { font-size: 0.75rem; opacity: 0.7; }
 
-        /* Tags */
-        .tag-check input { display: none; }
-        .tag-box {
-            padding: 8px 16px;
-            border-radius: 50px;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.03);
-            font-size: 0.85rem;
+        /* MODE CARDS (Chaos, Comfort, Zen) */
+        .mode-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+        }
+
+        .mode-option input { display: none; }
+        
+        .mode-card {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255,255,255,0.6);
+            border: 1px solid transparent;
+            border-radius: 16px;
             cursor: pointer;
             transition: all 0.3s;
         }
-        .tag-check input:checked + .tag-box {
-            background: var(--accent);
-            color: #000;
-            border-color: var(--accent);
-            font-weight: 600;
+
+        .mode-icon { font-size: 1.8rem; margin-right: 15px; }
+        .mode-info h3 { font-size: 1rem; margin-bottom: 2px; }
+        .mode-info p { font-size: 0.8rem; color: var(--text-light); }
+
+        .mode-option input:checked + .mode-card {
+            background: #fff;
+            border-color: var(--primary);
+            box-shadow: 0 4px 15px rgba(199, 91, 91, 0.2);
+            transform: scale(1.02);
         }
 
-        /* Button */
-        .submit-btn {
-            width: 100%;
+        /* COFFEE SELECTOR (Hidden by default) */
+        #coffee-section {
+            display: none; /* Toggled by JS */
+            margin-top: 20px;
+            background: rgba(255,255,255,0.4);
             padding: 20px;
-            background: linear-gradient(135deg, #d4af37 0%, #a88b2d 100%);
+            border-radius: 16px;
+            animation: fadeIn 0.5s;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+            background: #fff;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            outline: none;
+        }
+
+        /* BUTTON */
+        button {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: white;
             border: none;
-            border-radius: 8px;
-            color: #050505;
-            font-family: 'Cinzel', serif;
-            font-weight: 700;
-            font-size: 1.1rem;
+            border-radius: 14px;
+            font-size: 1rem;
+            font-weight: 600;
             letter-spacing: 1px;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
+            font-family: 'Outfit', sans-serif;
         }
-        .submit-btn:hover {
+
+        button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 20px rgba(199, 91, 91, 0.3);
+            background: #b04646;
         }
 
-        /* LOADING STATE */
-        #loading-view {
-            display: none;
-            text-align: center;
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg);
-            z-index: 10;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .loader {
-            width: 50px; height: 50px;
-            border: 3px solid rgba(212, 175, 55, 0.3);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 20px;
-        }
-        .loading-text { font-family: 'Courier New', monospace; font-size: 0.9rem; color: var(--accent); }
-
-        /* REPORT VIEW */
+        /* REPORT STYLES */
         #report-view { display: none; }
         
         .report-header {
-            border-bottom: 2px solid var(--accent);
+            border-bottom: 2px dashed var(--primary);
             padding-bottom: 20px;
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-        }
-        .report-meta { font-family: 'Courier New', monospace; font-size: 0.7rem; opacity: 0.6; text-align: right; }
-        
-        .report-section { margin-bottom: 30px; opacity: 0; transform: translateY(20px); }
-        .report-label { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: 700; }
-        .report-content { font-size: 1rem; line-height: 1.6; background: rgba(255,255,255,0.03); padding: 20px; border-left: 2px solid var(--border); border-radius: 0 8px 8px 0; }
-        
-        .venue-card {
-            background: linear-gradient(45deg, rgba(212, 175, 55, 0.1), transparent);
-            border: 1px solid var(--accent);
-            padding: 25px;
-            margin-top: 10px;
-            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
         }
 
-        .highlight { color: #fff; font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent); }
+        .report-body {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: var(--text-dark);
+        }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        .report-highlight {
+            background: #ffe0e0;
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .signature {
+            margin-top: 30px;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            text-align: right;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     </style>
 </head>
 <body>
 
-    <div class="main-container">
+    <div class="container">
         
         <div id="form-view" class="card">
             <header>
-                <h1>Calibration Protocol</h1>
-                <p class="subtitle">Thursday Night • Karachi • Data Ingestion</p>
+                <div class="status-badge">⚠️ Status: Boredom Critical</div>
+                <h1>Vibe Check Protocol</h1>
+                <p style="opacity: 0.7;">Intervention required for: Malaika</p>
             </header>
 
             <form id="dateForm" action="https://formspree.io/f/xgozggkq" method="POST">
                 
-                <div class="section-label">01 // Atmosphere Selection</div>
-                <div class="grid-2">
-                    <label class="radio-card">
-                        <input type="radio" name="vibe" value="Intimate" required>
-                        <div class="radio-box">
-                            <span class="emoji">🕯️</span>
-                            <span class="label-text">Intimate & Moody</span>
-                            <span class="desc-text">Low light, soft jazz, focus on us.</span>
-                        </div>
-                    </label>
-                    <label class="radio-card">
-                        <input type="radio" name="vibe" value="Social">
-                        <div class="radio-box">
-                            <span class="emoji">🥂</span>
-                            <span class="label-text">Chic & Social</span>
-                            <span class="desc-text">Buzzing energy, people watching.</span>
-                        </div>
-                    </label>
-                    <label class="radio-card">
-                        <input type="radio" name="vibe" value="Artsy">
-                        <div class="radio-box">
-                            <span class="emoji">🎨</span>
-                            <span class="label-text">Artsy & Green</span>
-                            <span class="desc-text">Open air, aesthetic, calm.</span>
-                        </div>
-                    </label>
-                    <label class="radio-card">
-                        <input type="radio" name="vibe" value="Casual">
-                        <div class="radio-box">
-                            <span class="emoji">☕</span>
-                            <span class="label-text">Pure Coffee</span>
-                            <span class="desc-text">Just caffeine and conversation.</span>
-                        </div>
-                    </label>
+                <div class="question-group">
+                    <div class="label-title">Step 1: Select Your Adventure</div>
+                    <div class="mode-grid">
+                        
+                        <label class="mode-option">
+                            <input type="radio" name="mode" value="Chaos" onchange="toggleCoffee(false)" required>
+                            <div class="mode-card">
+                                <span class="mode-icon">🎾</span>
+                                <div class="mode-info">
+                                    <h3>Chaos Mode</h3>
+                                    <p>Paddle / Bowling rivalry. I will destroy you.</p>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="mode-option">
+                            <input type="radio" name="mode" value="Comfort" onchange="toggleCoffee(false)">
+                            <div class="mode-card">
+                                <span class="mode-icon">🥘</span>
+                                <div class="mode-info">
+                                    <h3>Comfort Mode</h3>
+                                    <p>Biryani hunt & chill. No terrible jokes (maybe).</p>
+                                </div>
+                            </div>
+                        </label>
+
+                        <label class="mode-option">
+                            <input type="radio" name="mode" value="Zen" onchange="toggleCoffee(true)">
+                            <div class="mode-card">
+                                <span class="mode-icon">☕</span>
+                                <div class="mode-info">
+                                    <h3>Zen Mode</h3>
+                                    <p>Sunset, Beach breeze & Good Coffee.</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
                 </div>
 
-                <div class="section-label">02 // Conversation Menu</div>
-                <div class="grid-tags">
-                    <label class="tag-check"><input type="checkbox" name="topic" value="Ambitions"><span class="tag-box">🚀 Future Ambitions</span></label>
-                    <label class="tag-check"><input type="checkbox" name="topic" value="Lore"><span class="tag-box">📜 Deep Life Lore</span></label>
-                    <label class="tag-check"><input type="checkbox" name="topic" value="Roasting"><span class="tag-box">🔥 Light Roasting</span></label>
-                    <label class="tag-check"><input type="checkbox" name="topic" value="Travel"><span class="tag-box">✈️ Travel Plans</span></label>
-                    <label class="tag-check"><input type="checkbox" name="topic" value="Gossip"><span class="tag-box">🤫 Workplace Tea</span></label>
+                <div id="coffee-section">
+                    <div class="label-title">☕ Priority: Caffeine Location</div>
+                    <p style="font-size:0.85rem; margin-bottom:10px; opacity:0.7;">Since you chose Zen, we need high-quality beans.</p>
+                    <select name="coffee_spot">
+                        <option value="Cote Rotie">Cote Rôtie (Classy, E-Street)</option>
+                        <option value="Xanders">Xander's (The Safe Bet)</option>
+                        <option value="Drop Coffee">Drop Coffee (Best Roast)</option>
+                        <option value="Melbrew">Melbrew (Aesthetic)</option>
+                        <option value="Koel">Koel Cafe (Maximum Zen)</option>
+                        <option value="Surprise">Surprise Me (I trust you)</option>
+                    </select>
                 </div>
 
-                <div class="section-label">03 // The After-Hours</div>
-                <div class="grid-2">
-                    <label class="radio-card">
-                        <input type="radio" name="activity" value="Drive" required>
-                        <div class="radio-box">
-                            <span class="emoji">🚗</span>
-                            <span class="label-text">Sea View Drive</span>
-                            <span class="desc-text">Playlist + Ocean Breeze.</span>
-                        </div>
-                    </label>
-                    <label class="radio-card">
-                        <input type="radio" name="activity" value="Dessert">
-                        <div class="radio-box">
-                            <span class="emoji">🍰</span>
-                            <span class="label-text">Dessert Hunt</span>
-                            <span class="desc-text">Finding the best chocolate in DHA.</span>
-                        </div>
-                    </label>
-                    <label class="radio-card">
-                        <input type="radio" name="activity" value="Walk">
-                        <div class="radio-box">
-                            <span class="emoji">🌙</span>
-                            <span class="label-text">E-Street Walk</span>
-                            <span class="desc-text">Walking off the caffeine.</span>
-                        </div>
-                    </label>
-                    <label class="radio-card">
-                        <input type="radio" name="activity" value="Arcade">
-                        <div class="radio-box">
-                            <span class="emoji">👾</span>
-                            <span class="label-text">Competition</span>
-                            <span class="desc-text">Bowling or Arcade (District 19).</span>
-                        </div>
-                    </label>
+                <div class="question-group">
+                    <div class="label-title">Step 2: The Mood Setting</div>
+                    <div class="mode-grid">
+                        <label class="mode-option">
+                            <input type="radio" name="mood" value="Deep" required>
+                            <div class="mode-card">
+                                <span class="mode-icon">🧠</span>
+                                <div class="mode-info">
+                                    <h3>Deep & Meaningful</h3>
+                                    <p>Life lore, ambitions, "what does it all mean?"</p>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="mode-option">
+                            <input type="radio" name="mood" value="Light">
+                            <div class="mode-card">
+                                <span class="mode-icon">✨</span>
+                                <div class="mode-info">
+                                    <h3>Immaculate Vibes</h3>
+                                    <p>Gossip, roasting, laughing till it hurts.</p>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
                 </div>
 
-                <button type="submit" id="submitBtn" class="submit-btn">GENERATE REPORT</button>
+                <div class="question-group">
+                    <div class="label-title">Any Specific Cravings/Rules?</div>
+                    <input type="text" name="notes" placeholder="e.g. 'I need dessert' or 'Pick me up at 8'" style="width:100%; padding:15px; border-radius:10px; border:1px solid #ddd; outline:none; font-family:'Outfit';">
+                </div>
+
+                <button type="submit" id="submitBtn">Generate Prescription</button>
             </form>
-        </div>
-
-        <div id="loading-view" class="card">
-            <div class="loader"></div>
-            <div class="loading-text" id="loading-msg">CONNECTING TO NEURAL NET...</div>
         </div>
 
         <div id="report-view" class="card">
             <div class="report-header">
-                <div>
-                    <h2>COMPATIBILITY REPORT</h2>
-                    <div style="color:var(--accent); font-size:0.8rem;">REF: THURS-DATE-001</div>
-                </div>
-                <div class="report-meta">
-                    GENERATED BY: M&E AI<br>
-                    STATUS: APPROVED<br>
-                    CONFIDENCE: 99.8%
-                </div>
+                <h2 style="font-family: 'Playfair Display'; color: var(--primary);">Diagnosis Complete</h2>
+                <p style="font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; margin-top:5px;">Ref: MALAIKA-001</p>
             </div>
 
-            <div class="report-section" id="sec-1">
-                <div class="report-label">01 // Psychometric Profile</div>
-                <div class="report-content" id="report-psycho"></div>
-            </div>
-
-            <div class="report-section" id="sec-2">
-                <div class="report-label">02 // Strategic Venue Selection</div>
-                <div class="report-content venue-card">
-                    <h3 id="venue-name" style="color: #fff; margin-bottom: 5px;"></h3>
-                    <p id="venue-desc" style="font-size: 0.9rem; opacity: 0.9;"></p>
+            <div class="report-body" id="report-content">
                 </div>
-            </div>
 
-            <div class="report-section" id="sec-3">
-                <div class="report-label">03 // Operational Itinerary</div>
-                <div class="report-content" id="report-plan"></div>
+            <div class="signature">
+                - The Management
             </div>
             
-            <p style="text-align: center; margin-top: 30px; font-size: 0.8rem; opacity: 0.5;">
-                Screenshot this report and send to the Manager for confirmation.
+            <p style="text-align: center; margin-top: 30px; font-size: 0.8rem; opacity: 0.6;">
+                (Take a screenshot of this and send it to me for confirmation)
             </p>
         </div>
 
     </div>
 
     <script>
+        // Toggle Coffee Menu based on "Zen Mode" selection
+        function toggleCoffee(show) {
+            const section = document.getElementById('coffee-section');
+            if (show) {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+            }
+        }
+
         const form = document.getElementById("dateForm");
         const formView = document.getElementById("form-view");
-        const loadingView = document.getElementById("loading-view");
         const reportView = document.getElementById("report-view");
-        const loadingMsg = document.getElementById("loading-msg");
-
-        // --- THE "AI" LOGIC ENGINE ---
-        // This simulates a Generative AI response using decision trees
-        
-        const venues = {
-            "Intimate": { name: "Cote Rôtie (Phase 6)", desc: "Selected for its low acoustics and ambient lighting. Perfect for the 'Deep Lore' conversations you requested." },
-            "Social": { name: "Xander's (E-Street)", desc: "High energy coefficient. Selected because you want to be seen. The patio offers the perfect balance of noise and privacy." },
-            "Artsy": { name: "Koel Cafe", desc: "Serene environment detected. The courtyard setting aligns with your 'Artsy' input parameters." },
-            "Casual": { name: "Drop Coffee / Melbrew", desc: "No-nonsense caffeine injection. Pure minimalist vibes for focused interaction." }
-        };
-
-        const psychoanalysis = {
-            "Ambitions": "The inclusion of 'Future Ambitions' suggests a high-growth mindset.",
-            "Lore": "Requesting 'Deep Lore' indicates a desire for vulnerability and authentic connection.",
-            "Roasting": "Tolerance for 'Roasting' implies a secure attachment style and high sense of humor.",
-            "Gossip": "Selection of 'Tea' suggests you value social intelligence and shared secrets."
-        };
+        const reportContent = document.getElementById("report-content");
+        const btn = document.getElementById("submitBtn");
 
         async function handleSubmit(event) {
             event.preventDefault();
+            const originalText = btn.innerText;
+            btn.innerText = "Analyzing Vibes...";
             
-            // 1. UI Transition
-            formView.style.display = 'none';
-            loadingView.style.display = 'flex';
-
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData.entries());
-            const topics = formData.getAll("topic");
 
-            // 2. Submit to Formspree in background
+            // Send to Formspree
             fetch(event.target.action, {
                 method: form.method,
                 body: formData,
                 headers: { 'Accept': 'application/json' }
             });
 
-            // 3. Simulate "Thinking"
-            const messages = ["ANALYZING VIBE...", "CROSS-REFERENCING KARACHI MAP...", "OPTIMIZING ROMANCE ALGORITHMS...", "GENERATING REPORT..."];
-            
-            for(let i=0; i<messages.length; i++) {
-                loadingMsg.innerText = messages[i];
-                await new Promise(r => setTimeout(r, 800)); // Fake delay
-            }
+            // Simulate loading
+            await new Promise(r => setTimeout(r, 1500));
 
-            // 4. Generate the "AI" Report
-            generateAIReport(data.vibe, topics, data.activity);
+            // Generate "AI" Prescription
+            generateReport(data);
 
-            // 5. Show Report
-            loadingView.style.display = 'none';
+            // Transition
+            formView.style.display = 'none';
             reportView.style.display = 'block';
-            
-            // Animate sections in
-            setTimeout(() => { document.getElementById('sec-1').style.animation = "fadeUp 0.8s forwards"; }, 100);
-            setTimeout(() => { document.getElementById('sec-2').style.animation = "fadeUp 0.8s forwards"; }, 400);
-            setTimeout(() => { document.getElementById('sec-3').style.animation = "fadeUp 0.8s forwards"; }, 700);
         }
 
-        function generateAIReport(vibe, topics, activity) {
-            
-            // Section 1: Personality
-            let psychoText = `Based on your selection of a <strong>${vibe}</strong> atmosphere, the system detects you are currently prioritizing quality connection over chaotic environments. `;
-            if (topics.length > 0) {
-                const randomTopic = topics[Math.floor(Math.random() * topics.length)];
-                psychoText += psychoanalysis[randomTopic] || "Your conversation topics indicate a versatile personality.";
-            }
-            document.getElementById('report-psycho').innerHTML = psychoText;
+        function generateReport(data) {
+            let diagnosis = "";
+            let prescription = "";
+            let location = "";
 
-            // Section 2: Venue
-            // Logic: Default to the vibe map, but override if specific combos exist
-            let selectedVenue = venues[vibe];
-            if (vibe === "Intimate" && activity === "Dessert") {
-                selectedVenue = { name: "Flo (E-Street)", desc: "Classic French atmosphere suitable for both intimacy and high-quality sugar intake." };
+            // LOGIC ENGINE
+            if (data.mode === "Chaos") {
+                diagnosis = "Patient exhibits dangerously low levels of adrenaline.";
+                prescription = "Immediate competition therapy required.";
+                location = "Bowling Alley or Paddle Court (I will win).";
+            } else if (data.mode === "Comfort") {
+                diagnosis = "Patient requires immediate intake of carbohydrates and spice.";
+                prescription = "Standard 'Biryani & Venting' protocol initiated.";
+                location = "The best Biryani spot in Karachi.";
+            } else { // Zen
+                diagnosis = "Patient is suffering from urban fatigue. Needs 'Main Character Energy'.";
+                prescription = `Caffeine infusion followed by sea breeze inhalation.`;
+                location = data.coffee_spot === "Surprise" ? "Manager's Choice (Trust me)" : data.coffee_spot;
             }
-            
-            document.getElementById('venue-name').innerText = selectedVenue.name;
-            document.getElementById('venue-desc').innerText = selectedVenue.desc;
 
-            // Section 3: Itinerary
-            let plan = `
-                <ul style="list-style: none; padding-left: 0;">
-                    <li style="margin-bottom: 10px;"><strong>20:00 HRS:</strong> Pickup / Rendezvous.</li>
-                    <li style="margin-bottom: 10px;"><strong>20:30 HRS:</strong> Deployment to <span class="highlight">${selectedVenue.name}</span> for primary data exchange (conversation).</li>
-                    <li style="margin-bottom: 10px;"><strong>22:00 HRS:</strong> Transition to Phase 2: <span class="highlight">${getActivityName(activity)}</span>.</li>
-                    <li><strong>23:00 HRS:</strong> Mission Debrief.</li>
-                </ul>
+            const html = `
+                <p style="margin-bottom: 15px;"><strong>Clinical Assessment:</strong><br>
+                ${diagnosis}</p>
+
+                <p style="margin-bottom: 15px;"><strong>Prescribed Treatment:</strong><br>
+                One evening of <span class="report-highlight">${data.mode} Mode</span> focusing on <span class="report-highlight">${data.mood}</span> conversation.</p>
+
+                <p style="margin-bottom: 15px;"><strong>Designated Facility:</strong><br>
+                📍 ${location}</p>
+
+                <p><strong>Next Steps:</strong><br>
+                Wait for your pickup. Playlist is already prepared.</p>
             `;
-            document.getElementById('report-plan').innerHTML = plan;
-        }
 
-        function getActivityName(val) {
-            const map = {
-                "Drive": "Scenic Coastal Drive",
-                "Dessert": "Dessert Acquisition",
-                "Walk": "Pedestrian Stroll",
-                "Arcade": "Competitive Gaming"
-            };
-            return map[val] || val;
+            reportContent.innerHTML = html;
         }
 
         form.addEventListener("submit", handleSubmit);
