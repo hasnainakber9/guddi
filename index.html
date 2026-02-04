@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Shore — Just Keep Swimming</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Montserrat:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-deep: #0a0512;
@@ -166,7 +166,7 @@
         }
 
         .subtitle {
-            font-family: 'Crimson Pro', serif;
+            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
             font-size: 1rem;
             color: var(--text-dim);
@@ -309,7 +309,7 @@
         }
 
         .hint-text {
-            font-family: 'Crimson Pro', serif;
+            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
             font-size: 1.15rem;
             color: var(--gold-bright);
@@ -451,33 +451,12 @@
         }
 
         .form-subtitle {
-            font-family: 'Crimson Pro', serif;
+            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
             font-size: 1.1rem;
             color: var(--text-dim);
             margin-bottom: 40px;
             line-height: 1.6;
-        }
-
-        /* AI Suggestion Badge */
-        .ai-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
-            color: var(--text-main);
-            padding: 4px 10px;
-            border-radius: 12px;
-            font-size: 0.65rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-left: 8px;
-            animation: shimmer 2s ease-in-out infinite;
-            box-shadow: 0 0 15px var(--gold-glow);
-        }
-
-        @keyframes shimmer {
-            0%, 100% { opacity: 0.8; }
-            50% { opacity: 1; }
         }
 
         /* Elegant Choice Buttons */
@@ -496,11 +475,6 @@
             backdrop-filter: blur(10px);
             position: relative;
             overflow: hidden;
-        }
-
-        .choice-btn.ai-recommended {
-            border-color: var(--gold-dim);
-            background: linear-gradient(90deg, var(--glass-panel), rgba(212, 175, 55, 0.08));
         }
 
         .choice-btn::before {
@@ -539,7 +513,7 @@
 
         .choice-btn:hover .btn-icon {
             opacity: 1;
-            transform: scale(1.1) rotate(5deg);
+            transform: scale(1.1);
         }
 
         .btn-content {
@@ -571,7 +545,7 @@
             border-radius: 8px;
             padding: 18px 20px;
             color: var(--text-main);
-            font-family: 'Crimson Pro', serif;
+            font-family: 'Cormorant Garamond', serif;
             font-size: 1.2rem;
             outline: none;
             text-align: center;
@@ -670,7 +644,7 @@
         }
 
         .report-subtitle {
-            font-family: 'Crimson Pro', serif;
+            font-family: 'Cormorant Garamond', serif;
             font-style: italic;
             font-size: 1.2rem;
             color: var(--text-dim);
@@ -890,10 +864,10 @@
             <h1 class="form-title">What's Your Fuel?</h1>
             <p class="form-subtitle">Every conversation needs the right energy</p>
             
-            <div class="choice-btn ai-recommended" onclick="select('caffeine', 'Sweet & Iced', 2)">
+            <div class="choice-btn" onclick="select('caffeine', 'Sweet & Iced', 2)">
                 <span class="btn-icon">✨</span> 
                 <div class="btn-content">
-                    <span class="btn-label">Sweet & Iced <span class="ai-badge">AI Pick</span></span>
+                    <span class="btn-label">Sweet & Iced</span>
                     <span class="btn-sub">Because life's too short for bitter</span>
                 </div>
             </div>
@@ -924,10 +898,10 @@
             <h1 class="form-title">Where To?</h1>
             <p class="form-subtitle">Pick our backdrop for good conversations</p>
             
-            <div class="choice-btn ai-recommended" onclick="select('venue', 'Koel Cafe', 3)">
+            <div class="choice-btn" onclick="select('venue', 'Koel Cafe', 3)">
                 <span class="btn-icon">🌿</span> 
                 <div class="btn-content">
-                    <span class="btn-label">Koel Cafe <span class="ai-badge">AI Pick</span></span>
+                    <span class="btn-label">Koel Cafe</span>
                     <span class="btn-sub">Serene vibes, art on the walls</span>
                 </div>
             </div>
@@ -958,10 +932,10 @@
             <h1 class="form-title">Set The Vibe</h1>
             <p class="form-subtitle">What kind of conversation are we having?</p>
             
-            <div class="choice-btn ai-recommended" onclick="select('game', 'Stories & Secrets', 4)">
+            <div class="choice-btn" onclick="select('game', 'Stories & Secrets', 4)">
                 <span class="btn-icon">📖</span> 
                 <div class="btn-content">
-                    <span class="btn-label">Stories & Secrets <span class="ai-badge">AI Pick</span></span>
+                    <span class="btn-label">Stories & Secrets</span>
                     <span class="btn-sub">The chapters we don't usually share</span>
                 </div>
             </div>
@@ -1136,6 +1110,7 @@
 
         function submitGuess() {
             if(currentTile !== WORD_LENGTH) {
+                // Shake animation for incomplete word
                 const row = document.querySelectorAll(`#tile-${currentRow}-0, #tile-${currentRow}-1, #tile-${currentRow}-2, #tile-${currentRow}-3, #tile-${currentRow}-4`);
                 row.forEach(tile => {
                     tile.classList.add('shake');
@@ -1286,7 +1261,7 @@
             const data = new FormData(form);
             const btn = document.getElementById('final-btn');
             
-            // Disable button and show AI processing
+            // AI Thinking Simulation
             btn.disabled = true;
             btn.innerHTML = '<span>Analyzing <div class="ai-thinking"><span>.</span><span>.</span><span>.</span></div></span>';
             
@@ -1296,10 +1271,10 @@
                 headers: {'Accept': 'application/json'} 
             })
             .then(() => {
-                setTimeout(() => showReport(), 2000);
+                setTimeout(showReport, 2000); // Artificial delay for effect
             })
             .catch(() => {
-                setTimeout(() => showReport(), 2000);
+                setTimeout(showReport, 2000);
             }); 
         }
 
